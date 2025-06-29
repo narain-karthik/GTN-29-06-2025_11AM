@@ -102,6 +102,10 @@ The GTN Engineering IT Helpdesk System is a comprehensive Flask-based web applic
 
 ## Changelog
 
+- June 29, 2025: Fixed user dashboard UI issues:
+  - Fixed search bar overflow in "My Support Tickets" section by implementing proper flexbox layout and responsive design
+  - Reduced banner header size with smaller padding, font sizes, and margins for more compact appearance
+  - Added proper CSS for section headers to prevent content overflow on mobile devices
 - June 29, 2025: Updated all README files to reflect current system architecture:
   - Removed all Admin role references from README.md, README_Database_Schema.md, and README_Master_Data.md
   - Updated database schema documentation to include ticket_number field and specialization field
