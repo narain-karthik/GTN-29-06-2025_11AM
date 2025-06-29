@@ -52,22 +52,21 @@ body, html {
 
 /* Home page specific layout to prevent scrolling */
 .main-content-home {
-    height: calc(100vh - 90px);
+    height: calc(100vh - 160px); /* Adjusted to account for header and footer */
     overflow: hidden;
-}
-
-.main-content-home + .footer {
-    display: none;
+    background: white; /* White background as requested */
 }
 
 .main-content-home .hero-section {
     height: 100%;
+    background: white; /* Remove gradient background */
 }
 
 .main-content-home .hero-gradient {
     height: 100%;
     display: flex;
     align-items: center;
+    background: white; /* White background instead of gradient */
 }
 
 /* Header */
