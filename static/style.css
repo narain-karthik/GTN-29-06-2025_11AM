@@ -2611,6 +2611,9 @@ body, html {
     font-weight: 600;
     margin-bottom: 1rem;
     color: var(--gray-900);
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
 }
 
 .quick-actions-panel .actions-grid {
@@ -2884,6 +2887,7 @@ body, html {
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
     border: 1px solid var(--gray-100);
     height: fit-content;
+    overflow: hidden;
 }
 
 .panel-header {
@@ -2891,6 +2895,7 @@ body, html {
     justify-content: space-between;
     align-items: center;
     margin-bottom: 1.5rem;
+    width: 100%;
 }
 
 .panel-header .panel-title {
@@ -2901,6 +2906,8 @@ body, html {
     display: flex;
     align-items: center;
     gap: 0.5rem;
+    flex: 1;
+    min-width: 0;
 }
 
 .activity-timeline {
