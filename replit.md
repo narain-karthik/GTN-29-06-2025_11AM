@@ -102,6 +102,9 @@ The GTN Engineering IT Helpdesk System is a comprehensive Flask-based web applic
 
 ## Changelog
 
+- June 29, 2025: Removed Super Admin deletion restriction - Super Admins can now delete other Super Admin accounts (only self-deletion is still prevented for safety)
+- June 29, 2025: Added specialization field to User model allowing selection between Hardware and Software support expertise
+- June 29, 2025: Fixed email notification tracking to properly handle ticket ID extraction from GTN-000001 format for database logging
 - June 29, 2025: Successfully completed migration from Replit Agent to standard Replit environment with enhanced functionality and fixed email settings template:
   - Resolved 500 error in email settings page by fixing CSRF token handling in templates/master_data/email_settings.html
   - Changed test email functionality from POST form to GET link to avoid CSRF complications

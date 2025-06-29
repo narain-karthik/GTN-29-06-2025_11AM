@@ -582,12 +582,7 @@ def delete_user(user_id):
     
     user_to_delete = User.query.get_or_404(user_id)
     
-    # Prevent deletion of super admin users
-    if user_to_delete.role == 'super_admin':
-        flash('Cannot delete Super Admin users for security reasons.', 'error')
-        return redirect(url_for('manage_users'))
-    
-    # Prevent self-deletion
+    # Prevent self-deletion for safety
     if user_to_delete.id == current_user.id:
         flash('You cannot delete your own account.', 'error')
         return redirect(url_for('manage_users'))
