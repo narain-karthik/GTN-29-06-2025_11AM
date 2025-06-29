@@ -137,12 +137,10 @@
                     <div class="row">
                         <div class="col-12">
                             <h6 class="mb-3">Test Email Configuration</h6>
-                            <form method="POST" action="{{ url_for('test_email_settings') }}" style="display: inline;">
-                                <input type="hidden" name="csrf_token" value="{{ form.csrf_token._value() }}"/>
-                                <button type="submit" class="btn btn-outline-primary">
-                                    <i class="ri-mail-send-line"></i> Send Test Email
-                                </button>
-                            </form>
+                            <a href="{{ url_for('test_email_settings') }}" class="btn btn-outline-primary" 
+                               onclick="return confirm('Send a test email to verify SMTP settings?');">
+                                <i class="ri-mail-send-line"></i> Send Test Email
+                            </a>
                             <small class="text-muted d-block mt-2">
                                 This will send a test assignment email to your account to verify SMTP configuration.
                             </small>

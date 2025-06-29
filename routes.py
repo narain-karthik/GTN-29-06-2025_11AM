@@ -1247,7 +1247,7 @@ def manage_email_settings():
     
     return render_template('master_data/email_settings.html', form=form, email_settings=email_settings)
 
-@app.route('/super_admin/test_email_settings', methods=['POST'])
+@app.route('/super_admin/test_email_settings', methods=['GET', 'POST'])
 @login_required
 @super_admin_required
 def test_email_settings():
