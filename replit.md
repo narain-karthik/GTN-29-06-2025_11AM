@@ -107,6 +107,7 @@ The GTN Engineering IT Helpdesk System is a comprehensive Flask-based web applic
   - Created compact, medium-sized profile layout with optimized spacing and smaller elements
   - Made profile header more compact with smaller avatar, reduced padding, and condensed text sizes
   - Optimized form sections with reduced margins, smaller fonts, and better vertical spacing
+  - Removed Quick Actions section from user profile to create cleaner, more focused layout
   - Fixed search bar overflow in "My Support Tickets" section by implementing proper flexbox layout and responsive design
   - Reduced banner header size with smaller padding, font sizes, and margins for more compact appearance
   - Added proper CSS for section headers to prevent content overflow on mobile devices
