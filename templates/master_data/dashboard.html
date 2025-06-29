@@ -366,7 +366,7 @@
                                     {% for user in users[:5] %}
                                     <tr>
                                         <td>
-                                            <strong>{{ user.full_name() }}</strong>
+                                            <strong>{{ user.first_name }} {{ user.last_name }}</strong>
                                             <br><small class="text-muted">{{ user.email }}</small>
                                         </td>
                                         <td>
