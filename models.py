@@ -49,6 +49,7 @@ class Ticket(db.Model):
     __tablename__ = 'tickets'
     
     id = db.Column(db.Integer, primary_key=True)
+    ticket_number = db.Column(db.String(20), nullable=False, unique=True)  # GTN-000001 format
     title = db.Column(db.String(200), nullable=False)
     description = db.Column(db.Text, nullable=False)
     category = db.Column(db.String(50), nullable=False)  # Hardware, Software, Network, Other
@@ -78,10 +79,6 @@ class Ticket(db.Model):
     
     # Relationship with comments
     comments = db.relationship('TicketComment', backref='ticket', lazy=True, cascade='all, delete-orphan')
-    
-    @property
-    def ticket_number(self):
-        return f"GTN-{self.id:06d}"
     
     def __repr__(self):
         return f'<Ticket {self.ticket_number}: {self.title}>'

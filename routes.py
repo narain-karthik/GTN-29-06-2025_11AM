@@ -327,8 +327,14 @@ def create_ticket():
             else:
                 other_attachments.append(fname)
 
+        # Generate ticket number
+        last_ticket = Ticket.query.order_by(Ticket.id.desc()).first()
+        next_ticket_id = (last_ticket.id + 1) if last_ticket else 1
+        ticket_number = f"GTN-{next_ticket_id:06d}"
+        
         # Create the ticket first
         ticket = Ticket(
+            ticket_number=ticket_number,
             title=form.title.data,
             description=form.description.data,
             category=form.category.data,
