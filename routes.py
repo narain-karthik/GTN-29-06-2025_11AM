@@ -189,7 +189,7 @@ def user_profile():
         'recent_tickets': user_tickets[:5] if user_tickets else []
     }
     
-    return render_template('user_profile.html', form=form, user=user, user_stats=user_stats)
+    return render_template('user_profile.html', form=form, user=user, user_stats=user_stats, current_user=user)
 
 @app.route('/super-admin-dashboard')
 @super_admin_required
