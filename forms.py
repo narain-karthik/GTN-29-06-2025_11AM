@@ -13,40 +13,47 @@ class LoginForm(FlaskForm):
 class TicketForm(FlaskForm):
     title = StringField('Title', validators=[DataRequired(), Length(min=5, max=200)])
     description = TextAreaField('Description', validators=[DataRequired(), Length(min=10)])
-    category = SelectField('Category', choices=[
-        ('Hardware', 'Hardware'),
-        ('Software', 'Software')
-    ], validators=[DataRequired()])
-    priority = SelectField('Priority', choices=[
-        ('Low', 'Low'),
-        ('Medium', 'Medium'),
-        ('High', 'High'),
-        ('Critical', 'Critical')
-    ], validators=[DataRequired()])
+    category = SelectField('Category', choices=[], validators=[DataRequired()])
+    priority = SelectField('Priority', choices=[], validators=[DataRequired()])
     system_name = StringField('System Name', render_kw={'placeholder': 'Enter your computer/system name'})
     image = FileField('Upload File (Optional)', validators=[FileAllowed(['jpg', 'jpeg', 'png', 'gif', 'pdf', 'doc', 'docx', 'xls', 'xlsx'], 'Images, PDF, Word, and Excel files only!')])
     submit = SubmitField('Create Ticket')
+    
+    def __init__(self, *args, **kwargs):
+        super(TicketForm, self).__init__(*args, **kwargs)
+        from models import MasterDataCategory, MasterDataPriority
+        
+        # Load categories from master data
+        categories = MasterDataCategory.query.filter_by(is_active=True).all()
+        self.category.choices = [(cat.name, cat.name) for cat in categories]
+        
+        # Load priorities from master data
+        priorities = MasterDataPriority.query.filter_by(is_active=True).order_by(MasterDataPriority.level).all()
+        self.priority.choices = [(pri.name, pri.name) for pri in priorities]
 
 class UpdateTicketForm(FlaskForm):
     title = StringField('Title', validators=[DataRequired(), Length(min=5, max=200)])
     description = TextAreaField('Description', validators=[DataRequired(), Length(min=10)])
-    category = SelectField('Category', choices=[
-        ('Hardware', 'Hardware'),
-        ('Software', 'Software')
-    ], validators=[DataRequired()])
-    priority = SelectField('Priority', choices=[
-        ('Low', 'Low'),
-        ('Medium', 'Medium'),
-        ('High', 'High'),
-        ('Critical', 'Critical')
-    ], validators=[DataRequired()])
-    status = SelectField('Status', choices=[
-        ('Open', 'Open'),
-        ('In Progress', 'In Progress'),
-        ('Resolved', 'Resolved'),
-        ('Closed', 'Closed')
-    ], validators=[DataRequired()])
+    category = SelectField('Category', choices=[], validators=[DataRequired()])
+    priority = SelectField('Priority', choices=[], validators=[DataRequired()])
+    status = SelectField('Status', choices=[], validators=[DataRequired()])
     submit = SubmitField('Update Ticket')
+    
+    def __init__(self, *args, **kwargs):
+        super(UpdateTicketForm, self).__init__(*args, **kwargs)
+        from models import MasterDataCategory, MasterDataPriority, MasterDataStatus
+        
+        # Load categories from master data
+        categories = MasterDataCategory.query.filter_by(is_active=True).all()
+        self.category.choices = [(cat.name, cat.name) for cat in categories]
+        
+        # Load priorities from master data
+        priorities = MasterDataPriority.query.filter_by(is_active=True).order_by(MasterDataPriority.level).all()
+        self.priority.choices = [(pri.name, pri.name) for pri in priorities]
+        
+        # Load statuses from master data
+        statuses = MasterDataStatus.query.filter_by(is_active=True).all()
+        self.status.choices = [(stat.name, stat.name) for stat in statuses]
 
 class CommentForm(FlaskForm):
     comment = TextAreaField('Comment', validators=[DataRequired(), Length(min=5)])
