@@ -2178,12 +2178,12 @@ body, html {
 }
 
 .profile-card .card-body {
-    padding: 1.5rem;
+    padding: 1.2rem;
 }
 
 .form-section {
-    margin-bottom: 1.5rem;
-    padding-bottom: 1rem;
+    margin-bottom: 1rem;
+    padding-bottom: 0.75rem;
     border-bottom: 1px solid var(--gray-200);
 }
 
@@ -2197,34 +2197,36 @@ body, html {
     font-size: 1rem;
     font-weight: 600;
     color: var(--gray-900);
-    margin-bottom: 1rem;
+    margin-bottom: 0.75rem;
     display: flex;
     align-items: center;
     gap: 0.5rem;
 }
 
 .form-group {
-    margin-bottom: 1rem;
+    margin-bottom: 0.75rem;
 }
 
 .form-label {
     font-size: 0.875rem;
     font-weight: 500;
     color: var(--gray-700);
-    margin-bottom: 0.5rem;
+    margin-bottom: 0.4rem;
 }
 
 .form-control {
-    padding: 0.6rem 0.75rem;
+    padding: 0.55rem 0.7rem;
     font-size: 0.875rem;
     border-radius: 6px;
     border: 1px solid var(--gray-300);
+    margin-bottom: 0.3rem;
 }
 
 .form-text {
     font-size: 0.75rem;
     color: var(--gray-500);
-    margin-top: 0.25rem;
+    margin-top: 0.2rem;
+    margin-bottom: 0.3rem;
 }
 
 .btn {
