@@ -4,7 +4,7 @@ Comprehensive documentation for the GTN Engineering IT Helpdesk System database 
 
 ## Overview
 
-The system uses a modern relational database architecture with ten core tables supporting user management, ticket lifecycle, collaborative comments, file attachments, and comprehensive master data management. Designed for PostgreSQL primary deployment with IST timezone support and optimized for Replit environment.
+The system uses a modern relational database architecture with eleven core tables supporting user management, ticket lifecycle, collaborative comments, file attachments, comprehensive master data management, and email notification logging. Designed for PostgreSQL primary deployment with IST timezone support and optimized for Replit environment.
 
 ## Database Architecture
 
@@ -322,6 +322,43 @@ CREATE TABLE backup_settings (
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
+```
+
+### 11. Email Notification Log (`email_notification_logs`)
+
+Tracking and logging of email notifications sent by the system.
+
+```sql
+CREATE TABLE email_notification_logs (
+    id SERIAL PRIMARY KEY,
+    to_email VARCHAR(100) NOT NULL,
+    subject VARCHAR(200) NOT NULL,
+    message_type VARCHAR(50) NOT NULL, -- 'ticket_created', 'ticket_assigned', 'ticket_updated'
+    status VARCHAR(20) NOT NULL, -- 'sent', 'failed'
+    error_message TEXT,
+    ticket_id INTEGER REFERENCES tickets(id),
+    user_id INTEGER REFERENCES users(id),
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+```
+
+**Field Specifications:**
+- `id`: Auto-incrementing log entry identifier
+- `to_email`: Recipient email address
+- `subject`: Email subject line
+- `message_type`: Type of notification (`ticket_created`, `ticket_assigned`, `ticket_updated`)
+- `status`: Email delivery status (`sent`, `failed`)
+- `error_message`: Error details for failed emails
+- `ticket_id`: Reference to related ticket (optional)
+- `user_id`: Reference to related user (optional)
+- `created_at`: Log entry timestamp (UTC)
+
+**Indexes & Constraints:**
+```sql
+CREATE INDEX idx_email_logs_status ON email_notification_logs(status);
+CREATE INDEX idx_email_logs_ticket_id ON email_notification_logs(ticket_id);
+CREATE INDEX idx_email_logs_user_id ON email_notification_logs(user_id);
+CREATE INDEX idx_email_logs_created_at ON email_notification_logs(created_at);
 ```
 
 ## Data Validation & Constraints

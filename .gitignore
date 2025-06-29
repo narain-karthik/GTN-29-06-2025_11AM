@@ -1,6 +1,6 @@
 # GTN Engineering IT Helpdesk - .gitignore
 
-# Python cache files
+# Python
 __pycache__/
 *.py[cod]
 *$py.class
@@ -18,43 +18,58 @@ parts/
 sdist/
 var/
 wheels/
+pip-wheel-metadata/
 share/python-wheels/
 *.egg-info/
 .installed.cfg
 *.egg
 MANIFEST
 
+# PyInstaller
+*.manifest
+*.spec
+
+# Unit test / coverage reports
+htmlcov/
+.tox/
+.nox/
+.coverage
+.coverage.*
+.cache
+nosetests.xml
+coverage.xml
+*.cover
+*.py,cover
+.hypothesis/
+.pytest_cache/
+
 # Virtual environments
-.env
-.venv
-env/
 venv/
+env/
 ENV/
 env.bak/
 venv.bak/
+.venv/
 
-# Environment variables
-.env.local
-.env.development
-.env.test
-.env.production
-
-# Flask specific
+# Flask
 instance/
 .webassets-cache
 
-# SQLAlchemy migrations
-migrations/
+# Environment variables
+.env
+.env.local
+.env.production
+.env.test
 
-# Database files
+# Database
 *.db
 *.sqlite
 *.sqlite3
 
-# Log files
+# Logs
 *.log
 logs/
-*.out
+*.log.*
 
 # IDE files
 .vscode/
@@ -63,176 +78,185 @@ logs/
 *.swo
 *~
 
-# macOS
+# OS generated files
 .DS_Store
-.AppleDouble
-.LSOverride
-Icon?
+.DS_Store?
 ._*
-.DocumentRevisions-V100
-.fseventsd
 .Spotlight-V100
-.TemporaryItems
 .Trashes
-.VolumeIcon.icns
-.com.apple.timemachine.donotpresent
+ehthumbs.db
+Thumbs.db
 
 # Windows
-Thumbs.db
-Thumbs.db:encryptable
-ehthumbs.db
-ehthumbs_vista.db
-*.stackdump
-[Dd]esktop.ini
-$RECYCLE.BIN/
-*.cab
-*.msi
-*.msix
-*.msm
-*.msp
-*.lnk
+desktop.ini
 
-# Linux
-*~
+# File uploads (exclude actual uploaded files but keep directory)
+uploads/*
+!uploads/.gitkeep
 
 # Temporary files
 *.tmp
 *.temp
-.cache/
-.pytest_cache/
-.coverage
-htmlcov/
-
-# Security and secrets
-*.pem
-*.key
-*.crt
-*.p12
-.secrets/
-secrets.json
-
-# Upload files (keep directory structure)
-uploads/*
-!uploads/.gitkeep
-static/uploads/*
-!static/uploads/.gitkeep
+tmp/
+temp/
 
 # Backup files
 *.bak
 *.backup
-backup_*/
-*.sql
-*.dump
+*.old
 
-# Jupyter Notebook
-.ipynb_checkpoints
+# Cache files
+.cache/
+*.cache
 
-# pyenv
-.python-version
+# Replit specific
+.replit
+replit.nix
+poetry.lock
+pyproject.toml
 
-# pipenv
+# Sensitive configuration files
+config.py
+config_local.py
+secrets.py
+
+# Development files
+dev_notes.md
+TODO.md
+scratch.py
+test_*.py
+tests/
+
+# Documentation temp files
+*.docx
+*.pdf
+*.xlsx
+
+# Image attachments (development only)
+attached_assets/
+static/uploads/
+
+# Lock files
+package-lock.json
+yarn.lock
 Pipfile.lock
 
-# Poetry
-poetry.lock
+# Node modules (if any JS tools are used)
+node_modules/
+
+# SQLite WAL files
+*.db-wal
+*.db-shm
+
+# Email templates cache
+email_cache/
+
+# Backup dumps
+*.sql
+*.dump
+backups/
+
+# SSL certificates (should be managed separately)
+*.key
+*.crt
+*.pem
+*.p12
+
+# Monitoring and metrics
+metrics/
+stats/
+
+# Custom application logs
+app.log
+error.log
+access.log
+debug.log
+
+# Jupyter Notebooks
+.ipynb_checkpoints/
+*.ipynb
+
+# PyCharm
+.idea/
+*.iml
+*.iws
+
+# Sublime Text
+*.sublime-project
+*.sublime-workspace
+
+# Vim
+*.vim
+
+# Emacs
+*~
+\#*\#
+/.emacs.desktop
+/.emacs.desktop.lock
+*.elc
+auto-save-list
+tramp
+.\#*
+
+# Local development overrides
+local_settings.py
+development_config.py
+
+# Performance profiling
+*.prof
+*.profile
+
+# Memory dumps
+*.hprof
+core.*
+
+# Application specific
+session_data/
+temp_uploads/
+processing/
+
+# Security scan results
+.security/
+security_reports/
+
+# Load testing results
+load_test_results/
+
+# API documentation cache
+api_docs_cache/
+
+# Translation files
+*.mo
+*.pot
+
+# Static files collected for production
+staticfiles/
+collected_static/
+
+# Media files (production)
+media/
 
 # Celery
 celerybeat-schedule
 celerybeat.pid
 
-# SageMath parsed files
-*.sage.py
+# Redis
+dump.rdb
 
-# Spyder
-.spyderproject
-.spyproject
+# Coverage reports
+.coverage*
+coverage/
 
-# Rope
-.ropeproject
+# Pytest
+.pytest_cache/
 
-# mkdocs documentation
-/site
-
-# mypy
+# MyPy
 .mypy_cache/
 .dmypy.json
 dmypy.json
 
-# Pyre type checker
+# Pyre
 .pyre/
 
-# pytype static type analyzer
+# Pytype
 .pytype/
-
-# Replit specific
-.replit
-replit.nix
-.config/
-.upm/
-
-# Node modules (if any)
-node_modules/
-npm-debug.log*
-yarn-debug.log*
-yarn-error.log*
-
-# Editor directories and files
-.vscode/*
-!.vscode/extensions.json
-*.suo
-*.ntvs*
-*.njsproj
-*.sln
-*.sw?
-
-# Archive files
-*.zip
-*.tar.gz
-*.rar
-*.7z
-
-# Test coverage
-.coverage
-.nyc_output
-coverage/
-
-# Documentation build files
-docs/_build/
-docs/build/
-
-# Package lock files
-package-lock.json
-yarn.lock
-
-# Local configuration overrides
-config.local.py
-settings.local.py
-
-# Redis dump file
-dump.rdb
-
-# Email test files
-sent_emails/
-
-# Profile images (keep structure)
-static/profile_images/*
-!static/profile_images/.gitkeep
-
-# Generated files
-static/css/compiled/
-static/js/compiled/
-
-# Error tracking files
-.sentry-dsn
-
-# Local development files
-dev_*.py
-test_*.py
-debug_*.py
-
-# Temporary upload files
-*.upload
-*.uploading
-
-# Lock files
-*.lock
