@@ -1950,16 +1950,26 @@ body, html {
     display: flex;
     gap: 1rem;
     align-items: center;
+    width: 100%;
+    max-width: 100%;
 }
 
 .filters-form {
     display: flex;
     gap: 1rem;
     align-items: center;
+    width: 100%;
+    max-width: 100%;
 }
 
 .filter-group {
     position: relative;
+    flex-shrink: 0;
+}
+
+.filter-group:last-child {
+    flex: 1;
+    max-width: 300px;
 }
 
 .filter-select {
@@ -1972,13 +1982,17 @@ body, html {
 .search-box {
     display: flex;
     position: relative;
+    width: 100%;
+    max-width: 100%;
 }
 
 .search-input {
     border-radius: 8px 0 0 8px;
     border-right: none;
-    min-width: 250px;
+    flex: 1;
+    min-width: 0;
     font-size: 0.875rem;
+    width: 100%;
 }
 
 .search-btn {
@@ -1989,10 +2003,66 @@ body, html {
     padding: 0.5rem 0.75rem;
     cursor: pointer;
     transition: var(--transition-base);
+    flex-shrink: 0;
 }
 
 .search-btn:hover {
     background: var(--primary-dark);
+}
+
+/* Section Header Layout */
+.section-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1.5rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid var(--gray-200);
+    gap: 1rem;
+    flex-wrap: wrap;
+}
+
+.section-title-wrapper {
+    flex-shrink: 0;
+}
+
+.section-title {
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: var(--gray-900);
+    margin: 0;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+/* Responsive design for section header */
+@media (max-width: 768px) {
+    .section-header {
+        flex-direction: column;
+        align-items: stretch;
+    }
+    
+    .filters-container {
+        width: 100%;
+    }
+    
+    .filters-form {
+        flex-direction: column;
+        gap: 0.75rem;
+    }
+    
+    .filter-group {
+        width: 100%;
+    }
+    
+    .filter-group:last-child {
+        max-width: 100%;
+    }
+    
+    .search-input {
+        min-width: 0;
+    }
 }
 
 /* Tickets Grid */
