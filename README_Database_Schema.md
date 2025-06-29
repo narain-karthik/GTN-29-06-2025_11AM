@@ -30,6 +30,7 @@ CREATE TABLE users (
     first_name VARCHAR(50) NOT NULL,
     last_name VARCHAR(50) NOT NULL,
     department VARCHAR(100),
+    specialization VARCHAR(50), -- Hardware or Software support
     role VARCHAR(50) NOT NULL DEFAULT 'user',
     ip_address VARCHAR(45),
     system_name VARCHAR(100),
@@ -46,6 +47,7 @@ CREATE TABLE users (
 - `first_name`, `last_name`: Required name fields (2-50 chars each)
 - `department`: Optional organizational unit (max 100 chars)
 - `role`: Simplified roles (`user` or `super_admin`)
+- `specialization`: Support expertise (`Hardware` or `Software`)
 - `ip_address`: IPv4/IPv6 tracking (45 chars for IPv6)
 - `system_name`: Computer/device identifier
 - `profile_image`: Optional image filename
@@ -66,6 +68,7 @@ Complete ticket lifecycle management with assignment tracking.
 ```sql
 CREATE TABLE tickets (
     id SERIAL PRIMARY KEY,
+    ticket_number VARCHAR(20) UNIQUE NOT NULL, -- GTN-000001 format
     title VARCHAR(200) NOT NULL,
     description TEXT NOT NULL,
     category VARCHAR(50) NOT NULL,

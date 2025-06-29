@@ -97,7 +97,7 @@ The Master Data Management system provides Super Admins with centralized control
 **Purpose**: Manage all system users and their access levels
 
 **User Roles**:
-- **User**: Can create tickets, view own tickets, update profile
+- **User**: Can create tickets, view own tickets, read-only profile access
 - **Super Admin**: Full system access, can manage all data and users
 
 **How to Manage**:

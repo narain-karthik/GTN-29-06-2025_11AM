@@ -11,8 +11,8 @@ A comprehensive Flask-based IT helpdesk management system with modern UI/UX desi
 ## 🌟 Key Features
 
 ### **Two-Tier Access System**
-- **User Role**: Create and track personal tickets, view ticket history
-- **Super Admin Role**: Complete system control, user management, ticket assignment, analytics
+- **User Role**: Create and track personal tickets, view ticket history, read-only profile access
+- **Super Admin Role**: Complete system control, user management, ticket assignment, analytics, master data management
 
 ### **Modern UI/UX Design**
 - **Hero Landing Page**: Gradient backgrounds, floating animations, professional branding
@@ -44,7 +44,9 @@ A comprehensive Flask-based IT helpdesk management system with modern UI/UX desi
 
 ## 🗄️ Database Schema
 
-### **Users Table**
+### **Core Tables**
+
+#### **Users Table**
 ```sql
 CREATE TABLE users (
     id SERIAL PRIMARY KEY,
@@ -54,7 +56,8 @@ CREATE TABLE users (
     first_name VARCHAR(50) NOT NULL,
     last_name VARCHAR(50) NOT NULL,
     department VARCHAR(100),
-    role VARCHAR(50) NOT NULL DEFAULT 'user',
+    specialization VARCHAR(50), -- Hardware or Software support
+    role VARCHAR(50) NOT NULL DEFAULT 'user', -- 'user' or 'super_admin'
     ip_address VARCHAR(45),
     system_name VARCHAR(100),
     profile_image VARCHAR(200),
@@ -62,10 +65,11 @@ CREATE TABLE users (
 );
 ```
 
-### **Tickets Table**
+#### **Tickets Table**
 ```sql
 CREATE TABLE tickets (
     id SERIAL PRIMARY KEY,
+    ticket_number VARCHAR(20) UNIQUE NOT NULL, -- GTN-000001 format
     title VARCHAR(200) NOT NULL,
     description TEXT NOT NULL,
     category VARCHAR(50) NOT NULL,
@@ -84,7 +88,7 @@ CREATE TABLE tickets (
 );
 ```
 
-### **Comments Table**
+#### **Ticket Comments Table**
 ```sql
 CREATE TABLE ticket_comments (
     id SERIAL PRIMARY KEY,
@@ -95,13 +99,109 @@ CREATE TABLE ticket_comments (
 );
 ```
 
-### **Attachments Table**
+#### **Attachments Table**
 ```sql
 CREATE TABLE attachments (
     id SERIAL PRIMARY KEY,
     ticket_id INTEGER REFERENCES tickets(id) NOT NULL,
     filename VARCHAR(255) NOT NULL,
     uploaded_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+```
+
+### **Master Data Tables**
+
+#### **Categories Table**
+```sql
+CREATE TABLE master_data_categories (
+    id SERIAL PRIMARY KEY,
+    name VARCHAR(50) UNIQUE NOT NULL,
+    description TEXT,
+    is_active BOOLEAN DEFAULT TRUE,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+```
+
+#### **Priorities Table**
+```sql
+CREATE TABLE master_data_priorities (
+    id SERIAL PRIMARY KEY,
+    name VARCHAR(20) UNIQUE NOT NULL,
+    description TEXT,
+    level INTEGER NOT NULL, -- 1-4 (Low to Critical)
+    color_code VARCHAR(7), -- Hex color code
+    is_active BOOLEAN DEFAULT TRUE,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+```
+
+#### **Statuses Table**
+```sql
+CREATE TABLE master_data_statuses (
+    id SERIAL PRIMARY KEY,
+    name VARCHAR(20) UNIQUE NOT NULL,
+    description TEXT,
+    color_code VARCHAR(7), -- Hex color code
+    is_active BOOLEAN DEFAULT TRUE,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+```
+
+#### **Email Settings Table**
+```sql
+CREATE TABLE email_settings (
+    id SERIAL PRIMARY KEY,
+    smtp_server VARCHAR(100) NOT NULL,
+    smtp_port INTEGER NOT NULL,
+    smtp_username VARCHAR(100) NOT NULL,
+    smtp_password VARCHAR(255) NOT NULL,
+    use_tls BOOLEAN DEFAULT TRUE,
+    from_email VARCHAR(100),
+    from_name VARCHAR(100),
+    is_active BOOLEAN DEFAULT TRUE,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+```
+
+#### **Email Notifications Table**
+```sql
+CREATE TABLE email_notifications (
+    id SERIAL PRIMARY KEY,
+    ticket_id INTEGER REFERENCES tickets(id),
+    recipient_email VARCHAR(120) NOT NULL,
+    subject VARCHAR(200) NOT NULL,
+    status VARCHAR(20) DEFAULT 'pending', -- pending, sent, failed
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    sent_at TIMESTAMP
+);
+```
+
+#### **Timezone Settings Table**
+```sql
+CREATE TABLE timezone_settings (
+    id SERIAL PRIMARY KEY,
+    timezone_name VARCHAR(50) NOT NULL,
+    display_name VARCHAR(100) NOT NULL,
+    utc_offset VARCHAR(10) NOT NULL,
+    is_active BOOLEAN DEFAULT TRUE,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+```
+
+#### **Backup Settings Table**
+```sql
+CREATE TABLE backup_settings (
+    id SERIAL PRIMARY KEY,
+    backup_frequency VARCHAR(20) NOT NULL, -- daily, weekly, monthly
+    backup_time TIME NOT NULL,
+    backup_location VARCHAR(200),
+    max_backups INTEGER DEFAULT 30,
+    compress_backups BOOLEAN DEFAULT TRUE,
+    include_attachments BOOLEAN DEFAULT TRUE,
+    email_notifications BOOLEAN DEFAULT TRUE,
+    notification_email VARCHAR(120),
+    is_active BOOLEAN DEFAULT TRUE,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 ```
 
@@ -213,14 +313,24 @@ CREATE TABLE attachments (
 ### **Project Structure**
 ```
 ├── main.py              # Application entry point
-├── app.py               # Flask configuration
-├── routes.py            # URL routing and views
-├── models.py            # Database models
-├── forms.py             # WTForms definitions
-├── templates/           # Jinja2 templates
-├── static/             # CSS, JS, images
-├── utils/              # Utility functions
-└── uploads/            # File attachments
+├── app.py               # Flask configuration and database setup
+├── routes.py            # URL routing and view functions
+├── models.py            # SQLAlchemy database models
+├── forms.py             # WTForms form definitions
+├── templates/           # Jinja2 HTML templates
+│   ├── auth/           # Authentication templates
+│   ├── master_data/    # Master data management templates
+│   ├── tickets/        # Ticket-related templates
+│   └── users/          # User management templates
+├── static/             # Static assets
+│   ├── style.css       # Main stylesheet
+│   └── uploads/        # File attachments storage
+├── utils/              # Utility modules
+│   └── email.py        # Email notification system
+├── README.md           # Main documentation
+├── README_Database_Schema.md    # Database documentation
+├── README_Master_Data.md        # Master data guide
+└── README_PostgreSQL_Setup.md   # Database setup guide
 ```
 
 ### **Environment Variables**
