@@ -102,10 +102,14 @@ The GTN Engineering IT Helpdesk System is a comprehensive Flask-based web applic
 
 ## Changelog
 
-- June 29, 2025: Successfully completed migration from Replit Agent to standard Replit environment with full functionality:
+- June 29, 2025: Successfully completed migration from Replit Agent to standard Replit environment with enhanced functionality:
   - Fixed PostgreSQL database connection and automatic provisioning
   - Created uploads directory to resolve 500 errors during ticket creation
   - Configured secure session management with SESSION_SECRET environment variable
+  - Implemented automatic default master data creation on startup (Categories: 2, Priorities: 4, Statuses: 4)
+  - Added Email Notification tracking dashboard with sent/failed statistics
+  - Enhanced user profile UI with modern design matching provided reference
+  - Fixed email notifications route 500 error with correct URL references
   - Verified all database tables are properly created and functional
   - Application running successfully on port 5000 with Gunicorn WSGI server
 - June 29, 2025: Completed Master Data integration with full CRUD functionality and dynamic email configuration:
