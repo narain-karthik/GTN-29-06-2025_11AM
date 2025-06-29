@@ -102,6 +102,12 @@ The GTN Engineering IT Helpdesk System is a comprehensive Flask-based web applic
 
 ## Changelog
 
+- June 29, 2025: Simplified homepage layout for compact viewing without scrolling:
+  - Removed extensive sections (features, user roles, call-to-action) from index.html
+  - Created compact single-section design with header, professional content, and footer
+  - Changed layout to centered single column with 60vh height for no-scroll experience
+  - Maintained professional branding with "Professional IT Helpdesk Solutions" tagline
+  - Kept essential "Access Helpdesk" button for user login functionality
 - June 29, 2025: Completed user interface fixes and access control improvements:
   - Fixed 500 error in reports dashboard by restructuring SQLAlchemy query to return dictionary format
   - Removed specialization field from user profile template as requested
