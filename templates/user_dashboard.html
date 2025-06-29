@@ -189,80 +189,43 @@
 
             <!-- Tickets Grid -->
             {% if tickets %}
-                <div class="tickets-grid">
+                <div class="tickets-grid-lite">
                     {% for ticket in tickets %}
-                        <div class="ticket-card">
-                            <div class="ticket-header">
-                                <div class="ticket-number">
-                                    <span class="ticket-id">#{{ ticket.ticket_number }}</span>
+                        <div class="ticket-card-lite">
+                            <div class="ticket-status-circle">
+                                {% set status_config = {
+                                    'Open': {'class': 'status-open', 'icon': 'ri-error-warning-line'},
+                                    'In Progress': {'class': 'status-progress', 'icon': 'ri-time-line'},
+                                    'Resolved': {'class': 'status-resolved', 'icon': 'ri-check-line'},
+                                    'Closed': {'class': 'status-closed', 'icon': 'ri-check-double-line'}
+                                } %}
+                                <div class="status-icon {{ status_config[ticket.status]['class'] }}">
+                                    <i class="{{ status_config[ticket.status]['icon'] }}"></i>
+                                </div>
+                            </div>
+                            
+                            <div class="ticket-content-lite">
+                                <div class="ticket-header-lite">
+                                    <span class="ticket-number-lite">#{{ ticket.ticket_number }}</span>
                                     {% if ticket.image_filename or ticket.attachments %}
-                                        <i class="ri-attachment-line attachment-icon" title="Has attachments"></i>
+                                        <i class="ri-attachment-line attachment-icon-lite"></i>
                                     {% endif %}
                                 </div>
-                                <div class="ticket-status">
-                                    {% set status_config = {
-                                        'Open': {'class': 'status-open', 'icon': 'ri-error-warning-line'},
-                                        'In Progress': {'class': 'status-progress', 'icon': 'ri-time-line'},
-                                        'Resolved': {'class': 'status-resolved', 'icon': 'ri-check-line'},
-                                        'Closed': {'class': 'status-closed', 'icon': 'ri-check-double-line'}
-                                    } %}
-                                    <span class="status-badge {{ status_config[ticket.status]['class'] }}">
-                                        <i class="{{ status_config[ticket.status]['icon'] }}"></i>
-                                        {{ ticket.status }}
-                                    </span>
-                                </div>
-                            </div>
-
-                            <div class="ticket-content">
-                                <h5 class="ticket-title">{{ ticket.title }}</h5>
-                                <p class="ticket-description">{{ ticket.description[:100] }}{% if ticket.description|length > 100 %}...{% endif %}</p>
                                 
-                                <div class="ticket-meta">
-                                    <div class="meta-item">
-                                        <i class="ri-bookmark-line"></i>
-                                        <span class="category-badge category-{{ ticket.category.lower() }}">
-                                            {{ ticket.category }}
-                                        </span>
-                                    </div>
-                                    <div class="meta-item">
-                                        <i class="ri-flag-line"></i>
-                                        {% set priority_config = {
-                                            'Low': {'class': 'priority-low', 'color': '#28a745'},
-                                            'Medium': {'class': 'priority-medium', 'color': '#ffc107'},
-                                            'High': {'class': 'priority-high', 'color': '#fd7e14'},
-                                            'Critical': {'class': 'priority-critical', 'color': '#dc3545'}
-                                        } %}
-                                        <span class="priority-badge {{ priority_config[ticket.priority]['class'] }}">
-                                            {{ ticket.priority }}
-                                        </span>
-                                    </div>
-                                </div>
-
-                                <div class="ticket-timeline">
-                                    <div class="timeline-item">
-                                        <i class="ri-calendar-line"></i>
-                                        <span>Created: {{ ticket.created_at | to_ist }}</span>
-                                    </div>
-                                    {% if ticket.assigned_to %}
-                                        <div class="timeline-item">
-                                            <i class="ri-user-line"></i>
-                                            <span>Assigned to: {{ ticket.assignee.full_name }}</span>
-                                        </div>
-                                    {% endif %}
+                                <h6 class="ticket-title-lite">{{ ticket.title }}</h6>
+                                <p class="ticket-description-lite">{{ ticket.description[:80] }}{% if ticket.description|length > 80 %}...{% endif %}</p>
+                                
+                                <div class="ticket-meta-lite">
+                                    <span class="meta-tag">{{ ticket.category }}</span>
+                                    <span class="meta-tag priority-{{ ticket.priority.lower() }}">{{ ticket.priority }}</span>
+                                    <span class="meta-date">{{ ticket.created_at.strftime('%m/%d') if ticket.created_at else '' }}</span>
                                 </div>
                             </div>
-
-                            <div class="ticket-actions">
-                                <a href="{{ url_for('view_ticket', ticket_id=ticket.id) }}" class="btn btn-primary btn-sm">
+                            
+                            <div class="ticket-actions-lite">
+                                <a href="{{ url_for('view_ticket', ticket_id=ticket.id) }}" class="action-btn-lite">
                                     <i class="ri-eye-line"></i>
-                                    View Details
                                 </a>
-                                {% if ticket.status not in ['Resolved', 'Closed'] %}
-                                    <button class="btn btn-outline-secondary btn-sm" onclick="showTicketQuickUpdate({{ ticket.id }})">
-                                        <i class="ri-edit-line"></i>
-                                        Quick Update
-                                    </button>
-                                {% endif %}
                             </div>
                         </div>
                     {% endfor %}
