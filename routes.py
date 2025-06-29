@@ -757,10 +757,26 @@ def reports_dashboard():
     
     # Get top users by ticket count
     from sqlalchemy import func
-    top_users = db.session.query(
-        User,
+    top_users_query = db.session.query(
+        User.id,
+        User.username,
+        User.first_name,
+        User.last_name,
+        User.department,
         func.count(Ticket.id).label('ticket_count')
-    ).join(Ticket, User.id == Ticket.user_id).group_by(User.id).order_by(func.count(Ticket.id).desc()).limit(8).all()
+    ).join(Ticket, User.id == Ticket.user_id).group_by(User.id, User.username, User.first_name, User.last_name, User.department).order_by(func.count(Ticket.id).desc()).limit(8).all()
+    
+    # Convert to list of dictionaries for easier template access
+    top_users = []
+    for user_data in top_users_query:
+        top_users.append({
+            'id': user_data[0],
+            'username': user_data[1],
+            'first_name': user_data[2],
+            'last_name': user_data[3],
+            'department': user_data[4],
+            'ticket_count': user_data[5]
+        })
     
     return render_template('reports_dashboard.html', 
                          stats=stats, 

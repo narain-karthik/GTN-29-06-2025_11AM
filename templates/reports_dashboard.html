@@ -361,16 +361,16 @@
                                 <div class="user-stat-card">
                                     <div class="user-avatar">
                                         <div class="avatar-circle">
-                                            {{ user_stat[0].first_name[0] if user_stat[0].first_name else 'U' }}{{ user_stat[0].last_name[0] if user_stat[0].last_name else '' }}
+                                            {{ user_stat.first_name[0] if user_stat.first_name else 'U' }}{{ user_stat.last_name[0] if user_stat.last_name else '' }}
                                         </div>
                                     </div>
                                     <div class="user-info">
-                                        <h6>{{ user_stat[0].full_name }}</h6>
-                                        <p>{{ user_stat[0].department or 'No Department' }}</p>
+                                        <h6>{{ user_stat.first_name + ' ' + user_stat.last_name if user_stat.first_name and user_stat.last_name else user_stat.username }}</h6>
+                                        <p>{{ user_stat.department or 'No Department' }}</p>
                                     </div>
                                     <div class="user-stats">
                                         <div class="stat">
-                                            <span class="stat-number">{{ user_stat[1] }}</span>
+                                            <span class="stat-number">{{ user_stat.ticket_count }}</span>
                                             <span class="stat-label">Tickets</span>
                                         </div>
                                     </div>
