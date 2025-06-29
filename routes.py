@@ -4,7 +4,7 @@ from flask_login import current_user
 from werkzeug.utils import secure_filename
 from sqlalchemy import extract, and_
 from app import app, db
-from models import User, Ticket, TicketComment, Attachment, MasterDataCategory, MasterDataPriority, MasterDataStatus, EmailSettings, TimezoneSettings, BackupSettings
+from models import User, Ticket, TicketComment, Attachment, MasterDataCategory, MasterDataPriority, MasterDataStatus, EmailSettings, TimezoneSettings, BackupSettings, EmailNotificationLog
 from forms import LoginForm, TicketForm, UpdateTicketForm, CommentForm, UserRegistrationForm, AssignTicketForm, UserProfileForm, MasterDataCategoryForm, MasterDataPriorityForm, MasterDataStatusForm, EmailSettingsForm, TimezoneSettingsForm, BackupSettingsForm
 from datetime import datetime
 from utils.email import send_assignment_email  # Add this import
@@ -1306,6 +1306,44 @@ def manage_backup_settings():
         form.is_active.data = backup_settings.is_active
     
     return render_template('master_data/backup_settings.html', form=form, backup_settings=backup_settings)
+
+@app.route('/super_admin/master_data/email_notifications')
+@super_admin_required
+def email_notifications_dashboard():
+    """Email notifications dashboard to track sent/failed emails"""
+    # Get statistics
+    total_notifications = EmailNotificationLog.query.count()
+    sent_notifications = EmailNotificationLog.query.filter_by(status='sent').count()
+    failed_notifications = EmailNotificationLog.query.filter_by(status='failed').count()
+    
+    # Get recent notifications (last 50)
+    recent_notifications = EmailNotificationLog.query.order_by(EmailNotificationLog.created_at.desc()).limit(50).all()
+    
+    # Get filter parameters
+    status_filter = request.args.get('status', 'all')
+    message_type_filter = request.args.get('message_type', 'all')
+    
+    # Build filtered query
+    query = EmailNotificationLog.query
+    if status_filter != 'all':
+        query = query.filter_by(status=status_filter)
+    if message_type_filter != 'all':
+        query = query.filter_by(message_type=message_type_filter)
+    
+    filtered_notifications = query.order_by(EmailNotificationLog.created_at.desc()).limit(100).all()
+    
+    stats = {
+        'total_notifications': total_notifications,
+        'sent_notifications': sent_notifications,
+        'failed_notifications': failed_notifications,
+        'success_rate': round((sent_notifications / total_notifications * 100) if total_notifications > 0 else 0, 1)
+    }
+    
+    return render_template('master_data/email_notifications.html', 
+                         stats=stats, 
+                         notifications=filtered_notifications,
+                         status_filter=status_filter,
+                         message_type_filter=message_type_filter)
 
 
 # Initialize default admin on first import

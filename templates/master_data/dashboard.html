@@ -391,7 +391,7 @@
     <!-- System Settings Section -->
     <div class="row">
         <!-- Email Settings Section -->
-        <div class="col-lg-6 mb-4">
+        <div class="col-lg-4 mb-4">
             <div class="card shadow">
                 <div class="card-header py-3 d-flex justify-content-between align-items-center">
                     <h6 class="m-0 font-weight-bold text-secondary">
@@ -456,8 +456,46 @@
             </div>
         </div>
 
+        <!-- Email Notifications Section -->
+        <div class="col-lg-4 mb-4">
+            <div class="card shadow">
+                <div class="card-header py-3 d-flex justify-content-between align-items-center">
+                    <h6 class="m-0 font-weight-bold text-warning">
+                        <i class="ri-notification-3-line me-2"></i>Email Notifications
+                    </h6>
+                    <a href="{{ url_for('email_notifications_dashboard') }}" class="btn btn-warning btn-sm">
+                        <i class="ri-eye-line"></i> View Logs
+                    </a>
+                </div>
+                <div class="card-body">
+                    <div class="text-center py-3">
+                        <div class="row">
+                            <div class="col-6">
+                                <div class="mb-2">
+                                    <i class="ri-check-line text-success fa-2x"></i>
+                                </div>
+                                <h5 class="text-success mb-0">0</h5>
+                                <small class="text-muted">Sent</small>
+                            </div>
+                            <div class="col-6">
+                                <div class="mb-2">
+                                    <i class="ri-error-warning-line text-danger fa-2x"></i>
+                                </div>
+                                <h5 class="text-danger mb-0">0</h5>
+                                <small class="text-muted">Failed</small>
+                            </div>
+                        </div>
+                        <hr>
+                        <p class="text-muted mb-0">
+                            <small>Email notifications will appear here once tickets are created or assigned</small>
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
         <!-- Timezone Settings Section -->
-        <div class="col-lg-6 mb-4">
+        <div class="col-lg-4 mb-4">
             <div class="card shadow">
                 <div class="card-header py-3 d-flex justify-content-between align-items-center">
                     <h6 class="m-0 font-weight-bold text-info">

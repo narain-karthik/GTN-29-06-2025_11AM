@@ -6,27 +6,32 @@
 <div class="container-fluid">
     <div class="row justify-content-center">
         <div class="col-12 col-xl-10">
-            <!-- Page Header -->
-            <div class="profile-header mb-4">
-                <div class="row align-items-center">
-                    <div class="col">
-                        <h1 class="page-title">
-                            <i class="ri-user-settings-line text-primary"></i>
-                            My Profile
-                        </h1>
-                        <p class="page-subtitle">Manage your account settings and personal information</p>
-                    </div>
-                    <div class="col-auto">
-                        <div class="profile-avatar">
-                            <div class="avatar-circle">
+            <!-- Modern Profile Header -->
+            <div class="modern-profile-header mb-4">
+                <div class="profile-banner">
+                    <div class="profile-info-section">
+                        <div class="profile-avatar-large">
+                            <div class="avatar-circle-large">
                                 <i class="ri-user-line"></i>
                             </div>
-                            <div class="avatar-info">
-                                <h6 class="mb-0">{{ user.full_name }}</h6>
-                                <small class="text-muted">{{ user.role.title() }} Account</small>
-                            </div>
+                        </div>
+                        <div class="profile-details">
+                            <h1 class="profile-name">{{ user.full_name }}</h1>
+                            <p class="profile-subtitle">Manage your account settings and personal information</p>
                         </div>
                     </div>
+                    <div class="profile-badge-section">
+                        <div class="user-role-badge {{ 'super-admin-badge' if user.is_super_admin else 'user-badge' }}">
+                            <i class="ri-user-line"></i>
+                            <span>{{ user.role.replace('_', ' ').title() }}</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="profile-title-section">
+                    <h2 class="section-title">
+                        <i class="ri-user-settings-line"></i>
+                        My Profile
+                    </h2>
                 </div>
             </div>
 

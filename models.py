@@ -196,3 +196,22 @@ class BackupSettings(db.Model):
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
     updated_at = db.Column(db.DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
 
+
+class EmailNotificationLog(db.Model):
+    """Log of email notifications sent/failed"""
+    __tablename__ = 'email_notification_logs'
+
+    id = db.Column(db.Integer, primary_key=True)
+    to_email = db.Column(db.String(100), nullable=False)
+    subject = db.Column(db.String(200), nullable=False)
+    message_type = db.Column(db.String(50), nullable=False)  # 'ticket_created', 'ticket_assigned', 'ticket_updated'
+    status = db.Column(db.String(20), nullable=False)  # 'sent', 'failed'
+    error_message = db.Column(db.Text, nullable=True)
+    ticket_id = db.Column(db.Integer, db.ForeignKey('tickets.id'), nullable=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=True)
+    created_at = db.Column(db.DateTime, default=datetime.utcnow)
+    
+    # Relationships
+    ticket = db.relationship('Ticket', backref='notification_logs')
+    user = db.relationship('User', backref='notification_logs')
+
