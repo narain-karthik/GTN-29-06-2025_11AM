@@ -350,50 +350,14 @@ CREATE TABLE backup_settings (
 - File uploads: Verify uploads directory permissions
 - SMTP errors: Configure email settings in utils/email.py
 
-## 📋 Recent Updates
 
-- **June 28, 2025**: Implemented modern UI/UX with hero section and animated login
-- **June 28, 2025**: Simplified to two-tier role system (User and Super Admin)
-- **June 28, 2025**: Added IST timezone support for Excel exports
-- **June 28, 2025**: Enhanced responsive design and mobile optimization
-- **June 28, 2025**: Completed Admin role removal and system simplification
 
 ### Supported Platforms
 - **Development**: Windows, macOS, Linux
 - **Production**: Linux (Ubuntu 20.04+, CentOS 8+), Windows Server
 - **Browsers**: Chrome 90+, Firefox 88+, Safari 14+, Edge 90+
 
-## Quick Start (Replit Environment)
 
-### 1. Replit Setup
-The system is now optimized for Replit deployment with automatic setup:
-- PostgreSQL database automatically provisioned
-- Environment variables pre-configured
-- Dependencies auto-installed via Replit's package system
-
-### 2. Default Login Credentials
-The system creates default accounts on first run:
-- **Super Admin**: `super_admin` / `admin123`
-- **Admin**: `admin_user` / `admin123`
-- **Test User**: `test_user` / `user123`
-
-### 3. Run Application
-```bash
-gunicorn --bind 0.0.0.0:5000 --reuse-port --reload main:app
-```
-
-The application will be available at your Replit URL on port 5000
-
-### 4. Local Development Setup (Alternative)
-For local development outside Replit:
-```bash
-git clone <repository-url>
-cd gtn-helpdesk-system
-pip install -r requirements.txt
-export DATABASE_URL="postgresql://username:password@localhost:5432/gtn_helpdesk"
-export SESSION_SECRET="your-secret-key-here"
-python main.py
-```
 
 ## Installation Guide
 
@@ -490,39 +454,20 @@ app.config.update({
 })
 ```
 
-## User Guide
 
-### Default Login Credentials
-
-#### Super Administrator
-- **Username**: `superadmin`
-- **Password**: `super123`
-- **Capabilities**: Full system access, user management, reports
-
-#### Admin Users
-- **Username**: `yuvaraj` | **Password**: `admin123`
-- **Username**: `jayachandran` | **Password**: `admin123` 
-- **Username**: `narainkarthik` | **Password**: `admin123`
-- **Capabilities**: Ticket management, assignment, resolution
-
-#### Test User
-- **Username**: `testuser` | **Password**: `user123`
-- **Capabilities**: Create tickets, view own tickets, add comments
-
-**⚠️ Important**: Change all default passwords immediately after installation!
 
 ### User Roles & Permissions
 
-| Feature | User | Admin | Super Admin |
-|---------|------|-------|-------------|
-| Create Tickets | ✅ | ✅ | ✅ |
-| View Own Tickets | ✅ | ✅ | ✅ |
-| View All Tickets | ❌ | ✅ | ✅ |
-| Assign Tickets | ❌ | ✅ | ✅ |
-| Manage Users | ❌ | ❌ | ✅ |
-| Reports Dashboard | ❌ | ❌ | ✅ |
-| Excel Export | ❌ | ❌ | ✅ |
-| System Settings | ❌ | ❌ | ✅ |
+| Feature | User | Super Admin |
+|---------|------|-------------|
+| Create Tickets | ✅ | ✅ |
+| View Own Tickets | ✅ | ✅ |
+| View All Tickets | ❌ | ✅ |
+| Assign Tickets | ❌ | ✅ |
+| Manage Users | ❌ | ✅ |
+| Reports Dashboard | ❌ | ✅ |
+| Excel Export | ❌ | ✅ |
+| System Settings | ❌ | ✅ |
 
 ### Creating Your First Ticket
 
@@ -822,24 +767,7 @@ tar -czf app_backup_$(date +%Y%m%d).tar.gz /path/to/app
 3. **Backup First**: Create full backup before updates
 4. **Gradual Rollout**: Deploy to small user groups first
 
-## Recent Updates & Changelog
 
-### June 27, 2025 - v2.1.0 (Replit Migration & Enhanced Features)
-- **Replit Integration**: Successfully migrated from Replit Agent to Replit environment
-- **Automatic PostgreSQL**: Database provisioning and setup now fully automated
-- **Enhanced Ticket History**: Redesigned ticket history sidebar with cleaner format:
-  - Created By: Shows ticket creator with timestamp
-  - Assigned By: Shows who assigned the ticket (or "Not assigned")
-  - Assigned To: Shows current assignee (or "Not assigned")
-  - Status: Current status with colored badge
-- **Bug Fixes**: Resolved edit ticket template errors and property access issues
-- **Security**: Enhanced client/server separation and secure configuration
-
-### Previous Major Updates
-- **June 26, 2025 - v2.0.5**: Enhanced user management with complete CRUD operations
-- **June 23, 2025 - v2.0.4**: Improved file upload system supporting PDF, Word, Excel files
-- **June 22, 2025 - v2.0.3**: Added visual reports dashboard and MySQL support
-- **June 21, 2025 - v2.0.0**: Initial PostgreSQL integration and setup
 
 ## License
 
