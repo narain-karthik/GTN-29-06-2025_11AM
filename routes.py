@@ -1004,6 +1004,11 @@ def master_data_dashboard():
     users = User.query.order_by(User.created_at.desc()).all()
     users_count = User.query.count()
     
+    # Email notification statistics
+    from models import EmailNotificationLog
+    email_sent_count = EmailNotificationLog.query.filter_by(status='sent').count()
+    email_failed_count = EmailNotificationLog.query.filter_by(status='failed').count()
+    
     return render_template('master_data/dashboard.html',
                          categories=categories,
                          priorities=priorities, 
@@ -1012,7 +1017,9 @@ def master_data_dashboard():
                          timezone_settings=timezone_settings,
                          backup_settings=backup_settings,
                          users=users,
-                         users_count=users_count)
+                         users_count=users_count,
+                         email_sent_count=email_sent_count,
+                         email_failed_count=email_failed_count)
 
 
 @app.route('/super_admin/master_data/categories', methods=['GET', 'POST'])
