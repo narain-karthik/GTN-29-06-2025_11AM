@@ -47,6 +47,18 @@ app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 # Initialize the app with the extension
 db.init_app(app)
 
+def utc_to_ist(dt):
+    """Convert UTC datetime to IST"""
+    if dt:
+        from datetime import timezone, timedelta
+        # IST is UTC+5:30
+        ist_timezone = timezone(timedelta(hours=5, minutes=30))
+        if dt.tzinfo is None:
+            # Assume UTC if no timezone info
+            dt = dt.replace(tzinfo=timezone.utc)
+        return dt.astimezone(ist_timezone)
+    return dt
+
 @app.template_filter('to_ist')
 def to_ist_filter(dt):
     if dt:
