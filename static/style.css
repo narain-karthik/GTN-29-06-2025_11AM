@@ -2065,6 +2065,127 @@ body, html {
     }
 }
 
+/* Lite Profile Header Styles */
+.lite-profile-header {
+    background: white;
+    border: 1px solid var(--gray-200);
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: var(--shadow-sm);
+}
+
+.profile-banner-lite {
+    padding: 2rem;
+    background: white;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 1rem;
+}
+
+.profile-info-section-lite {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+}
+
+.profile-avatar-lite {
+    flex-shrink: 0;
+}
+
+.avatar-circle-lite {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    background: var(--gray-100);
+    border: 2px solid var(--gray-300);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--gray-600);
+    font-size: 2rem;
+}
+
+.profile-details-lite {
+    flex: 1;
+    min-width: 0;
+}
+
+.profile-name-lite {
+    font-size: 2rem;
+    font-weight: 600;
+    color: var(--gray-900);
+    margin-bottom: 0.5rem;
+    line-height: 1.2;
+}
+
+.profile-subtitle-lite {
+    font-size: 1rem;
+    color: var(--gray-600);
+    margin: 0;
+    line-height: 1.4;
+}
+
+.profile-badge-section-lite {
+    flex-shrink: 0;
+}
+
+.user-role-badge-lite {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.5rem 1rem;
+    background: var(--gray-100);
+    color: var(--gray-700);
+    border: 1px solid var(--gray-300);
+    border-radius: 8px;
+    font-size: 0.875rem;
+    font-weight: 500;
+}
+
+.profile-title-section-lite {
+    padding: 1rem 2rem;
+    border-top: 1px solid var(--gray-200);
+    background: var(--gray-50);
+}
+
+.section-title-lite {
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: var(--gray-900);
+    margin: 0;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.section-title-lite i {
+    color: var(--gray-600);
+}
+
+/* Responsive design for lite profile */
+@media (max-width: 768px) {
+    .profile-banner-lite {
+        flex-direction: column;
+        align-items: stretch;
+        text-align: center;
+    }
+    
+    .profile-info-section-lite {
+        flex-direction: column;
+        text-align: center;
+    }
+    
+    .profile-name-lite {
+        font-size: 1.75rem;
+    }
+    
+    .profile-title-section-lite {
+        padding: 1rem;
+    }
+}
+
 /* Tickets Grid */
 .tickets-grid {
     display: grid;

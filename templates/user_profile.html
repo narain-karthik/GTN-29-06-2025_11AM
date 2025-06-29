@@ -6,29 +6,29 @@
 <div class="container-fluid">
     <div class="row justify-content-center">
         <div class="col-12 col-xl-10">
-            <!-- Modern Profile Header -->
-            <div class="modern-profile-header mb-4">
-                <div class="profile-banner">
-                    <div class="profile-info-section">
-                        <div class="profile-avatar-large">
-                            <div class="avatar-circle-large">
+            <!-- Lite Profile Header -->
+            <div class="lite-profile-header mb-4">
+                <div class="profile-banner-lite">
+                    <div class="profile-info-section-lite">
+                        <div class="profile-avatar-lite">
+                            <div class="avatar-circle-lite">
                                 <i class="ri-user-line"></i>
                             </div>
                         </div>
-                        <div class="profile-details">
-                            <h1 class="profile-name">{{ user.full_name }}</h1>
-                            <p class="profile-subtitle">Manage your account settings and personal information</p>
+                        <div class="profile-details-lite">
+                            <h1 class="profile-name-lite">{{ user.full_name }}</h1>
+                            <p class="profile-subtitle-lite">Manage your account settings and personal information</p>
                         </div>
                     </div>
-                    <div class="profile-badge-section">
-                        <div class="user-role-badge {{ 'super-admin-badge' if user.is_super_admin else 'user-badge' }}">
+                    <div class="profile-badge-section-lite">
+                        <div class="user-role-badge-lite">
                             <i class="ri-user-line"></i>
                             <span>{{ user.role.replace('_', ' ').title() }}</span>
                         </div>
                     </div>
                 </div>
-                <div class="profile-title-section">
-                    <h2 class="section-title">
+                <div class="profile-title-section-lite">
+                    <h2 class="section-title-lite">
                         <i class="ri-user-settings-line"></i>
                         My Profile
                     </h2>
