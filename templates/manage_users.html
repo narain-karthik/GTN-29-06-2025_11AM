@@ -154,7 +154,7 @@
                         </thead>
                         <tbody>
                             {% for user in users %}
-                                <tr class="user-row" data-role="{{ user.role }}" data-name="{{ user.full_name() }}" data-username="{{ user.username }}" data-email="{{ user.email }}">
+                                <tr class="user-row" data-role="{{ user.role }}" data-name="{{ user.full_name }}" data-username="{{ user.username }}" data-email="{{ user.email }}">
                                     <td class="user-id">
                                         <span class="id-badge">#{{ user.id }}</span>
                                     </td>
