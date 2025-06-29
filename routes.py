@@ -646,7 +646,19 @@ def assign_work(ticket_id):
         db.session.commit()
         
         assignee = User.query.get(form.assigned_to.data)
-        flash(f'Work assigned to {assignee.full_name}!', 'success')
+        
+        # Send email notification to assigned user
+        from utils.email import send_assignment_email
+        try:
+            email_sent = send_assignment_email(assignee.email, ticket.ticket_number, assignee.full_name)
+            if email_sent:
+                flash(f'Work assigned to {assignee.full_name} and email notification sent!', 'success')
+            else:
+                flash(f'Work assigned to {assignee.full_name} but email notification failed.', 'warning')
+        except Exception as e:
+            logging.error(f"Error sending assignment email: {e}")
+            flash(f'Work assigned to {assignee.full_name} but email notification failed.', 'warning')
+        
         return redirect(url_for('super_admin_dashboard'))
     
     return render_template('assign_work.html', form=form, ticket=ticket, admins=admins)
@@ -788,12 +800,29 @@ def edit_assignment(ticket_id):
             assigned_to = None
             
         ticket.assigned_to = assigned_to
+        ticket.assigned_by = current_user.id
         ticket.updated_at = datetime.utcnow()
         
         try:
             db.session.commit()
             assignee_name = User.query.get(assigned_to).full_name if assigned_to else 'Unassigned'
-            flash(f'Ticket {ticket.ticket_number} has been assigned to {assignee_name}.', 'success')
+            
+            # Send email notification if assigned to someone
+            if assigned_to:
+                from utils.email import send_assignment_email
+                assignee = User.query.get(assigned_to)
+                try:
+                    email_sent = send_assignment_email(assignee.email, ticket.ticket_number, assignee.full_name)
+                    if email_sent:
+                        flash(f'Ticket {ticket.ticket_number} assigned to {assignee_name} and email notification sent!', 'success')
+                    else:
+                        flash(f'Ticket {ticket.ticket_number} assigned to {assignee_name} but email notification failed.', 'warning')
+                except Exception as e:
+                    logging.error(f"Error sending assignment email: {e}")
+                    flash(f'Ticket {ticket.ticket_number} assigned to {assignee_name} but email notification failed.', 'warning')
+            else:
+                flash(f'Ticket {ticket.ticket_number} has been unassigned.', 'success')
+                
             return redirect(url_for('super_admin_dashboard'))
         except Exception as e:
             db.session.rollback()
@@ -1217,6 +1246,33 @@ def manage_email_settings():
         form.is_active.data = email_settings.is_active
     
     return render_template('master_data/email_settings.html', form=form, email_settings=email_settings)
+
+@app.route('/super_admin/test_email_settings', methods=['POST'])
+@login_required
+@super_admin_required
+def test_email_settings():
+    """Test email configuration by sending a test email"""
+    try:
+        current_user = get_current_user()
+        from utils.email import send_assignment_email
+        
+        # Send test email to current user
+        email_sent = send_assignment_email(
+            current_user.email, 
+            "TEST", 
+            current_user.full_name
+        )
+        
+        if email_sent:
+            flash('Test email sent successfully! Check your inbox.', 'success')
+        else:
+            flash('Test email failed to send. Check email settings and application logs.', 'error')
+            
+    except Exception as e:
+        logging.error(f"Test email error: {e}")
+        flash('Test email failed with error. Check application logs for details.', 'error')
+        
+    return redirect(url_for('manage_email_settings'))
 
 @app.route('/super_admin/master_data/timezone_settings', methods=['GET', 'POST'])
 @super_admin_required
