@@ -47,6 +47,27 @@ body, html {
     background: var(--light-bg);
     color: var(--gray-800);
     line-height: 1.6;
+    overflow-x: hidden;
+}
+
+/* Home page specific layout to prevent scrolling */
+.main-content-home {
+    height: calc(100vh - 90px);
+    overflow: hidden;
+}
+
+.main-content-home + .footer {
+    display: none;
+}
+
+.main-content-home .hero-section {
+    height: 100%;
+}
+
+.main-content-home .hero-gradient {
+    height: 100%;
+    display: flex;
+    align-items: center;
 }
 
 /* Header */
