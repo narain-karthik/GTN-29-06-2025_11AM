@@ -102,17 +102,6 @@ The GTN Engineering IT Helpdesk System is a comprehensive Flask-based web applic
 
 ## Changelog
 
-- June 29, 2025: Redesigned view_ticket.html with modern professional UI/UX:
-  - Created beautiful header with gradient ticket number badge, large title, and meta information with icons
-  - Implemented three distinct status/priority/category cards with icons and color-coded values
-  - Added modern card design with gradient headers, proper spacing, and smooth hover animations
-  - Enhanced comments with timeline-style layout, user avatars, and professional typography
-  - Improved attachment display with file type icons, hover effects, and clean download buttons
-  - Added assignment card showing user avatar, name, and role information
-  - Implemented visual timeline sidebar showing ticket creation, assignment, and resolution history
-  - Enhanced system information display with icons and organized technical details
-  - Added responsive design that works perfectly on both mobile and desktop devices
-  - Maintained all functionality while creating a visually appealing and intuitive user experience
 - June 29, 2025: Fixed user dashboard UI issues:
   - Fixed search bar overflow in "My Support Tickets" section by implementing proper flexbox layout and responsive design
   - Reduced banner header size with smaller padding, font sizes, and margins for more compact appearance
