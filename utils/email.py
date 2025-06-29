@@ -103,30 +103,35 @@ def send_assignment_email(to_email, ticket_id, assignee_name):
             server.sendmail(email_settings['from_email'], [to_email], msg.as_string())
             logging.info("Email sent successfully")
             
-        # Log successful email
-        log_email_notification(to_email, subject, 'ticket_assigned', 'sent', ticket_id=ticket_id)
+        # Log successful email (handle test case where ticket_id might not be an integer)
+        log_ticket_id = None if ticket_id == "TEST" else ticket_id
+        log_email_notification(to_email, subject, 'ticket_assigned', 'sent', ticket_id=log_ticket_id)
         logging.info(f"Assignment email sent successfully to {to_email} for ticket #{ticket_id}")
         return True
         
     except smtplib.SMTPAuthenticationError as e:
         error_msg = f"SMTP Authentication failed: {e}. Check Gmail app password or enable 2-factor authentication"
         logging.error(error_msg)
-        log_email_notification(to_email, subject, 'ticket_assigned', 'failed', error_msg, ticket_id)
+        log_ticket_id = None if ticket_id == "TEST" else ticket_id
+        log_email_notification(to_email, subject, 'ticket_assigned', 'failed', error_msg, log_ticket_id)
         return False
     except smtplib.SMTPRecipientsRefused as e:
         error_msg = f"Recipient email rejected: {e}"
         logging.error(error_msg)
-        log_email_notification(to_email, subject, 'ticket_assigned', 'failed', error_msg, ticket_id)
+        log_ticket_id = None if ticket_id == "TEST" else ticket_id
+        log_email_notification(to_email, subject, 'ticket_assigned', 'failed', error_msg, log_ticket_id)
         return False
     except smtplib.SMTPServerDisconnected as e:
         error_msg = f"SMTP server disconnected: {e}"
         logging.error(error_msg)
-        log_email_notification(to_email, subject, 'ticket_assigned', 'failed', error_msg, ticket_id)
+        log_ticket_id = None if ticket_id == "TEST" else ticket_id
+        log_email_notification(to_email, subject, 'ticket_assigned', 'failed', error_msg, log_ticket_id)
         return False
     except Exception as e:
         error_msg = f"Failed to send assignment email: {e} (Type: {type(e).__name__})"
         logging.error(error_msg)
-        log_email_notification(to_email, subject, 'ticket_assigned', 'failed', error_msg, ticket_id)
+        log_ticket_id = None if ticket_id == "TEST" else ticket_id
+        log_email_notification(to_email, subject, 'ticket_assigned', 'failed', error_msg, log_ticket_id)
         return False
 
 
