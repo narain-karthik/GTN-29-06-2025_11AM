@@ -102,6 +102,14 @@ The GTN Engineering IT Helpdesk System is a comprehensive Flask-based web applic
 
 ## Changelog
 
+- June 29, 2025: Completed Master Data integration and enhanced system functionality:
+  - Fixed Master Data forms to dynamically load categories, priorities, and statuses from database instead of hardcoded values
+  - Added default Email Settings, Timezone Settings, and Backup Settings to make them visible in Master Data dashboard
+  - Added edit functionality for all Master Data components with proper routes and templates
+  - Enhanced timezone utility to read settings from Master Data and support configurable timezones
+  - Added edit_priority.html and edit_status.html templates with professional UI and color picker support
+  - Updated priorities.html and statuses.html to include functional Edit and Activate/Deactivate action buttons
+  - Master Data system now fully controls application behavior with real-time updates
 - June 29, 2025: Removed Department functionality from Master Data management system:
   - Deleted MasterDataDepartment model and database table
   - Removed MasterDataDepartmentForm from forms.py

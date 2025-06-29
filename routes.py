@@ -1071,6 +1071,47 @@ def manage_statuses():
     return render_template('master_data/statuses.html', form=form, statuses=statuses)
 
 
+@app.route('/super_admin/master_data/priorities/<int:priority_id>/edit', methods=['GET', 'POST'])
+@super_admin_required
+def edit_priority(priority_id):
+    """Edit a priority"""
+    priority = MasterDataPriority.query.get_or_404(priority_id)
+    form = MasterDataPriorityForm(obj=priority)
+    
+    if form.validate_on_submit():
+        priority.name = form.name.data
+        priority.description = form.description.data
+        priority.level = form.level.data
+        priority.color_code = form.color_code.data
+        priority.is_active = form.is_active.data
+        priority.updated_at = datetime.utcnow()
+        db.session.commit()
+        flash(f'Priority "{priority.name}" updated successfully!', 'success')
+        return redirect(url_for('manage_priorities'))
+    
+    return render_template('master_data/edit_priority.html', form=form, priority=priority)
+
+
+@app.route('/super_admin/master_data/statuses/<int:status_id>/edit', methods=['GET', 'POST'])
+@super_admin_required
+def edit_status(status_id):
+    """Edit a status"""
+    status = MasterDataStatus.query.get_or_404(status_id)
+    form = MasterDataStatusForm(obj=status)
+    
+    if form.validate_on_submit():
+        status.name = form.name.data
+        status.description = form.description.data
+        status.color_code = form.color_code.data
+        status.is_active = form.is_active.data
+        status.updated_at = datetime.utcnow()
+        db.session.commit()
+        flash(f'Status "{status.name}" updated successfully!', 'success')
+        return redirect(url_for('manage_statuses'))
+    
+    return render_template('master_data/edit_status.html', form=form, status=status)
+
+
 
 
 

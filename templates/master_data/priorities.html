@@ -151,9 +151,26 @@
                                         </td>
                                         <td>
                                             <div class="btn-group btn-group-sm" role="group">
-                                                <button type="button" class="btn btn-outline-primary btn-sm" title="Edit Priority">
+                                                <a href="{{ url_for('edit_priority', priority_id=priority.id) }}" 
+                                                   class="btn btn-outline-primary btn-sm" 
+                                                   title="Edit Priority">
                                                     <i class="ri-edit-line"></i>
-                                                </button>
+                                                </a>
+                                                {% if priority.is_active %}
+                                                    <button type="button" 
+                                                            class="btn btn-outline-warning btn-sm" 
+                                                            title="Deactivate Priority"
+                                                            onclick="confirmAction('Are you sure you want to deactivate this priority?')">
+                                                        <i class="ri-pause-line"></i>
+                                                    </button>
+                                                {% else %}
+                                                    <button type="button" 
+                                                            class="btn btn-outline-success btn-sm" 
+                                                            title="Activate Priority"
+                                                            onclick="confirmAction('Are you sure you want to activate this priority?')">
+                                                        <i class="ri-play-line"></i>
+                                                    </button>
+                                                {% endif %}
                                             </div>
                                         </td>
                                     </tr>
