@@ -4,8 +4,8 @@ from flask_login import current_user
 from werkzeug.utils import secure_filename
 from sqlalchemy import extract, and_
 from app import app, db
-from models import User, Ticket, TicketComment, Attachment, MasterDataCategory, MasterDataPriority, MasterDataStatus, MasterDataDepartment, SystemSettings
-from forms import LoginForm, TicketForm, UpdateTicketForm, CommentForm, UserRegistrationForm, AssignTicketForm, UserProfileForm, MasterDataCategoryForm, MasterDataPriorityForm, MasterDataStatusForm, MasterDataDepartmentForm, SystemSettingsForm
+from models import User, Ticket, TicketComment, Attachment, MasterDataCategory, MasterDataPriority, MasterDataStatus, MasterDataDepartment, EmailSettings, TimezoneSettings, BackupSettings
+from forms import LoginForm, TicketForm, UpdateTicketForm, CommentForm, UserRegistrationForm, AssignTicketForm, UserProfileForm, MasterDataCategoryForm, MasterDataPriorityForm, MasterDataStatusForm, MasterDataDepartmentForm, EmailSettingsForm, TimezoneSettingsForm, BackupSettingsForm
 from datetime import datetime
 from utils.email import send_assignment_email  # Add this import
 from utils.timezone import utc_to_ist
@@ -970,7 +970,9 @@ def master_data_dashboard():
     priorities = MasterDataPriority.query.order_by(MasterDataPriority.level).all()
     statuses = MasterDataStatus.query.all()
     departments = MasterDataDepartment.query.all()
-    settings = SystemSettings.query.all()
+    email_settings = EmailSettings.query.first()
+    timezone_settings = TimezoneSettings.query.first()
+    backup_settings = BackupSettings.query.first()
     users = User.query.order_by(User.created_at.desc()).all()
     users_count = User.query.count()
     
@@ -979,7 +981,9 @@ def master_data_dashboard():
                          priorities=priorities, 
                          statuses=statuses,
                          departments=departments,
-                         settings=settings,
+                         email_settings=email_settings,
+                         timezone_settings=timezone_settings,
+                         backup_settings=backup_settings,
                          users=users,
                          users_count=users_count)
 
@@ -1091,27 +1095,143 @@ def manage_departments():
     return render_template('master_data/departments.html', form=form, departments=departments)
 
 
-@app.route('/super_admin/master_data/settings', methods=['GET', 'POST'])
+@app.route('/super_admin/master_data/email_settings', methods=['GET', 'POST'])
 @super_admin_required
-def manage_settings():
-    """Manage system settings"""
-    form = SystemSettingsForm()
-    settings = SystemSettings.query.all()
+def manage_email_settings():
+    """Manage SMTP email settings"""
+    form = EmailSettingsForm()
+    email_settings = EmailSettings.query.first()
     
     if form.validate_on_submit():
-        setting = SystemSettings(
-            setting_key=form.setting_key.data,
-            setting_value=form.setting_value.data,
-            setting_type=form.setting_type.data,
-            description=form.description.data,
-            is_active=form.is_active.data
-        )
-        db.session.add(setting)
+        if email_settings:
+            # Update existing settings
+            email_settings.smtp_server = form.smtp_server.data
+            email_settings.smtp_port = form.smtp_port.data
+            email_settings.smtp_username = form.smtp_username.data
+            email_settings.smtp_password = form.smtp_password.data
+            email_settings.use_tls = form.use_tls.data
+            email_settings.from_email = form.from_email.data
+            email_settings.from_name = form.from_name.data
+            email_settings.is_active = form.is_active.data
+            email_settings.updated_at = datetime.utcnow()
+        else:
+            # Create new settings
+            email_settings = EmailSettings(
+                smtp_server=form.smtp_server.data,
+                smtp_port=form.smtp_port.data,
+                smtp_username=form.smtp_username.data,
+                smtp_password=form.smtp_password.data,
+                use_tls=form.use_tls.data,
+                from_email=form.from_email.data,
+                from_name=form.from_name.data,
+                is_active=form.is_active.data
+            )
+            db.session.add(email_settings)
+        
         db.session.commit()
-        flash(f'Setting "{setting.setting_key}" created successfully!', 'success')
-        return redirect(url_for('manage_settings'))
+        flash('Email settings saved successfully!', 'success')
+        return redirect(url_for('manage_email_settings'))
+    elif email_settings:
+        # Pre-populate form with existing data
+        form.smtp_server.data = email_settings.smtp_server
+        form.smtp_port.data = email_settings.smtp_port
+        form.smtp_username.data = email_settings.smtp_username
+        form.smtp_password.data = email_settings.smtp_password
+        form.use_tls.data = email_settings.use_tls
+        form.from_email.data = email_settings.from_email
+        form.from_name.data = email_settings.from_name
+        form.is_active.data = email_settings.is_active
     
-    return render_template('master_data/settings.html', form=form, settings=settings)
+    return render_template('master_data/email_settings.html', form=form, email_settings=email_settings)
+
+@app.route('/super_admin/master_data/timezone_settings', methods=['GET', 'POST'])
+@super_admin_required
+def manage_timezone_settings():
+    """Manage timezone settings"""
+    form = TimezoneSettingsForm()
+    timezone_settings = TimezoneSettings.query.first()
+    
+    if form.validate_on_submit():
+        if timezone_settings:
+            # Update existing settings
+            timezone_settings.timezone_name = form.timezone_name.data
+            timezone_settings.display_name = form.display_name.data
+            timezone_settings.utc_offset = form.utc_offset.data
+            timezone_settings.is_active = form.is_active.data
+            timezone_settings.updated_at = datetime.utcnow()
+        else:
+            # Create new settings
+            timezone_settings = TimezoneSettings(
+                timezone_name=form.timezone_name.data,
+                display_name=form.display_name.data,
+                utc_offset=form.utc_offset.data,
+                is_active=form.is_active.data
+            )
+            db.session.add(timezone_settings)
+        
+        db.session.commit()
+        flash('Timezone settings saved successfully!', 'success')
+        return redirect(url_for('manage_timezone_settings'))
+    elif timezone_settings:
+        # Pre-populate form with existing data
+        form.timezone_name.data = timezone_settings.timezone_name
+        form.display_name.data = timezone_settings.display_name
+        form.utc_offset.data = timezone_settings.utc_offset
+        form.is_active.data = timezone_settings.is_active
+    
+    return render_template('master_data/timezone_settings.html', form=form, timezone_settings=timezone_settings)
+
+@app.route('/super_admin/master_data/backup_settings', methods=['GET', 'POST'])
+@super_admin_required
+def manage_backup_settings():
+    """Manage backup settings"""
+    form = BackupSettingsForm()
+    backup_settings = BackupSettings.query.first()
+    
+    if form.validate_on_submit():
+        if backup_settings:
+            # Update existing settings
+            backup_settings.backup_frequency = form.backup_frequency.data
+            backup_settings.backup_time = form.backup_time.data
+            backup_settings.backup_location = form.backup_location.data
+            backup_settings.max_backups = form.max_backups.data
+            backup_settings.compress_backups = form.compress_backups.data
+            backup_settings.include_attachments = form.include_attachments.data
+            backup_settings.email_notifications = form.email_notifications.data
+            backup_settings.notification_email = form.notification_email.data
+            backup_settings.is_active = form.is_active.data
+            backup_settings.updated_at = datetime.utcnow()
+        else:
+            # Create new settings
+            backup_settings = BackupSettings(
+                backup_frequency=form.backup_frequency.data,
+                backup_time=form.backup_time.data,
+                backup_location=form.backup_location.data,
+                max_backups=form.max_backups.data,
+                compress_backups=form.compress_backups.data,
+                include_attachments=form.include_attachments.data,
+                email_notifications=form.email_notifications.data,
+                notification_email=form.notification_email.data,
+                is_active=form.is_active.data
+            )
+            db.session.add(backup_settings)
+        
+        db.session.commit()
+        flash('Backup settings saved successfully!', 'success')
+        return redirect(url_for('manage_backup_settings'))
+    elif backup_settings:
+        # Pre-populate form with existing data
+        form.backup_frequency.data = backup_settings.backup_frequency
+        form.backup_time.data = backup_settings.backup_time
+        form.backup_location.data = backup_settings.backup_location
+        form.max_backups.data = backup_settings.max_backups
+        form.compress_backups.data = backup_settings.compress_backups
+        form.include_attachments.data = backup_settings.include_attachments
+        form.email_notifications.data = backup_settings.email_notifications
+        form.notification_email.data = backup_settings.notification_email
+        form.is_active.data = backup_settings.is_active
+    
+    return render_template('master_data/backup_settings.html', form=form, backup_settings=backup_settings)
 
 
 # Initialize default admin on first import

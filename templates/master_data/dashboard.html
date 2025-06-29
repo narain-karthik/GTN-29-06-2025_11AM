@@ -121,9 +121,13 @@
                     <div class="row no-gutters align-items-center">
                         <div class="col mr-2">
                             <div class="text-xs font-weight-bold text-dark text-uppercase mb-1">
-                                Settings
+                                System Settings
                             </div>
-                            <div class="h5 mb-0 font-weight-bold text-gray-800">{{ settings|length }}</div>
+                            <div class="h5 mb-0 font-weight-bold text-gray-800">
+                                {{ 3 if email_settings and timezone_settings and backup_settings else 
+                                  (2 if (email_settings and timezone_settings) or (email_settings and backup_settings) or (timezone_settings and backup_settings) else
+                                  (1 if email_settings or timezone_settings or backup_settings else 0)) }}
+                            </div>
                         </div>
                         <div class="col-auto">
                             <i class="ri-settings-3-line fa-2x text-gray-300"></i>

@@ -161,15 +161,47 @@ class MasterDataDepartment(db.Model):
     updated_at = db.Column(db.DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
 
 
-class SystemSettings(db.Model):
-    """System-wide settings and configurations"""
-    __tablename__ = 'system_settings'
+class EmailSettings(db.Model):
+    """Email SMTP settings for notifications"""
+    __tablename__ = 'email_settings'
     
     id = db.Column(db.Integer, primary_key=True)
-    setting_key = db.Column(db.String(100), unique=True, nullable=False)
-    setting_value = db.Column(db.Text, nullable=True)
-    setting_type = db.Column(db.String(20), nullable=False)  # text, number, boolean, json
-    description = db.Column(db.String(200), nullable=True)
+    smtp_server = db.Column(db.String(100), nullable=False, default='smtp.gmail.com')
+    smtp_port = db.Column(db.Integer, nullable=False, default=587)
+    smtp_username = db.Column(db.String(100), nullable=False)
+    smtp_password = db.Column(db.String(200), nullable=False)
+    use_tls = db.Column(db.Boolean, default=True)
+    from_email = db.Column(db.String(100), nullable=True)
+    from_name = db.Column(db.String(100), nullable=True, default='GTN IT Helpdesk')
+    is_active = db.Column(db.Boolean, default=True)
+    created_at = db.Column(db.DateTime, default=datetime.utcnow)
+    updated_at = db.Column(db.DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
+
+class TimezoneSettings(db.Model):
+    """Timezone settings for the application"""
+    __tablename__ = 'timezone_settings'
+    
+    id = db.Column(db.Integer, primary_key=True)
+    timezone_name = db.Column(db.String(50), nullable=False, default='Asia/Kolkata')
+    display_name = db.Column(db.String(100), nullable=False, default='Indian Standard Time (IST)')
+    utc_offset = db.Column(db.String(10), nullable=False, default='+05:30')
+    is_active = db.Column(db.Boolean, default=True)
+    created_at = db.Column(db.DateTime, default=datetime.utcnow)
+    updated_at = db.Column(db.DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
+
+class BackupSettings(db.Model):
+    """Database backup settings and configurations"""
+    __tablename__ = 'backup_settings'
+    
+    id = db.Column(db.Integer, primary_key=True)
+    backup_frequency = db.Column(db.String(20), nullable=False, default='daily')  # daily, weekly, monthly
+    backup_time = db.Column(db.Time, nullable=False, default=datetime.strptime('02:00', '%H:%M').time())
+    backup_location = db.Column(db.String(200), nullable=True, default='/backups')
+    max_backups = db.Column(db.Integer, nullable=False, default=30)
+    compress_backups = db.Column(db.Boolean, default=True)
+    include_attachments = db.Column(db.Boolean, default=True)
+    email_notifications = db.Column(db.Boolean, default=True)
+    notification_email = db.Column(db.String(100), nullable=True)
     is_active = db.Column(db.Boolean, default=True)
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
     updated_at = db.Column(db.DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
