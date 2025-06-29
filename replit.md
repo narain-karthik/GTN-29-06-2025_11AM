@@ -102,6 +102,12 @@ The GTN Engineering IT Helpdesk System is a comprehensive Flask-based web applic
 
 ## Changelog
 
+- June 29, 2025: Removed Department functionality from Master Data management system:
+  - Deleted MasterDataDepartment model and database table
+  - Removed MasterDataDepartmentForm from forms.py
+  - Deleted manage_departments route and templates/master_data/departments.html
+  - Updated Master Data dashboard to remove Department section and overview card
+  - System now only manages Categories, Priorities, Statuses, and System Settings
 - June 29, 2025: Successfully completed migration from Replit Agent to standard Replit environment:
   - Set up PostgreSQL database with automatic provisioning
   - Configured secure session management with SESSION_SECRET environment variable

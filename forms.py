@@ -118,12 +118,7 @@ class MasterDataStatusForm(FlaskForm):
     submit = SubmitField('Save Status')
 
 
-class MasterDataDepartmentForm(FlaskForm):
-    name = StringField('Department Name', validators=[DataRequired(), Length(min=2, max=100)])
-    description = TextAreaField('Description', validators=[Length(max=200)])
-    manager_name = StringField('Manager Name', validators=[Length(max=100)])
-    is_active = BooleanField('Active', default=True)
-    submit = SubmitField('Save Department')
+
 
 
 class EmailSettingsForm(FlaskForm):

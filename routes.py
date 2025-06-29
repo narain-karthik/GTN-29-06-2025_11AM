@@ -4,8 +4,8 @@ from flask_login import current_user
 from werkzeug.utils import secure_filename
 from sqlalchemy import extract, and_
 from app import app, db
-from models import User, Ticket, TicketComment, Attachment, MasterDataCategory, MasterDataPriority, MasterDataStatus, MasterDataDepartment, EmailSettings, TimezoneSettings, BackupSettings
-from forms import LoginForm, TicketForm, UpdateTicketForm, CommentForm, UserRegistrationForm, AssignTicketForm, UserProfileForm, MasterDataCategoryForm, MasterDataPriorityForm, MasterDataStatusForm, MasterDataDepartmentForm, EmailSettingsForm, TimezoneSettingsForm, BackupSettingsForm
+from models import User, Ticket, TicketComment, Attachment, MasterDataCategory, MasterDataPriority, MasterDataStatus, EmailSettings, TimezoneSettings, BackupSettings
+from forms import LoginForm, TicketForm, UpdateTicketForm, CommentForm, UserRegistrationForm, AssignTicketForm, UserProfileForm, MasterDataCategoryForm, MasterDataPriorityForm, MasterDataStatusForm, EmailSettingsForm, TimezoneSettingsForm, BackupSettingsForm
 from datetime import datetime
 from utils.email import send_assignment_email  # Add this import
 from utils.timezone import utc_to_ist
@@ -969,7 +969,6 @@ def master_data_dashboard():
     categories = MasterDataCategory.query.all()
     priorities = MasterDataPriority.query.order_by(MasterDataPriority.level).all()
     statuses = MasterDataStatus.query.all()
-    departments = MasterDataDepartment.query.all()
     email_settings = EmailSettings.query.first()
     timezone_settings = TimezoneSettings.query.first()
     backup_settings = BackupSettings.query.first()
@@ -980,7 +979,6 @@ def master_data_dashboard():
                          categories=categories,
                          priorities=priorities, 
                          statuses=statuses,
-                         departments=departments,
                          email_settings=email_settings,
                          timezone_settings=timezone_settings,
                          backup_settings=backup_settings,
@@ -1073,26 +1071,7 @@ def manage_statuses():
     return render_template('master_data/statuses.html', form=form, statuses=statuses)
 
 
-@app.route('/super_admin/master_data/departments', methods=['GET', 'POST'])
-@super_admin_required
-def manage_departments():
-    """Manage departments"""
-    form = MasterDataDepartmentForm()
-    departments = MasterDataDepartment.query.all()
-    
-    if form.validate_on_submit():
-        department = MasterDataDepartment(
-            name=form.name.data,
-            description=form.description.data,
-            manager_name=form.manager_name.data,
-            is_active=form.is_active.data
-        )
-        db.session.add(department)
-        db.session.commit()
-        flash(f'Department "{department.name}" created successfully!', 'success')
-        return redirect(url_for('manage_departments'))
-    
-    return render_template('master_data/departments.html', form=form, departments=departments)
+
 
 
 @app.route('/super_admin/master_data/email_settings', methods=['GET', 'POST'])

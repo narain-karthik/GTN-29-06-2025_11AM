@@ -148,17 +148,7 @@ class MasterDataStatus(db.Model):
     updated_at = db.Column(db.DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
 
 
-class MasterDataDepartment(db.Model):
-    """Master data for departments"""
-    __tablename__ = 'master_departments'
-    
-    id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(100), unique=True, nullable=False)
-    description = db.Column(db.String(200), nullable=True)
-    manager_name = db.Column(db.String(100), nullable=True)
-    is_active = db.Column(db.Boolean, default=True)
-    created_at = db.Column(db.DateTime, default=datetime.utcnow)
-    updated_at = db.Column(db.DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
+
 
 
 class EmailSettings(db.Model):
