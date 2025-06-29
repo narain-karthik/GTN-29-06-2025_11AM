@@ -83,6 +83,69 @@ body, html {
     height: 100%;
 }
 
+/* Lite login form styles */
+.login-card {
+    background: white;
+    border-radius: 12px;
+    padding: 2rem;
+    width: 100%;
+    max-width: 400px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    border: 1px solid #f1f5f9;
+}
+
+.login-btn-lite {
+    height: 50px;
+    border-radius: 8px;
+    font-size: 1rem;
+    font-weight: 500;
+    background: var(--primary-color);
+    border: none;
+    transition: var(--transition-base);
+}
+
+.login-btn-lite:hover {
+    background: var(--primary-dark);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(37, 99, 235, 0.2);
+}
+
+.modern-login-form .form-control {
+    height: 50px;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    font-size: 0.95rem;
+    padding: 0.75rem;
+    transition: var(--transition-base);
+}
+
+.modern-login-form .form-control:focus {
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.1);
+}
+
+.modern-login-form .form-floating > label {
+    padding: 0.75rem;
+    color: #64748b;
+    font-weight: 400;
+    font-size: 0.9rem;
+}
+
+.back-home-link {
+    color: #64748b;
+    text-decoration: none;
+    font-size: 0.9rem;
+    transition: var(--transition-base);
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.back-home-link:hover {
+    color: var(--primary-color);
+    text-decoration: none;
+}
+
 /* Header */
 .header {
     background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-dark) 100%);
