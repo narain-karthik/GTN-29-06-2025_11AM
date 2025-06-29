@@ -52,8 +52,12 @@ body, html {
 
 /* Home page specific layout to prevent scrolling */
 .main-content-home {
-    height: calc(100vh - 140px);
+    height: calc(100vh - 90px);
     overflow: hidden;
+}
+
+.main-content-home + .footer {
+    display: none;
 }
 
 .main-content-home .hero-section {
@@ -460,12 +464,13 @@ body, html {
 
 /* Footer */
 .footer {
-    background: var(--gray-100);
-    color: var(--gray-700);
+    background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-dark) 100%);
+    color: white;
     text-align: center;
-    padding: 15px 30px;
+    padding: 20px 30px;
     margin-top: auto;
-    border-top: 1px solid var(--gray-200);
+    border-top: 1px solid var(--primary-dark);
+    box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
 }
 
 .footer p {
