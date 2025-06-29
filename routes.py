@@ -1026,6 +1026,24 @@ def edit_category(category_id):
     return render_template('master_data/edit_category.html', form=form, category=category)
 
 
+@app.route('/super_admin/master_data/categories/<int:category_id>/delete', methods=['POST'])
+@super_admin_required
+def delete_category(category_id):
+    """Delete a category"""
+    category = MasterDataCategory.query.get_or_404(category_id)
+    category_name = category.name
+    
+    try:
+        db.session.delete(category)
+        db.session.commit()
+        flash(f'Category "{category_name}" deleted successfully!', 'success')
+    except Exception as e:
+        db.session.rollback()
+        flash(f'Error deleting category: {str(e)}', 'error')
+    
+    return redirect(url_for('manage_categories'))
+
+
 @app.route('/super_admin/master_data/priorities', methods=['GET', 'POST'])
 @super_admin_required
 def manage_priorities():
@@ -1092,6 +1110,24 @@ def edit_priority(priority_id):
     return render_template('master_data/edit_priority.html', form=form, priority=priority)
 
 
+@app.route('/super_admin/master_data/priorities/<int:priority_id>/delete', methods=['POST'])
+@super_admin_required
+def delete_priority(priority_id):
+    """Delete a priority"""
+    priority = MasterDataPriority.query.get_or_404(priority_id)
+    priority_name = priority.name
+    
+    try:
+        db.session.delete(priority)
+        db.session.commit()
+        flash(f'Priority "{priority_name}" deleted successfully!', 'success')
+    except Exception as e:
+        db.session.rollback()
+        flash(f'Error deleting priority: {str(e)}', 'error')
+    
+    return redirect(url_for('manage_priorities'))
+
+
 @app.route('/super_admin/master_data/statuses/<int:status_id>/edit', methods=['GET', 'POST'])
 @super_admin_required
 def edit_status(status_id):
@@ -1110,6 +1146,24 @@ def edit_status(status_id):
         return redirect(url_for('manage_statuses'))
     
     return render_template('master_data/edit_status.html', form=form, status=status)
+
+
+@app.route('/super_admin/master_data/statuses/<int:status_id>/delete', methods=['POST'])
+@super_admin_required
+def delete_status(status_id):
+    """Delete a status"""
+    status = MasterDataStatus.query.get_or_404(status_id)
+    status_name = status.name
+    
+    try:
+        db.session.delete(status)
+        db.session.commit()
+        flash(f'Status "{status_name}" deleted successfully!', 'success')
+    except Exception as e:
+        db.session.rollback()
+        flash(f'Error deleting status: {str(e)}', 'error')
+    
+    return redirect(url_for('manage_statuses'))
 
 
 

@@ -80,6 +80,35 @@
     <!-- Custom JS -->
     <script src="{{ url_for('static', filename='script.js') }}"></script>
     
+    <!-- Master Data JavaScript Functions -->
+    <script>
+        function confirmDelete(itemName, deleteUrl) {
+            if (confirm(`Are you sure you want to delete "${itemName}"? This action cannot be undone.`)) {
+                // Create a form and submit it as POST request
+                const form = document.createElement('form');
+                form.method = 'POST';
+                form.action = deleteUrl;
+                
+                // Add CSRF token if available
+                const csrfToken = document.querySelector('meta[name=csrf-token]');
+                if (csrfToken) {
+                    const csrfInput = document.createElement('input');
+                    csrfInput.type = 'hidden';
+                    csrfInput.name = 'csrf_token';
+                    csrfInput.value = csrfToken.getAttribute('content');
+                    form.appendChild(csrfInput);
+                }
+                
+                document.body.appendChild(form);
+                form.submit();
+            }
+        }
+        
+        function confirmAction(message) {
+            return confirm(message);
+        }
+    </script>
+    
     {% block scripts %}{% endblock %}
 </body>
 </html>

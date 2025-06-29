@@ -102,14 +102,16 @@ The GTN Engineering IT Helpdesk System is a comprehensive Flask-based web applic
 
 ## Changelog
 
-- June 29, 2025: Completed Master Data integration and enhanced system functionality:
+- June 29, 2025: Completed Master Data integration with full CRUD functionality and dynamic email configuration:
   - Fixed Master Data forms to dynamically load categories, priorities, and statuses from database instead of hardcoded values
-  - Added default Email Settings, Timezone Settings, and Backup Settings to make them visible in Master Data dashboard
-  - Added edit functionality for all Master Data components with proper routes and templates
-  - Enhanced timezone utility to read settings from Master Data and support configurable timezones
-  - Added edit_priority.html and edit_status.html templates with professional UI and color picker support
-  - Updated priorities.html and statuses.html to include functional Edit and Activate/Deactivate action buttons
-  - Master Data system now fully controls application behavior with real-time updates
+  - Enhanced utils/email.py to read SMTP settings from Master Data database with fallback protection
+  - Added complete delete functionality for all Master Data components with confirmation dialogs
+  - Created edit_priority.html and edit_status.html templates with professional UI and color picker support
+  - Updated priorities.html, statuses.html, and categories.html to include Edit, Activate/Deactivate, and Delete action buttons
+  - Added delete routes in routes.py for categories, priorities, and statuses with proper error handling
+  - Updated Master Data dashboard to show individual overview cards for Email Settings, Timezone Settings, and Backup Settings
+  - Added JavaScript confirmDelete function with CSRF protection for secure deletion operations
+  - Master Data system now provides complete control over application behavior with real-time updates
 - June 29, 2025: Removed Department functionality from Master Data management system:
   - Deleted MasterDataDepartment model and database table
   - Removed MasterDataDepartmentForm from forms.py

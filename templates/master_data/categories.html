@@ -145,6 +145,12 @@
                                                         <i class="ri-play-line"></i>
                                                     </button>
                                                 {% endif %}
+                                                <button type="button" 
+                                                        class="btn btn-outline-danger btn-sm" 
+                                                        title="Delete Category"
+                                                        onclick="confirmDelete('{{ category.name }}', '{{ url_for('delete_category', category_id=category.id) }}')">
+                                                    <i class="ri-delete-bin-line"></i>
+                                                </button>
                                             </div>
                                         </td>
                                     </tr>

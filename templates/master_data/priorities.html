@@ -171,6 +171,12 @@
                                                         <i class="ri-play-line"></i>
                                                     </button>
                                                 {% endif %}
+                                                <button type="button" 
+                                                        class="btn btn-outline-danger btn-sm" 
+                                                        title="Delete Priority"
+                                                        onclick="confirmDelete('{{ priority.name }}', '{{ url_for('delete_priority', priority_id=priority.id) }}')">
+                                                    <i class="ri-delete-bin-line"></i>
+                                                </button>
                                             </div>
                                         </td>
                                     </tr>
