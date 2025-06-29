@@ -3,283 +3,186 @@
 {% block title %}Ticket {{ ticket.ticket_number }} - GTN Engineering IT Helpdesk{% endblock %}
 
 {% block content %}
-    <div class="container">
+<div class="ticket-view-lite">
+    <div class="container-fluid">
+        <!-- Header -->
+        <div class="ticket-header-lite">
+            <div class="d-flex justify-content-between align-items-center">
+                <div class="ticket-title-section">
+                    <h3 class="ticket-number">{{ ticket.ticket_number }}</h3>
+                    <h4 class="ticket-title">{{ ticket.title }}</h4>
+                </div>
+                <div class="header-actions">
+                    {% if user.is_super_admin %}
+                        <a href="{{ url_for('edit_ticket', ticket_id=ticket.id) }}" class="btn btn-sm btn-outline-primary">
+                            <i class="ri-edit-line"></i> Edit
+                        </a>
+                    {% endif %}
+                    <a href="{{ url_for('user_dashboard' if not user.is_super_admin else 'super_admin_dashboard') }}" 
+                       class="btn btn-sm btn-outline-secondary">
+                        <i class="ri-arrow-left-line"></i> Back
+                    </a>
+                </div>
+            </div>
+        </div>
+
         <div class="row">
-            <div class="col-md-8">
-                <div class="card">
-                    <div class="card-header d-flex justify-content-between align-items-center">
-                        <h4><i class="ri-ticket-line"></i> {{ ticket.ticket_number }}</h4>
-                        {% if user.is_super_admin %}
-                            <a href="{{ url_for('edit_ticket', ticket_id=ticket.id) }}" class="btn btn-sm btn-outline-primary">
-                                <i class="ri-edit-line"></i> Edit
-                            </a>
-                        {% endif %}
-                    </div>
-                    <div class="card-body">
-                        <h5>{{ ticket.title }}</h5>
-                        
-                        <div class="row mb-3">
-                            <div class="col-md-6">
-                                <p><strong>Category:</strong> 
-                                    <span class="badge bg-secondary">{{ ticket.category }}</span>
-                                </p>
-                                <p><strong>Priority:</strong> 
-                                    {% set priority_class = {
-                                        'Low': 'success',
-                                        'Medium': 'warning',
-                                        'High': 'danger',
-                                        'Critical': 'dark'
-                                    } %}
-                                    <span class="badge bg-{{ priority_class[ticket.priority] }}">
-                                        {{ ticket.priority }}
-                                    </span>
-                                </p>
-                            </div>
-                            <div class="col-md-6">
-                                <p><strong>Status:</strong> 
-                                    {% set status_class = {
-                                        'Open': 'primary',
-                                        'In Progress': 'info',
-                                        'Resolved': 'success',
-                                        'Closed': 'secondary'
-                                    } %}
-                                    <span class="badge bg-{{ status_class[ticket.status] }}">
-                                        {{ ticket.status }}
-                                    </span>
-                                </p>
-                               <p><strong>Created:</strong> {{ ticket.created_at|to_ist }}</p>
-                            </div>
+            <div class="col-lg-8">
+                <!-- Ticket Info Panel -->
+                <div class="info-panel-lite">
+                    <div class="info-grid">
+                        <div class="info-item">
+                            <span class="label">Status</span>
+                            {% set status_class = {
+                                'Open': 'primary',
+                                'In Progress': 'warning', 
+                                'Resolved': 'success',
+                                'Closed': 'secondary'
+                            } %}
+                            <span class="badge bg-{{ status_class[ticket.status] }}">{{ ticket.status }}</span>
                         </div>
-                        
-                        <p><strong>Submitted by:</strong> {{ ticket.user_name }} ({{ ticket.user.department }})</p>
-                        
-                        <!-- Assignment Information -->
+                        <div class="info-item">
+                            <span class="label">Priority</span>
+                            {% set priority_class = {
+                                'Low': 'success',
+                                'Medium': 'warning',
+                                'High': 'danger', 
+                                'Critical': 'dark'
+                            } %}
+                            <span class="badge bg-{{ priority_class[ticket.priority] }}">{{ ticket.priority }}</span>
+                        </div>
+                        <div class="info-item">
+                            <span class="label">Category</span>
+                            <span class="badge bg-secondary">{{ ticket.category }}</span>
+                        </div>
+                        <div class="info-item">
+                            <span class="label">Created</span>
+                            <span class="value">{{ ticket.created_at|to_ist }}</span>
+                        </div>
+                        <div class="info-item">
+                            <span class="label">Submitted by</span>
+                            <span class="value">{{ ticket.user_name }}</span>
+                        </div>
                         {% if ticket.assigned_to %}
-                            <div class="row">
-                                <div class="col-md-6">
-                                    <p><strong>Assigned to:</strong> {{ ticket.assignee.full_name }} ({{ ticket.assignee.department }})</p>
-                                </div>
-                                <div class="col-md-6">
-                                    {% if ticket.assigner %}
-                                        <p><strong>Assigned by:</strong> {{ ticket.assigner.full_name }}</p>
-                                    {% elif ticket.assigned_by %}
-                                        <p><strong>Assigned by:</strong> System Admin</p>
-                                    {% endif %}
-                                </div>
-                            </div>
-                        {% endif %}
-                        
-                        <!-- User System Information -->
-                        <div class="row">
-                            <div class="col-md-6">
-                                <p><strong>User IP Address:</strong><br>
-                                <code>{{ ticket.user_ip_address or 'Not captured' }}</code></p>
-                            </div>
-                            <div class="col-md-6">
-                                <p><strong>User System Name:</strong><br>
-                                <code>{{ ticket.user_system_name or 'Not captured' }}</code></p>
-                            </div>
+                        <div class="info-item">
+                            <span class="label">Assigned to</span>
+                            <span class="value">{{ ticket.assignee.full_name }}</span>
                         </div>
-                        
-                        {% if ticket.assignee %}
-                            <p><strong>Assigned to:</strong> {{ ticket.assignee.full_name }}</p>
-                        {% endif %}
-                        
-                        {% if ticket.resolved_at %}
-                            <p><strong>Resolved:</strong> {{ ticket.resolved_at|to_ist }}</p>
-                        {% endif %}
-                        
-                        <hr>
-                        
-                        <h6>Description:</h6>
-                        <div class="bg-light p-3 rounded">
-                            {{ ticket.description | nl2br }}
-                        </div>
-                        
-                        {% if (ticket.image_filename or ticket.attachments) and (user.is_super_admin or ticket.user_id == user.id) %}
-                            <hr>
-                            <h6>Attachments:</h6>
-                            
-                            {% if ticket.image_filename %}
-                                <div class="attachment-item mb-3">
-                                    <h6 class="text-muted">Primary Image:</h6>
-                                    <div class="text-center">
-                                        <img src="{{ url_for('view_image', filename=ticket.image_filename) }}" 
-                                             class="img-fluid rounded" 
-                                             style="max-height: 400px; cursor: pointer;" 
-                                             onclick="window.open(this.src, '_blank')"
-                                             alt="Ticket attachment">
-                                        <p class="text-muted mt-2">
-                                            <small><i class="ri-information-line"></i> Click to view full size</small>
-                                        </p>
-                                    </div>
-                                </div>
-                            {% endif %}
-                            
-                            {% if ticket.attachments %}
-                                <div class="attachment-list">
-                                    <h6 class="text-muted">Additional Files:</h6>
-                                    <div class="list-group">
-                                        {% for attachment in ticket.attachments %}
-                                            <div class="list-group-item d-flex justify-content-between align-items-center">
-                                                <div>
-                                                    {% set file_ext = attachment.filename.split('.')[-1].lower() %}
-                                                    {% if file_ext in ['pdf'] %}
-                                                        <i class="ri-file-pdf-line me-2 text-danger"></i>
-                                                    {% elif file_ext in ['doc', 'docx'] %}
-                                                        <i class="ri-file-word-line me-2 text-primary"></i>
-                                                    {% elif file_ext in ['xls', 'xlsx'] %}
-                                                        <i class="ri-file-excel-line me-2 text-success"></i>
-                                                    {% elif file_ext in ['jpg', 'jpeg', 'png', 'gif', 'bmp'] %}
-                                                        <i class="ri-image-line me-2 text-info"></i>
-                                                    {% else %}
-                                                        <i class="ri-file-line me-2"></i>
-                                                    {% endif %}
-                                                    <strong>{{ attachment.filename.split('_', 1)[-1] if '_' in attachment.filename else attachment.filename }}</strong>
-                                                    <span class="badge bg-secondary ms-2">{{ file_ext.upper() }}</span>
-                                                    <br>
-                                                    <small class="text-muted">
-    Uploaded: {{ attachment.uploaded_at|to_ist }}
-</small>
-                                                </div>
-                                                <div>
-                                                    <a href="{{ url_for('download_attachment', filename=attachment.filename) }}" 
-                                                       class="btn btn-sm btn-outline-primary">
-                                                        <i class="ri-download-line"></i> Download
-                                                    </a>
-                                                </div>
-                                            </div>
-                                        {% endfor %}
-                                    </div>
-                                </div>
-                            {% endif %}
                         {% endif %}
                     </div>
                 </div>
 
-                <!-- Comments Section -->
-                <div class="card mt-4">
-                    <div class="card-header">
-                        <h6><i class="ri-chat-3-line"></i> Comments & Updates</h6>
+                <!-- Description -->
+                <div class="content-panel-lite">
+                    <h6 class="panel-title">Description</h6>
+                    <div class="description-content">
+                        {{ ticket.description | nl2br }}
                     </div>
-                    <div class="card-body">
-                        {% if ticket.comments %}
-                            {% for comment in ticket.comments %}
-                               <div class="mb-3 border-bottom pb-3">
-    <div class="d-flex justify-content-between">
-        <strong>{{ comment.user.full_name }}</strong>
-        <small class="text-muted">{{ comment.created_at|to_ist }}</small>
-    </div>
-    <p class="mb-0 mt-1">{{ comment.comment | nl2br }}</p>
-</div>
+                </div>
+
+                <!-- Attachments -->
+                {% if (ticket.image_filename or ticket.attachments) and (user.is_super_admin or ticket.user_id == user.id) %}
+                <div class="content-panel-lite">
+                    <h6 class="panel-title">Attachments</h6>
+                    {% if ticket.image_filename %}
+                        <div class="attachment-preview">
+                            <img src="{{ url_for('view_image', filename=ticket.image_filename) }}" 
+                                 class="attachment-image" 
+                                 onclick="window.open(this.src, '_blank')"
+                                 alt="Ticket attachment">
+                        </div>
+                    {% endif %}
+                    
+                    {% if ticket.attachments %}
+                        <div class="attachment-list-lite">
+                            {% for attachment in ticket.attachments %}
+                                <div class="attachment-item-lite">
+                                    {% set file_ext = attachment.filename.split('.')[-1].lower() %}
+                                    <i class="ri-file-line"></i>
+                                    <span class="filename">{{ attachment.filename.split('_', 1)[-1] if '_' in attachment.filename else attachment.filename }}</span>
+                                    <a href="{{ url_for('download_attachment', filename=attachment.filename) }}" 
+                                       class="download-btn">
+                                        <i class="ri-download-line"></i>
+                                    </a>
+                                </div>
                             {% endfor %}
-                        {% else %}
-                            <p class="text-muted">No comments yet.</p>
-                        {% endif %}
-                        
-                        <!-- Add Comment Form -->
-                        <form method="POST" action="{{ url_for('add_comment', ticket_id=ticket.id) }}">
-                            {{ form.hidden_tag() }}
-                            <div class="mb-3">
-                                {{ form.comment.label(class="form-label") }}
-                                {{ form.comment(class="form-control", rows="3", placeholder="Add a comment or update...") }}
-                            </div>
-                            <div class="d-flex justify-content-end">
-                                {{ form.submit(class="btn btn-primary") }}
-                            </div>
-                        </form>
-                    </div>
+                        </div>
+                    {% endif %}
+                </div>
+                {% endif %}
+
+                <!-- Comments -->
+                <div class="content-panel-lite">
+                    <h6 class="panel-title">Comments & Updates</h6>
+                    {% if ticket.comments %}
+                        <div class="comments-list-lite">
+                            {% for comment in ticket.comments %}
+                                <div class="comment-item-lite">
+                                    <div class="comment-header">
+                                        <strong>{{ comment.user.full_name }}</strong>
+                                        <span class="comment-time">{{ comment.created_at|to_ist }}</span>
+                                    </div>
+                                    <div class="comment-text">{{ comment.comment | nl2br }}</div>
+                                </div>
+                            {% endfor %}
+                        </div>
+                    {% else %}
+                        <p class="no-comments">No comments yet.</p>
+                    {% endif %}
+                    
+                    <!-- Add Comment Form -->
+                    <form method="POST" action="{{ url_for('add_comment', ticket_id=ticket.id) }}" class="comment-form-lite">
+                        {{ form.hidden_tag() }}
+                        <div class="form-group">
+                            {{ form.comment(class="form-control", rows="3", placeholder="Add a comment or update...") }}
+                        </div>
+                        <div class="form-actions">
+                            {{ form.submit(class="btn btn-primary btn-sm") }}
+                        </div>
+                    </form>
                 </div>
             </div>
             
             <!-- Sidebar -->
-            <div class="col-md-4">
-                <!-- Actions Card -->
-                <div class="card">
-                    <div class="card-header">
-                        <h6><i class="ri-settings-3-line"></i> Actions</h6>
-                    </div>
-                    <div class="card-body">
-                        {% if user.is_super_admin %}
-                            <a href="{{ url_for('edit_ticket', ticket_id=ticket.id) }}" class="btn btn-outline-primary w-100 mb-2">
-                                <i class="ri-edit-line"></i> Edit Ticket
-                            </a>
-                            
-                            {% if not ticket.assignee %}
-                                <div class="card">
-                                    <div class="card-header">
-                                        <h6>Assign Ticket</h6>
-                                    </div>
-                                    <div class="card-body">
-                                        <form method="POST" action="{{ url_for('assign_ticket', ticket_id=ticket.id) }}">
-                                            {{ assign_form.hidden_tag() }}
-                                            <div class="mb-3">
-                                                {{ assign_form.assigned_to.label(class="form-label") }}
-                                                {{ assign_form.assigned_to(class="form-select") }}
-                                            </div>
-                                            {{ assign_form.submit(class="btn btn-success w-100") }}
-                                        </form>
-                                    </div>
-                                </div>
-                            {% endif %}
+            <div class="col-lg-4">
+                {% if user.is_super_admin and not ticket.assignee %}
+                <!-- Quick Assign -->
+                <div class="action-panel-lite">
+                    <h6 class="panel-title">Quick Assign</h6>
+                    <form method="POST" action="{{ url_for('assign_ticket', ticket_id=ticket.id) }}">
+                        {{ assign_form.hidden_tag() }}
+                        <div class="form-group">
+                            {{ assign_form.assigned_to(class="form-select form-select-sm") }}
+                        </div>
+                        <div class="form-actions">
+                            {{ assign_form.submit(class="btn btn-success btn-sm") }}
+                        </div>
+                    </form>
+                </div>
+                {% endif %}
+
+                <!-- System Info -->
+                <div class="info-panel-lite">
+                    <h6 class="panel-title">System Information</h6>
+                    <div class="system-info">
+                        {% if ticket.user_ip_address %}
+                        <div class="system-item">
+                            <span class="label">IP Address</span>
+                            <code>{{ ticket.user_ip_address }}</code>
+                        </div>
                         {% endif %}
-                        
-                        <a href="{{ url_for('user_dashboard' if not user.is_super_admin else 'super_admin_dashboard') }}" 
-                           class="btn btn-outline-secondary w-100">
-                            <i class="ri-arrow-left-line"></i> Back to Dashboard
-                        </a>
+                        {% if ticket.user_system_name %}
+                        <div class="system-item">
+                            <span class="label">System Name</span>
+                            <code>{{ ticket.user_system_name }}</code>
+                        </div>
+                        {% endif %}
                     </div>
                 </div>
-                
-                <!-- Ticket History -->
-
-<div class="card mt-3">
-  <div class="card-header">
-    <h6><i class="ri-history-line"></i> Ticket History</h6>
-  </div>
-  <div class="card-body">
-    <div>
-      <strong>Created By:</strong> {{ ticket.user_name }}<br>
-      <small class="text-muted">{{ ticket.created_at|to_ist }}</small>
-    </div>
-
-    <div>
-      <strong>Assigned By:</strong>
-      {% if ticket.assigner %}
-        {{ ticket.assigner.full_name }}
-        {% if ticket.assigned_at %}
-          <br><small class="text-muted">Assigned at: {{ ticket.assigned_at|to_ist }}</small>
-        {% endif %}
-      {% else %}
-        <span class="text-muted">Not assigned</span>
-      {% endif %}
-    </div>
-
-    <div>
-      <strong>Assigned To:</strong>
-      {% if ticket.assignee %}
-        {{ ticket.assignee.full_name }}
-      {% else %}
-        <span class="text-muted">Not assigned</span>
-        {% if ticket.unassigned_at %}
-          <br><small class="text-muted">Unassigned at: {{ ticket.unassigned_at|to_ist }}</small>
-        {% endif %}
-      {% endif %}
-    </div>
-
-    <div>
-      <strong>Status:</strong>
-      <span class="badge bg-{{ status_class[ticket.status] }}">{{ ticket.status }}</span>
-      {% if ticket.updated_at %}
-        <br><small class="text-muted">Last Status Update: {{ ticket.updated_at|to_ist }}</small>
-      {% endif %}
-    </div>
-  </div>
-</div>
-
             </div>
         </div>
     </div>
+</div>
 {% endblock %}
 
 {% block scripts %}
