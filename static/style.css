@@ -1977,6 +1977,7 @@ body, html {
     align-items: center;
     width: 100%;
     max-width: 100%;
+    flex-wrap: wrap;
 }
 
 .filters-form {
@@ -1985,6 +1986,7 @@ body, html {
     align-items: center;
     width: 100%;
     max-width: 100%;
+    flex-wrap: wrap;
 }
 
 .filter-group {
@@ -1993,8 +1995,9 @@ body, html {
 }
 
 .filter-group:last-child {
-    flex: 1;
+    flex-shrink: 0;
     max-width: 300px;
+    min-width: 250px;
 }
 
 .filter-select {
@@ -2008,7 +2011,8 @@ body, html {
     display: flex;
     position: relative;
     width: 100%;
-    max-width: 100%;
+    max-width: 300px;
+    min-width: 250px;
 }
 
 .search-input {
@@ -2018,6 +2022,8 @@ body, html {
     min-width: 0;
     font-size: 0.875rem;
     width: 100%;
+    padding: 0.5rem 0.75rem;
+    border: 1px solid var(--gray-300);
 }
 
 .search-btn {
@@ -2029,6 +2035,10 @@ body, html {
     cursor: pointer;
     transition: var(--transition-base);
     flex-shrink: 0;
+    width: 48px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .search-btn:hover {
