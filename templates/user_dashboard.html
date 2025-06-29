@@ -241,7 +241,7 @@
                                 <div class="ticket-timeline">
                                     <div class="timeline-item">
                                         <i class="ri-calendar-line"></i>
-                                        <span>Created: {{ ticket.created_at | to_ist | strftime('%b %d, %Y') }}</span>
+                                        <span>Created: {{ ticket.created_at | to_ist }}</span>
                                     </div>
                                     {% if ticket.assigned_to %}
                                         <div class="timeline-item">

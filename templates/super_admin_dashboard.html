@@ -183,7 +183,7 @@
                                 <div class="timeline-content">
                                     <div class="timeline-header">
                                         <h6 class="timeline-title">{{ ticket.title }}</h6>
-                                        <span class="timeline-time">{{ ticket.created_at | to_ist | strftime('%b %d, %Y at %I:%M %p') }}</span>
+                                        <span class="timeline-time">{{ ticket.created_at | to_ist }}</span>
                                     </div>
                                     <p class="timeline-text">
                                         Created by <strong>{{ ticket.user_name }}</strong> 
@@ -401,7 +401,7 @@
                                             <div class="detail-item">
                                                 <i class="ri-calendar-line"></i>
                                                 <span class="detail-label">Created:</span>
-                                                <span class="detail-value">{{ ticket.created_at | to_ist | strftime('%b %d, %Y') }}</span>
+                                                <span class="detail-value">{{ ticket.created_at | to_ist }}</span>
                                             </div>
                                             <div class="detail-item">
                                                 <i class="ri-bookmark-line"></i>
@@ -478,7 +478,6 @@
                         </div>
                     {% endif %}
                 </div>
-                    {% endif %}
                 </div>
             </div>
         </div>
