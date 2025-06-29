@@ -33,7 +33,7 @@
                         <i class="ri-error-warning-line"></i>
                     </div>
                     <div class="stat-content">
-                        <h3 class="stat-number">{{ tickets.filter_by(status='Open').count() }}</h3>
+                        <h3 class="stat-number">{{ tickets | selectattr('status', 'equalto', 'Open') | list | length }}</h3>
                         <p class="stat-label">Open Tickets</p>
                     </div>
                 </div>
@@ -44,7 +44,7 @@
                         <i class="ri-time-line"></i>
                     </div>
                     <div class="stat-content">
-                        <h3 class="stat-number">{{ tickets.filter_by(status='In Progress').count() }}</h3>
+                        <h3 class="stat-number">{{ tickets | selectattr('status', 'equalto', 'In Progress') | list | length }}</h3>
                         <p class="stat-label">In Progress</p>
                     </div>
                 </div>
@@ -55,7 +55,7 @@
                         <i class="ri-check-line"></i>
                     </div>
                     <div class="stat-content">
-                        <h3 class="stat-number">{{ tickets.filter_by(status='Resolved').count() }}</h3>
+                        <h3 class="stat-number">{{ tickets | selectattr('status', 'equalto', 'Resolved') | list | length }}</h3>
                         <p class="stat-label">Resolved</p>
                     </div>
                 </div>
@@ -66,7 +66,7 @@
                         <i class="ri-ticket-line"></i>
                     </div>
                     <div class="stat-content">
-                        <h3 class="stat-number">{{ tickets.count() }}</h3>
+                        <h3 class="stat-number">{{ tickets | length }}</h3>
                         <p class="stat-label">Total Tickets</p>
                     </div>
                 </div>
