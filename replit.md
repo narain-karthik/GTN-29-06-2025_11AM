@@ -102,11 +102,13 @@ The GTN Engineering IT Helpdesk System is a comprehensive Flask-based web applic
 
 ## Changelog
 
-- June 29, 2025: Fixed user interface issues and completed migration troubleshooting:
-  - Fixed 500 error in reports dashboard by correcting template variable references (user_stat[0] instead of user_stat.user)
+- June 29, 2025: Completed user interface fixes and access control improvements:
+  - Fixed 500 error in reports dashboard by restructuring SQLAlchemy query to return dictionary format
   - Removed specialization field from user profile template as requested
-  - Enhanced logo visibility in header with improved CSS styling (increased size, added padding and shadow)
-  - All three user-reported issues resolved successfully
+  - Enhanced logo visibility with improved CSS (increased container size, added overflow handling, better image scaling)
+  - Implemented read-only user profiles for regular users - only Super Admins can edit profile information
+  - Added permission checks and disabled form fields with appropriate user feedback messages
+  - All user-reported issues successfully resolved
 - June 29, 2025: Removed Super Admin deletion restriction - Super Admins can now delete other Super Admin accounts (only self-deletion is still prevented for safety)
 - June 29, 2025: Added specialization field to User model allowing selection between Hardware and Software support expertise
 - June 29, 2025: Fixed email notification tracking to properly handle ticket ID extraction from GTN-000001 format for database logging

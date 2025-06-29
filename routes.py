@@ -147,11 +147,16 @@ def user_dashboard():
 @app.route('/user-profile', methods=['GET', 'POST'])
 @login_required
 def user_profile():
-    """User profile management"""
+    """User profile management - Super Admin can edit, users can only view"""
     user = get_current_user()
     form = UserProfileForm(obj=user)
     
-    if form.validate_on_submit():
+    # Only allow Super Admins to edit profiles
+    if request.method == 'POST' and not user.is_super_admin:
+        flash('You do not have permission to edit profile information.', 'error')
+        return redirect(url_for('user_profile'))
+    
+    if form.validate_on_submit() and user.is_super_admin:
         user.first_name = form.first_name.data
         user.last_name = form.last_name.data
         user.email = form.email.data
