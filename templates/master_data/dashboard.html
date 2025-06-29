@@ -1,0 +1,405 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-12">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <div>
+                    <h1 class="h3 mb-0 text-gray-800">
+                        <i class="ri-database-2-line me-2"></i>Master Data Management
+                    </h1>
+                    <p class="text-muted">Control all system configuration and reference data</p>
+                </div>
+                <div class="btn-group" role="group">
+                    <a href="{{ url_for('super_admin_dashboard') }}" class="btn btn-outline-secondary">
+                        <i class="ri-arrow-left-line"></i> Back to Dashboard
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Overview Cards -->
+    <div class="row mb-4">
+        <div class="col-xl-3 col-md-6 mb-4">
+            <div class="card border-left-primary shadow h-100 py-2">
+                <div class="card-body">
+                    <div class="row no-gutters align-items-center">
+                        <div class="col mr-2">
+                            <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
+                                Categories
+                            </div>
+                            <div class="h5 mb-0 font-weight-bold text-gray-800">{{ categories|length }}</div>
+                        </div>
+                        <div class="col-auto">
+                            <i class="ri-folder-line fa-2x text-gray-300"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-xl-3 col-md-6 mb-4">
+            <div class="card border-left-success shadow h-100 py-2">
+                <div class="card-body">
+                    <div class="row no-gutters align-items-center">
+                        <div class="col mr-2">
+                            <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
+                                Priorities
+                            </div>
+                            <div class="h5 mb-0 font-weight-bold text-gray-800">{{ priorities|length }}</div>
+                        </div>
+                        <div class="col-auto">
+                            <i class="ri-flag-line fa-2x text-gray-300"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-xl-3 col-md-6 mb-4">
+            <div class="card border-left-info shadow h-100 py-2">
+                <div class="card-body">
+                    <div class="row no-gutters align-items-center">
+                        <div class="col mr-2">
+                            <div class="text-xs font-weight-bold text-info text-uppercase mb-1">
+                                Statuses
+                            </div>
+                            <div class="h5 mb-0 font-weight-bold text-gray-800">{{ statuses|length }}</div>
+                        </div>
+                        <div class="col-auto">
+                            <i class="ri-pulse-line fa-2x text-gray-300"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-xl-3 col-md-6 mb-4">
+            <div class="card border-left-warning shadow h-100 py-2">
+                <div class="card-body">
+                    <div class="row no-gutters align-items-center">
+                        <div class="col mr-2">
+                            <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">
+                                Departments
+                            </div>
+                            <div class="h5 mb-0 font-weight-bold text-gray-800">{{ departments|length }}</div>
+                        </div>
+                        <div class="col-auto">
+                            <i class="ri-building-line fa-2x text-gray-300"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Management Sections -->
+    <div class="row">
+        <!-- Categories Section -->
+        <div class="col-lg-6 mb-4">
+            <div class="card shadow">
+                <div class="card-header py-3 d-flex justify-content-between align-items-center">
+                    <h6 class="m-0 font-weight-bold text-primary">
+                        <i class="ri-folder-line me-2"></i>Ticket Categories
+                    </h6>
+                    <a href="{{ url_for('manage_categories') }}" class="btn btn-primary btn-sm">
+                        <i class="ri-add-line"></i> Manage
+                    </a>
+                </div>
+                <div class="card-body">
+                    {% if categories %}
+                        <div class="table-responsive">
+                            <table class="table table-sm">
+                                <thead>
+                                    <tr>
+                                        <th>Name</th>
+                                        <th>Status</th>
+                                        <th>Created</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for category in categories[:5] %}
+                                    <tr>
+                                        <td>{{ category.name }}</td>
+                                        <td>
+                                            {% if category.is_active %}
+                                                <span class="badge bg-success">Active</span>
+                                            {% else %}
+                                                <span class="badge bg-secondary">Inactive</span>
+                                            {% endif %}
+                                        </td>
+                                        <td>{{ category.created_at.strftime('%Y-%m-%d') if category.created_at else '' }}</td>
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    {% else %}
+                        <p class="text-muted">No categories defined yet.</p>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+
+        <!-- Priorities Section -->
+        <div class="col-lg-6 mb-4">
+            <div class="card shadow">
+                <div class="card-header py-3 d-flex justify-content-between align-items-center">
+                    <h6 class="m-0 font-weight-bold text-success">
+                        <i class="ri-flag-line me-2"></i>Priority Levels
+                    </h6>
+                    <a href="{{ url_for('manage_priorities') }}" class="btn btn-success btn-sm">
+                        <i class="ri-add-line"></i> Manage
+                    </a>
+                </div>
+                <div class="card-body">
+                    {% if priorities %}
+                        <div class="table-responsive">
+                            <table class="table table-sm">
+                                <thead>
+                                    <tr>
+                                        <th>Level</th>
+                                        <th>Name</th>
+                                        <th>Color</th>
+                                        <th>Status</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for priority in priorities[:5] %}
+                                    <tr>
+                                        <td>{{ priority.level }}</td>
+                                        <td>{{ priority.name }}</td>
+                                        <td>
+                                            {% if priority.color_code %}
+                                                <span class="badge" style="background-color: {{ priority.color_code }};">{{ priority.color_code }}</span>
+                                            {% else %}
+                                                <span class="text-muted">No color</span>
+                                            {% endif %}
+                                        </td>
+                                        <td>
+                                            {% if priority.is_active %}
+                                                <span class="badge bg-success">Active</span>
+                                            {% else %}
+                                                <span class="badge bg-secondary">Inactive</span>
+                                            {% endif %}
+                                        </td>
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    {% else %}
+                        <p class="text-muted">No priorities defined yet.</p>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+
+        <!-- Statuses Section -->
+        <div class="col-lg-6 mb-4">
+            <div class="card shadow">
+                <div class="card-header py-3 d-flex justify-content-between align-items-center">
+                    <h6 class="m-0 font-weight-bold text-info">
+                        <i class="ri-pulse-line me-2"></i>Ticket Statuses
+                    </h6>
+                    <a href="{{ url_for('manage_statuses') }}" class="btn btn-info btn-sm">
+                        <i class="ri-add-line"></i> Manage
+                    </a>
+                </div>
+                <div class="card-body">
+                    {% if statuses %}
+                        <div class="table-responsive">
+                            <table class="table table-sm">
+                                <thead>
+                                    <tr>
+                                        <th>Name</th>
+                                        <th>Color</th>
+                                        <th>Status</th>
+                                        <th>Created</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for status in statuses[:5] %}
+                                    <tr>
+                                        <td>{{ status.name }}</td>
+                                        <td>
+                                            {% if status.color_code %}
+                                                <span class="badge" style="background-color: {{ status.color_code }};">{{ status.color_code }}</span>
+                                            {% else %}
+                                                <span class="text-muted">No color</span>
+                                            {% endif %}
+                                        </td>
+                                        <td>
+                                            {% if status.is_active %}
+                                                <span class="badge bg-success">Active</span>
+                                            {% else %}
+                                                <span class="badge bg-secondary">Inactive</span>
+                                            {% endif %}
+                                        </td>
+                                        <td>{{ status.created_at.strftime('%Y-%m-%d') if status.created_at else '' }}</td>
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    {% else %}
+                        <p class="text-muted">No statuses defined yet.</p>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+
+        <!-- Departments Section -->
+        <div class="col-lg-6 mb-4">
+            <div class="card shadow">
+                <div class="card-header py-3 d-flex justify-content-between align-items-center">
+                    <h6 class="m-0 font-weight-bold text-warning">
+                        <i class="ri-building-line me-2"></i>Departments
+                    </h6>
+                    <a href="{{ url_for('manage_departments') }}" class="btn btn-warning btn-sm">
+                        <i class="ri-add-line"></i> Manage
+                    </a>
+                </div>
+                <div class="card-body">
+                    {% if departments %}
+                        <div class="table-responsive">
+                            <table class="table table-sm">
+                                <thead>
+                                    <tr>
+                                        <th>Name</th>
+                                        <th>Manager</th>
+                                        <th>Status</th>
+                                        <th>Created</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for dept in departments[:5] %}
+                                    <tr>
+                                        <td>{{ dept.name }}</td>
+                                        <td>{{ dept.manager_name or 'Not assigned' }}</td>
+                                        <td>
+                                            {% if dept.is_active %}
+                                                <span class="badge bg-success">Active</span>
+                                            {% else %}
+                                                <span class="badge bg-secondary">Inactive</span>
+                                            {% endif %}
+                                        </td>
+                                        <td>{{ dept.created_at.strftime('%Y-%m-%d') if dept.created_at else '' }}</td>
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    {% else %}
+                        <p class="text-muted">No departments defined yet.</p>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- System Settings Section -->
+    <div class="row">
+        <div class="col-12">
+            <div class="card shadow">
+                <div class="card-header py-3 d-flex justify-content-between align-items-center">
+                    <h6 class="m-0 font-weight-bold text-dark">
+                        <i class="ri-settings-3-line me-2"></i>System Settings
+                    </h6>
+                    <a href="{{ url_for('manage_settings') }}" class="btn btn-dark btn-sm">
+                        <i class="ri-add-line"></i> Manage Settings
+                    </a>
+                </div>
+                <div class="card-body">
+                    {% if settings %}
+                        <div class="table-responsive">
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th>Setting Key</th>
+                                        <th>Type</th>
+                                        <th>Value</th>
+                                        <th>Description</th>
+                                        <th>Status</th>
+                                        <th>Last Updated</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for setting in settings[:10] %}
+                                    <tr>
+                                        <td><code>{{ setting.setting_key }}</code></td>
+                                        <td>
+                                            <span class="badge bg-secondary">{{ setting.setting_type }}</span>
+                                        </td>
+                                        <td>
+                                            {% if setting.setting_value and setting.setting_value|length > 30 %}
+                                                {{ setting.setting_value[:30] }}...
+                                            {% else %}
+                                                {{ setting.setting_value or 'Empty' }}
+                                            {% endif %}
+                                        </td>
+                                        <td>{{ setting.description or 'No description' }}</td>
+                                        <td>
+                                            {% if setting.is_active %}
+                                                <span class="badge bg-success">Active</span>
+                                            {% else %}
+                                                <span class="badge bg-secondary">Inactive</span>
+                                            {% endif %}
+                                        </td>
+                                        <td>{{ setting.updated_at.strftime('%Y-%m-%d %H:%M') if setting.updated_at else 'Never' }}</td>
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    {% else %}
+                        <div class="text-center py-4">
+                            <i class="ri-settings-3-line fa-3x text-gray-300 mb-3"></i>
+                            <p class="text-muted">No system settings configured yet.</p>
+                            <a href="{{ url_for('manage_settings') }}" class="btn btn-primary">
+                                <i class="ri-add-line"></i> Add First Setting
+                            </a>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+.border-left-primary {
+    border-left: 0.25rem solid #4e73df !important;
+}
+
+.border-left-success {
+    border-left: 0.25rem solid #1cc88a !important;
+}
+
+.border-left-info {
+    border-left: 0.25rem solid #36b9cc !important;
+}
+
+.border-left-warning {
+    border-left: 0.25rem solid #f6c23e !important;
+}
+
+.text-gray-800 {
+    color: #5a5c69 !important;
+}
+
+.text-gray-300 {
+    color: #dddfeb !important;
+}
+
+.fa-2x {
+    font-size: 2em;
+}
+
+.fa-3x {
+    font-size: 3em;
+}
+</style>
+{% endblock %}

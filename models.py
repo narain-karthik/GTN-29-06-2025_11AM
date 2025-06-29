@@ -107,3 +107,70 @@ class Attachment(db.Model):
     filename = db.Column(db.String(255), nullable=False)
     uploaded_at = db.Column(db.DateTime, default=datetime.utcnow)
 
+
+# Master Data Models
+class MasterDataCategory(db.Model):
+    """Master data for ticket categories"""
+    __tablename__ = 'master_categories'
+    
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(50), unique=True, nullable=False)
+    description = db.Column(db.String(200), nullable=True)
+    is_active = db.Column(db.Boolean, default=True)
+    created_at = db.Column(db.DateTime, default=datetime.utcnow)
+    updated_at = db.Column(db.DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
+
+
+class MasterDataPriority(db.Model):
+    """Master data for ticket priorities"""
+    __tablename__ = 'master_priorities'
+    
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(20), unique=True, nullable=False)
+    description = db.Column(db.String(200), nullable=True)
+    level = db.Column(db.Integer, nullable=False)  # 1=Low, 2=Medium, 3=High, 4=Critical
+    color_code = db.Column(db.String(7), nullable=True)  # Hex color for UI
+    is_active = db.Column(db.Boolean, default=True)
+    created_at = db.Column(db.DateTime, default=datetime.utcnow)
+    updated_at = db.Column(db.DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
+
+
+class MasterDataStatus(db.Model):
+    """Master data for ticket statuses"""
+    __tablename__ = 'master_statuses'
+    
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(20), unique=True, nullable=False)
+    description = db.Column(db.String(200), nullable=True)
+    color_code = db.Column(db.String(7), nullable=True)  # Hex color for UI
+    is_active = db.Column(db.Boolean, default=True)
+    created_at = db.Column(db.DateTime, default=datetime.utcnow)
+    updated_at = db.Column(db.DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
+
+
+class MasterDataDepartment(db.Model):
+    """Master data for departments"""
+    __tablename__ = 'master_departments'
+    
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(100), unique=True, nullable=False)
+    description = db.Column(db.String(200), nullable=True)
+    manager_name = db.Column(db.String(100), nullable=True)
+    is_active = db.Column(db.Boolean, default=True)
+    created_at = db.Column(db.DateTime, default=datetime.utcnow)
+    updated_at = db.Column(db.DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
+
+
+class SystemSettings(db.Model):
+    """System-wide settings and configurations"""
+    __tablename__ = 'system_settings'
+    
+    id = db.Column(db.Integer, primary_key=True)
+    setting_key = db.Column(db.String(100), unique=True, nullable=False)
+    setting_value = db.Column(db.Text, nullable=True)
+    setting_type = db.Column(db.String(20), nullable=False)  # text, number, boolean, json
+    description = db.Column(db.String(200), nullable=True)
+    is_active = db.Column(db.Boolean, default=True)
+    created_at = db.Column(db.DateTime, default=datetime.utcnow)
+    updated_at = db.Column(db.DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
+

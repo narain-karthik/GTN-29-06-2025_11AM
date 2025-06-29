@@ -35,8 +35,7 @@
                     {% if session.role == 'super_admin' %}
                         <a href="{{ url_for('super_admin_dashboard') }}"><i class="ri-dashboard-line"></i> Dashboard</a>
                         <a href="{{ url_for('manage_users') }}"><i class="ri-team-line"></i> Users</a>
-                        <a href="{{ url_for('logout') }}"><i class="ri-logout-box-line"></i> Logout</a>
-
+                        <a href="{{ url_for('master_data_dashboard') }}"><i class="ri-database-2-line"></i> Master Data</a>
                         <a href="{{ url_for('logout') }}"><i class="ri-logout-box-line"></i> Logout</a>
                     {% else %}
                         <a href="{{ url_for('user_dashboard') }}"><i class="ri-dashboard-line"></i> My Tickets</a>

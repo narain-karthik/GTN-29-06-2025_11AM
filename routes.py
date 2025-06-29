@@ -4,8 +4,8 @@ from flask_login import current_user
 from werkzeug.utils import secure_filename
 from sqlalchemy import extract, and_
 from app import app, db
-from models import User, Ticket, TicketComment, Attachment
-from forms import LoginForm, TicketForm, UpdateTicketForm, CommentForm, UserRegistrationForm, AssignTicketForm, UserProfileForm
+from models import User, Ticket, TicketComment, Attachment, MasterDataCategory, MasterDataPriority, MasterDataStatus, MasterDataDepartment, SystemSettings
+from forms import LoginForm, TicketForm, UpdateTicketForm, CommentForm, UserRegistrationForm, AssignTicketForm, UserProfileForm, MasterDataCategoryForm, MasterDataPriorityForm, MasterDataStatusForm, MasterDataDepartmentForm, SystemSettingsForm
 from datetime import datetime
 from utils.email import send_assignment_email  # Add this import
 from utils.timezone import utc_to_ist
@@ -960,6 +960,155 @@ def download_excel_report():
         logging.error(f"Error generating Excel report: {e}")
         flash('Error generating report. Please try again.', 'error')
         return redirect(url_for('reports_dashboard'))
+
+# Master Data Management Routes
+@app.route('/super_admin/master_data')
+@super_admin_required
+def master_data_dashboard():
+    """Master Data management dashboard"""
+    categories = MasterDataCategory.query.all()
+    priorities = MasterDataPriority.query.order_by(MasterDataPriority.level).all()
+    statuses = MasterDataStatus.query.all()
+    departments = MasterDataDepartment.query.all()
+    settings = SystemSettings.query.all()
+    
+    return render_template('master_data/dashboard.html',
+                         categories=categories,
+                         priorities=priorities, 
+                         statuses=statuses,
+                         departments=departments,
+                         settings=settings)
+
+
+@app.route('/super_admin/master_data/categories', methods=['GET', 'POST'])
+@super_admin_required
+def manage_categories():
+    """Manage ticket categories"""
+    form = MasterDataCategoryForm()
+    categories = MasterDataCategory.query.all()
+    
+    if form.validate_on_submit():
+        category = MasterDataCategory(
+            name=form.name.data,
+            description=form.description.data,
+            is_active=form.is_active.data
+        )
+        db.session.add(category)
+        db.session.commit()
+        flash(f'Category "{category.name}" created successfully!', 'success')
+        return redirect(url_for('manage_categories'))
+    
+    return render_template('master_data/categories.html', form=form, categories=categories)
+
+
+@app.route('/super_admin/master_data/categories/<int:category_id>/edit', methods=['GET', 'POST'])
+@super_admin_required
+def edit_category(category_id):
+    """Edit a category"""
+    category = MasterDataCategory.query.get_or_404(category_id)
+    form = MasterDataCategoryForm(obj=category)
+    
+    if form.validate_on_submit():
+        category.name = form.name.data
+        category.description = form.description.data
+        category.is_active = form.is_active.data
+        category.updated_at = datetime.utcnow()
+        db.session.commit()
+        flash(f'Category "{category.name}" updated successfully!', 'success')
+        return redirect(url_for('manage_categories'))
+    
+    return render_template('master_data/edit_category.html', form=form, category=category)
+
+
+@app.route('/super_admin/master_data/priorities', methods=['GET', 'POST'])
+@super_admin_required
+def manage_priorities():
+    """Manage ticket priorities"""
+    form = MasterDataPriorityForm()
+    priorities = MasterDataPriority.query.order_by(MasterDataPriority.level).all()
+    
+    if form.validate_on_submit():
+        priority = MasterDataPriority(
+            name=form.name.data,
+            description=form.description.data,
+            level=form.level.data,
+            color_code=form.color_code.data,
+            is_active=form.is_active.data
+        )
+        db.session.add(priority)
+        db.session.commit()
+        flash(f'Priority "{priority.name}" created successfully!', 'success')
+        return redirect(url_for('manage_priorities'))
+    
+    return render_template('master_data/priorities.html', form=form, priorities=priorities)
+
+
+@app.route('/super_admin/master_data/statuses', methods=['GET', 'POST'])
+@super_admin_required
+def manage_statuses():
+    """Manage ticket statuses"""
+    form = MasterDataStatusForm()
+    statuses = MasterDataStatus.query.all()
+    
+    if form.validate_on_submit():
+        status = MasterDataStatus(
+            name=form.name.data,
+            description=form.description.data,
+            color_code=form.color_code.data,
+            is_active=form.is_active.data
+        )
+        db.session.add(status)
+        db.session.commit()
+        flash(f'Status "{status.name}" created successfully!', 'success')
+        return redirect(url_for('manage_statuses'))
+    
+    return render_template('master_data/statuses.html', form=form, statuses=statuses)
+
+
+@app.route('/super_admin/master_data/departments', methods=['GET', 'POST'])
+@super_admin_required
+def manage_departments():
+    """Manage departments"""
+    form = MasterDataDepartmentForm()
+    departments = MasterDataDepartment.query.all()
+    
+    if form.validate_on_submit():
+        department = MasterDataDepartment(
+            name=form.name.data,
+            description=form.description.data,
+            manager_name=form.manager_name.data,
+            is_active=form.is_active.data
+        )
+        db.session.add(department)
+        db.session.commit()
+        flash(f'Department "{department.name}" created successfully!', 'success')
+        return redirect(url_for('manage_departments'))
+    
+    return render_template('master_data/departments.html', form=form, departments=departments)
+
+
+@app.route('/super_admin/master_data/settings', methods=['GET', 'POST'])
+@super_admin_required
+def manage_settings():
+    """Manage system settings"""
+    form = SystemSettingsForm()
+    settings = SystemSettings.query.all()
+    
+    if form.validate_on_submit():
+        setting = SystemSettings(
+            setting_key=form.setting_key.data,
+            setting_value=form.setting_value.data,
+            setting_type=form.setting_type.data,
+            description=form.description.data,
+            is_active=form.is_active.data
+        )
+        db.session.add(setting)
+        db.session.commit()
+        flash(f'Setting "{setting.setting_key}" created successfully!', 'success')
+        return redirect(url_for('manage_settings'))
+    
+    return render_template('master_data/settings.html', form=form, settings=settings)
+
 
 # Initialize default admin on first import
 with app.app_context():

@@ -102,6 +102,13 @@ The GTN Engineering IT Helpdesk System is a comprehensive Flask-based web applic
 
 ## Changelog
 
+- June 29, 2025: Added comprehensive Master Data Management system for Super Admins:
+  - Created centralized Master Data dashboard for controlling all system configuration
+  - Added management interfaces for Categories, Priorities, Statuses, Departments, and System Settings
+  - Implemented full CRUD operations with proper validation and forms
+  - Added Master Data navigation link in Super Admin menu
+  - Created database models for master data with proper relationships and timestamps
+  - Designed professional UI with overview cards, data tables, and management forms
 - June 29, 2025: Enhanced UI/UX for five key pages with modern design, interactive elements, and improved user experience:
   - Create Ticket: Progress indicators, drag-drop file upload, character counters, form validation
   - User Profile: Professional layout with avatar, stats sidebar, password strength indicators

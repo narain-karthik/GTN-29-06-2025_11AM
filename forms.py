@@ -1,13 +1,8 @@
 from flask_wtf import FlaskForm
 from flask_wtf.file import FileField, FileAllowed
-from wtforms import  TextAreaField, SelectField, SubmitField, EmailField
-from wtforms.validators import DataRequired, Email, Length, EqualTo
+from wtforms import StringField, TextAreaField, SelectField, SubmitField, EmailField, PasswordField, BooleanField
+from wtforms.validators import DataRequired, Email, Length, EqualTo, Optional
 from models import User
-from flask_wtf import FlaskForm
-from wtforms import StringField, SelectField, SubmitField, PasswordField
-from wtforms.fields import EmailField
-from wtforms.validators import DataRequired, Email, Length, Optional
-from wtforms import SelectField
 
 class LoginForm(FlaskForm):
     username = StringField('Username', validators=[DataRequired(), Length(min=3, max=80)])
@@ -90,3 +85,55 @@ class AssignTicketForm(FlaskForm):
     def __init__(self, *args, **kwargs):
         super(AssignTicketForm, self).__init__(*args, **kwargs)
         self.assigned_to.choices = [(user.id, user.full_name) for user in User.query.filter_by(role='super_admin').all()]
+
+
+# Master Data Forms
+class MasterDataCategoryForm(FlaskForm):
+    name = StringField('Category Name', validators=[DataRequired(), Length(min=2, max=50)])
+    description = TextAreaField('Description', validators=[Length(max=200)])
+    is_active = BooleanField('Active', default=True)
+    submit = SubmitField('Save Category')
+
+
+class MasterDataPriorityForm(FlaskForm):
+    name = StringField('Priority Name', validators=[DataRequired(), Length(min=2, max=20)])
+    description = TextAreaField('Description', validators=[Length(max=200)])
+    level = SelectField('Level', choices=[
+        (1, '1 - Low'),
+        (2, '2 - Medium'),
+        (3, '3 - High'),
+        (4, '4 - Critical')
+    ], coerce=int, validators=[DataRequired()])
+    color_code = StringField('Color Code', validators=[Length(max=7)], render_kw={'placeholder': '#007bff'})
+    is_active = BooleanField('Active', default=True)
+    submit = SubmitField('Save Priority')
+
+
+class MasterDataStatusForm(FlaskForm):
+    name = StringField('Status Name', validators=[DataRequired(), Length(min=2, max=20)])
+    description = TextAreaField('Description', validators=[Length(max=200)])
+    color_code = StringField('Color Code', validators=[Length(max=7)], render_kw={'placeholder': '#28a745'})
+    is_active = BooleanField('Active', default=True)
+    submit = SubmitField('Save Status')
+
+
+class MasterDataDepartmentForm(FlaskForm):
+    name = StringField('Department Name', validators=[DataRequired(), Length(min=2, max=100)])
+    description = TextAreaField('Description', validators=[Length(max=200)])
+    manager_name = StringField('Manager Name', validators=[Length(max=100)])
+    is_active = BooleanField('Active', default=True)
+    submit = SubmitField('Save Department')
+
+
+class SystemSettingsForm(FlaskForm):
+    setting_key = StringField('Setting Key', validators=[DataRequired(), Length(min=2, max=100)])
+    setting_value = TextAreaField('Setting Value')
+    setting_type = SelectField('Type', choices=[
+        ('text', 'Text'),
+        ('number', 'Number'),
+        ('boolean', 'Boolean'),
+        ('json', 'JSON')
+    ], validators=[DataRequired()])
+    description = TextAreaField('Description', validators=[Length(max=200)])
+    is_active = BooleanField('Active', default=True)
+    submit = SubmitField('Save Setting')
