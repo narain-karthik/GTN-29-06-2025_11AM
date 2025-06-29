@@ -12,6 +12,7 @@ class User(db.Model):
     first_name = db.Column(db.String(50), nullable=False)
     last_name = db.Column(db.String(50), nullable=False)
     department = db.Column(db.String(100), nullable=True)
+    specialization = db.Column(db.String(50), nullable=True)  # Hardware, Software
     role = db.Column(db.String(50), nullable=False, default='user')  # user, super_admin
     ip_address = db.Column(db.String(45), nullable=True)  # IPv4/IPv6
     system_name = db.Column(db.String(100), nullable=True)

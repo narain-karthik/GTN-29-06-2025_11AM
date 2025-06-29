@@ -159,6 +159,24 @@
                                         </div>
                                         <div class="col-md-6">
                                             <div class="form-group">
+                                                <label class="form-label">{{ form.specialization.label.text }}</label>
+                                                {{ form.specialization(class="form-select" + (" is-invalid" if form.specialization.errors else "")) }}
+                                                {% if form.specialization.errors %}
+                                                    <div class="invalid-feedback">
+                                                        {% for error in form.specialization.errors %}{{ error }}{% endfor %}
+                                                    </div>
+                                                {% endif %}
+                                                <div class="form-text">
+                                                    <i class="ri-tools-line"></i>
+                                                    Your area of technical expertise
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="form-group">
                                                 <label class="form-label">{{ form.system_name.label.text }}</label>
                                                 {{ form.system_name(class="form-control" + (" is-invalid" if form.system_name.errors else ""), placeholder="e.g., DESK-001, Laptop-Marketing") }}
                                                 {% if form.system_name.errors %}

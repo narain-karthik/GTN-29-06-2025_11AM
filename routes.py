@@ -156,6 +156,7 @@ def user_profile():
         user.last_name = form.last_name.data
         user.email = form.email.data
         user.department = form.department.data
+        user.specialization = form.specialization.data if form.specialization.data else None
         user.system_name = form.system_name.data
         
         # Handle profile image upload
@@ -489,6 +490,7 @@ def edit_user(user_id):
         user.last_name = form.last_name.data
         user.email = form.email.data
         user.department = form.department.data
+        user.specialization = form.specialization.data if form.specialization.data else None
         user.system_name = form.system_name.data
         # Only update password if a new value is provided
         if form.password.data:
@@ -504,6 +506,7 @@ def edit_user(user_id):
     form.last_name.data = user.last_name
     form.email.data = user.email
     form.department.data = user.department
+    form.specialization.data = user.specialization
     form.system_name.data = user.system_name
     # Do not pre-fill password for security reasons
 
@@ -538,6 +541,7 @@ def create_user():
             first_name=form.first_name.data,
             last_name=form.last_name.data,
             department=form.department.data,
+            specialization=form.specialization.data if form.specialization.data else None,
             role=form.role.data
         )
         new_user.set_password(form.password.data)

@@ -137,6 +137,24 @@
                                 </div>
                                 <div class="col-md-6">
                                     <div class="form-group">
+                                        <label class="form-label">{{ form.specialization.label.text }}</label>
+                                        {{ form.specialization(class="form-select form-select-enhanced" + (" is-invalid" if form.specialization.errors else "")) }}
+                                        {% if form.specialization.errors %}
+                                            <div class="invalid-feedback">
+                                                {% for error in form.specialization.errors %}{{ error }}{% endfor %}
+                                            </div>
+                                        {% endif %}
+                                        <div class="form-text">
+                                            <i class="ri-tools-line"></i>
+                                            User's area of technical expertise
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
                                         <label class="form-label required">{{ form.role.label.text }}</label>
                                         {{ form.role(class="form-select form-select-enhanced" + (" is-invalid" if form.role.errors else "")) }}
                                         {% if form.role.errors %}

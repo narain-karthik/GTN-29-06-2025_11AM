@@ -65,6 +65,11 @@ class UserRegistrationForm(FlaskForm):
     first_name = StringField('First Name', validators=[DataRequired(), Length(min=2, max=50)])
     last_name = StringField('Last Name', validators=[DataRequired(), Length(min=2, max=50)])
     department = StringField('Department', validators=[Length(max=100)])
+    specialization = SelectField('Specialization', choices=[
+        ('', 'Select Specialization'),
+        ('Hardware', 'Hardware Support'),
+        ('Software', 'Software Support')
+    ], validators=[Optional()])
     role = SelectField('Role', choices=[
         ('user', 'User'),
         ('super_admin', 'Super Admin')
@@ -82,6 +87,11 @@ class UserProfileForm(FlaskForm):
     last_name = StringField('Last Name', validators=[DataRequired(), Length(min=2, max=50)])
     email = EmailField('Email', validators=[DataRequired(), Email()])
     department = StringField('Department', validators=[Length(max=100)])
+    specialization = SelectField('Specialization', choices=[
+        ('', 'Select Specialization'),
+        ('Hardware', 'Hardware Support'),
+        ('Software', 'Software Support')
+    ], validators=[Optional()])
     system_name = StringField('System Name', validators=[Length(max=100)])
     password = PasswordField('Password', validators=[Optional(), Length(min=6, max=128)])
     submit = SubmitField('Update Profile')
