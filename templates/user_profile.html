@@ -157,21 +157,7 @@
                                                 {% endif %}
                                             </div>
                                         </div>
-                                        <div class="col-md-6">
-                                            <div class="form-group">
-                                                <label class="form-label">{{ form.specialization.label.text }}</label>
-                                                {{ form.specialization(class="form-select" + (" is-invalid" if form.specialization.errors else "")) }}
-                                                {% if form.specialization.errors %}
-                                                    <div class="invalid-feedback">
-                                                        {% for error in form.specialization.errors %}{{ error }}{% endfor %}
-                                                    </div>
-                                                {% endif %}
-                                                <div class="form-text">
-                                                    <i class="ri-tools-line"></i>
-                                                    Your area of technical expertise
-                                                </div>
-                                            </div>
-                                        </div>
+
                                     </div>
                                     
                                     <div class="row">
