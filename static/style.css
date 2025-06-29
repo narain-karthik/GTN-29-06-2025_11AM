@@ -52,9 +52,9 @@ body, html {
 
 /* Home page specific layout to prevent scrolling */
 .main-content-home {
-    height: calc(100vh - 120px); /* Reduced to account for header and footer properly */
+    height: calc(100vh - 80px); /* Account for header and footer */
     overflow: hidden;
-    background: white; /* White background as requested */
+    background: white;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -62,11 +62,12 @@ body, html {
 
 .main-content-home .hero-section {
     height: 100%;
-    background: white; /* Remove gradient background */
+    background: white;
     display: flex;
     align-items: center;
     justify-content: center;
     width: 100%;
+    min-height: auto;
 }
 
 .main-content-home .hero-gradient {
@@ -74,8 +75,9 @@ body, html {
     display: flex;
     align-items: center;
     justify-content: center;
-    background: white; /* White background instead of gradient */
+    background: white;
     width: 100%;
+    min-height: auto;
 }
 
 /* Login page specific layout to prevent scrolling */
@@ -1019,6 +1021,12 @@ body, html {
     overflow: hidden;
 }
 
+/* Override for home page - no min-height to prevent scrolling */
+.main-content-home .hero-section {
+    min-height: auto !important;
+    height: 100% !important;
+}
+
 .hero-gradient {
     background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
     position: relative;
@@ -1026,6 +1034,12 @@ body, html {
     min-height: 100vh;
     display: flex;
     align-items: center;
+}
+
+/* Override for home page - no min-height to prevent scrolling */
+.main-content-home .hero-gradient {
+    min-height: auto !important;
+    height: 100% !important;
 }
 
 .hero-gradient::before {
