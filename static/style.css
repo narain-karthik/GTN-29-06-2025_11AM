@@ -69,6 +69,20 @@ body, html {
     background: white; /* White background instead of gradient */
 }
 
+/* Login page specific layout to prevent scrolling */
+.main-content-login {
+    height: calc(100vh - 160px); /* Adjusted to account for header and footer */
+    overflow: hidden;
+}
+
+.login-simple-container {
+    height: 100%;
+}
+
+.login-simple-container .container {
+    height: 100%;
+}
+
 /* Header */
 .header {
     background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-dark) 100%);

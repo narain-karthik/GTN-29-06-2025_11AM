@@ -2,241 +2,53 @@
 
 {% block title %}Login - GTN Engineering IT Helpdesk{% endblock %}
 
+{% block main_class %}main-content-login{% endblock %}
+
 {% block content %}
-<div class="login-page">
-    <div class="login-container">
-        <!-- Animated Background -->
-        <div class="login-bg">
-            <div class="login-bg-overlay"></div>
-            <div class="floating-shapes">
-                <div class="shape shape-1"></div>
-                <div class="shape shape-2"></div>
-                <div class="shape shape-3"></div>
-                <div class="shape shape-4"></div>
-            </div>
-        </div>
-
-        <div class="container-fluid h-100">
-            <div class="row h-100 align-items-center">
-                <!-- Left Side - Branding & Info -->
-                <div class="col-lg-7 d-none d-lg-block">
-                    <div class="login-brand-section">
-                        <div class="brand-content">
-                            <div class="brand-logo-area">
-                                <div class="brand-icon">
-                                    <i class="ri-shield-check-line"></i>
-                                </div>
-                                <h1 class="brand-title">GTN Engineering</h1>
-                                <h2 class="brand-subtitle">IT Helpdesk Portal</h2>
-                            </div>
-                            
-                            <p class="brand-description">
-                                Professional IT support solutions designed for modern businesses. 
-                                Access your personalized dashboard and manage support requests efficiently.
-                            </p>
-
-                            <div class="feature-grid">
-                                <div class="feature-highlight">
-                                    <div class="feature-icon">
-                                        <i class="ri-rocket-line"></i>
-                                    </div>
-                                    <div class="feature-text">
-                                        <h4>Fast Resolution</h4>
-                                        <p>Quick ticket processing and expert support</p>
-                                    </div>
-                                </div>
-                                <div class="feature-highlight">
-                                    <div class="feature-icon">
-                                        <i class="ri-shield-line"></i>
-                                    </div>
-                                    <div class="feature-text">
-                                        <h4>Secure Access</h4>
-                                        <p>Role-based permissions and data protection</p>
-                                    </div>
-                                </div>
-                                <div class="feature-highlight">
-                                    <div class="feature-icon">
-                                        <i class="ri-pulse-line"></i>
-                                    </div>
-                                    <div class="feature-text">
-                                        <h4>Real-time Updates</h4>
-                                        <p>Live dashboard and instant notifications</p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+<div class="login-simple-container">
+    <div class="container">
+        <div class="row justify-content-center align-items-center" style="height: 100%;">
+            <div class="col-md-6 col-lg-4">
+                <div class="login-card">
+                    <div class="login-header">
+                        <h3 class="login-title">Welcome Back</h3>
+                        <p class="login-subtitle">Sign in to access your helpdesk account</p>
                     </div>
-                </div>
 
-                <!-- Right Side - Login Form -->
-                <div class="col-lg-5">
-                    <div class="login-form-section">
-                        <div class="login-card">
-                            <div class="login-header">
-                                <h3 class="login-title">Welcome Back</h3>
-                                <p class="login-subtitle">Sign in to access your helpdesk account</p>
-                            </div>
-
-                            <form method="POST" class="modern-login-form">
-                                {{ form.hidden_tag() }}
-                                
-                                <div class="form-floating mb-3">
-                                    {{ form.username(class="form-control" + (" is-invalid" if form.username.errors else ""), placeholder="Username", id="floatingUsername") }}
-                                    <label for="floatingUsername">
-                                        <i class="ri-user-line me-2"></i>Username
-                                    </label>
-                                    {% if form.username.errors %}
-                                        <div class="invalid-feedback">
-                                            {% for error in form.username.errors %}{{ error }}{% endfor %}
-                                        </div>
-                                    {% endif %}
+                    <form method="POST" class="modern-login-form">
+                        {{ form.hidden_tag() }}
+                        
+                        <div class="form-floating mb-3">
+                            {{ form.username(class="form-control" + (" is-invalid" if form.username.errors else ""), placeholder="Username", id="floatingUsername") }}
+                            <label for="floatingUsername">
+                                <i class="ri-user-line me-2"></i>Username
+                            </label>
+                            {% if form.username.errors %}
+                                <div class="invalid-feedback">
+                                    {% for error in form.username.errors %}{{ error }}{% endfor %}
                                 </div>
-
-                                <div class="form-floating mb-4">
-                                    {{ form.password(class="form-control" + (" is-invalid" if form.password.errors else ""), placeholder="Password", id="floatingPassword") }}
-                                    <label for="floatingPassword">
-                                        <i class="ri-lock-line me-2"></i>Password
-                                    </label>
-                                    {% if form.password.errors %}
-                                        <div class="invalid-feedback">
-                                            {% for error in form.password.errors %}{{ error }}{% endfor %}
-                                        </div>
-                                    {% endif %}
-                                </div>
-
-                                <div class="d-grid mb-4">
-                                    {{ form.submit(class="btn btn-primary btn-lg login-btn") }}
-                                </div>
-
-                                <div class="login-footer">
-                                    <div class="role-indicators">
-                                        <div class="role-indicator">
-                                            <div class="role-dot user"></div>
-                                            <span>User Access</span>
-                                        </div>
-                                        <div class="role-indicator">
-                                            <div class="role-dot admin"></div>
-                                            <span>Super Admin</span>
-                                        </div>
-                                    </div>
-                                    <p class="access-note">
-                                        <i class="ri-information-line"></i>
-                                        Your dashboard will be customized based on your account permissions
-                                    </p>
-                                </div>
-                            </form>
+                            {% endif %}
                         </div>
-                    </div>
+
+                        <div class="form-floating mb-4">
+                            {{ form.password(class="form-control" + (" is-invalid" if form.password.errors else ""), placeholder="Password", id="floatingPassword") }}
+                            <label for="floatingPassword">
+                                <i class="ri-lock-line me-2"></i>Password
+                            </label>
+                            {% if form.password.errors %}
+                                <div class="invalid-feedback">
+                                    {% for error in form.password.errors %}{{ error }}{% endfor %}
+                                </div>
+                            {% endif %}
+                        </div>
+
+                        <div class="d-grid mb-4">
+                            {{ form.submit(class="btn btn-primary btn-lg login-btn") }}
+                        </div>
+                    </form>
                 </div>
             </div>
         </div>
     </div>
 </div>
-
-<style>
-.login-card {
-    max-width: 400px;
-    width: 100%;
-    padding: 2rem;
-    background: white;
-    border-radius: 12px;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
-}
-
-.login-logo {
-    width: 80px;
-    height: 80px;
-    object-fit: cover;
-    border-radius: 50%;
-}
-
-.login-title {
-    color: var(--primary-color);
-    font-weight: 600;
-    margin-bottom: 0.5rem;
-}
-
-.login-subtitle {
-    color: #6c757d;
-    margin-bottom: 0;
-}
-
-.login-form .input-group-text {
-    background-color: #f8f9fa;
-    border-right: none;
-}
-
-.login-form .form-control {
-    border-left: none;
-    padding-left: 0.5rem;
-}
-
-.login-form .form-control:focus {
-    border-color: var(--primary-color);
-    box-shadow: 0 0 0 0.2rem rgba(var(--primary-rgb), 0.25);
-}
-
-.role-info {
-    border-top: 1px solid #e9ecef;
-    padding-top: 1rem;
-}
-
-.role-badge {
-    padding: 0.5rem;
-}
-
-.role-badge i {
-    font-size: 1.5rem;
-    margin-bottom: 0.25rem;
-}
-
-.login-info-side {
-    background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
-    align-items: center;
-    justify-content: center;
-    position: relative;
-}
-
-.login-info-side::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: rgba(0, 0, 0, 0.2);
-    z-index: 1;
-}
-
-.login-info-content {
-    position: relative;
-    z-index: 2;
-    max-width: 400px;
-    padding: 2rem;
-}
-
-.feature-list {
-    list-style: none;
-    padding: 0;
-}
-
-.feature-item {
-    display: flex;
-    align-items: center;
-    margin-bottom: 1rem;
-    color: white;
-}
-
-.feature-item i {
-    font-size: 1.25rem;
-    margin-right: 0.75rem;
-    color: rgba(255, 255, 255, 0.8);
-}
-
-@media (max-width: 991.98px) {
-    .login-card {
-        margin: 2rem;
-    }
-}
-</style>
 {% endblock %}
