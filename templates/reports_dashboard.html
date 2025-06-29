@@ -332,7 +332,7 @@
                                     <p class="timeline-user">
                                         Created by {{ ticket.user_name }}
                                         {% if ticket.assignee %}
-                                            • Assigned to {{ ticket.assignee.full_name() }}
+                                            • Assigned to {{ ticket.assignee.full_name }}
                                         {% endif %}
                                     </p>
                                 </div>
@@ -365,7 +365,7 @@
                                         </div>
                                     </div>
                                     <div class="user-info">
-                                        <h6>{{ user_stat.user.full_name() }}</h6>
+                                        <h6>{{ user_stat.user.full_name }}</h6>
                                         <p>{{ user_stat.user.department or 'No Department' }}</p>
                                     </div>
                                     <div class="user-stats">

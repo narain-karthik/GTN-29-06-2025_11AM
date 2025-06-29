@@ -749,7 +749,7 @@ def reports_dashboard():
     top_users = db.session.query(
         User,
         func.count(Ticket.id).label('ticket_count')
-    ).join(Ticket).group_by(User.id).order_by(func.count(Ticket.id).desc()).limit(8).all()
+    ).join(Ticket, User.id == Ticket.user_id).group_by(User.id).order_by(func.count(Ticket.id).desc()).limit(8).all()
     
     return render_template('reports_dashboard.html', 
                          stats=stats, 
