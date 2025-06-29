@@ -3,123 +3,568 @@
 {% block title %}Create Ticket - GTN Engineering IT Helpdesk{% endblock %}
 
 {% block content %}
-    <div class="container">
-        <div class="row justify-content-center">
-            <div class="col-md-8">
-                <div class="card">
-                    <div class="card-header">
-                        <h4><i class="ri-add-line"></i> Create New Support Ticket</h4>
+<div class="container-fluid">
+    <div class="row justify-content-center">
+        <div class="col-12 col-lg-10 col-xl-8">
+            <!-- Page Header -->
+            <div class="page-header mb-4">
+                <div class="row align-items-center">
+                    <div class="col">
+                        <h1 class="page-title">
+                            <i class="ri-ticket-line text-primary"></i>
+                            Create Support Ticket
+                        </h1>
+                        <p class="page-subtitle">Need help? Submit a support ticket and our team will assist you.</p>
                     </div>
-                    <div class="card-body">
-                        <form method="POST" enctype="multipart/form-data">
-                            {{ form.hidden_tag() }}
-                            
+                </div>
+            </div>
+
+            <!-- Progress Steps -->
+            <div class="ticket-progress mb-4">
+                <div class="progress-step active">
+                    <div class="step-icon">
+                        <i class="ri-edit-line"></i>
+                    </div>
+                    <span class="step-text">Ticket Details</span>
+                </div>
+                <div class="progress-step">
+                    <div class="step-icon">
+                        <i class="ri-attachment-line"></i>
+                    </div>
+                    <span class="step-text">Attachments</span>
+                </div>
+                <div class="progress-step">
+                    <div class="step-icon">
+                        <i class="ri-send-plane-line"></i>
+                    </div>
+                    <span class="step-text">Submit</span>
+                </div>
+            </div>
+
+            <form method="POST" enctype="multipart/form-data" id="ticketForm">
+                {{ form.hidden_tag() }}
+                
+                <!-- Main Ticket Form Card -->
+                <div class="card ticket-form-card">
+                    <div class="card-body p-4">
+                        <!-- Title Section -->
+                        <div class="form-section mb-4">
+                            <h5 class="section-title">
+                                <i class="ri-text text-primary"></i>
+                                Ticket Information
+                            </h5>
                             <div class="mb-3">
-                                {{ form.title.label(class="form-label") }}
-                                {{ form.title(class="form-control" + (" is-invalid" if form.title.errors else "")) }}
+                                <label class="form-label required">{{ form.title.label.text }}</label>
+                                {{ form.title(class="form-control form-control-lg" + (" is-invalid" if form.title.errors else ""), placeholder="Brief description of your issue") }}
                                 {% if form.title.errors %}
                                     <div class="invalid-feedback">
                                         {% for error in form.title.errors %}{{ error }}{% endfor %}
                                     </div>
                                 {% endif %}
-                                <div class="form-text">Provide a clear, concise title for your issue</div>
+                                <div class="form-text">
+                                    <i class="ri-information-line"></i>
+                                    Be specific and descriptive. Good example: "Printer not working in Conference Room A"
+                                </div>
                             </div>
-                            
+                        </div>
+
+                        <!-- Category and Priority Section -->
+                        <div class="form-section mb-4">
+                            <h5 class="section-title">
+                                <i class="ri-settings-line text-primary"></i>
+                                Classification
+                            </h5>
                             <div class="row">
-                                <div class="col-md-4">
+                                <div class="col-md-6">
                                     <div class="mb-3">
-                                        {{ form.category.label(class="form-label") }}
-                                        {{ form.category(class="form-select" + (" is-invalid" if form.category.errors else "")) }}
+                                        <label class="form-label required">{{ form.category.label.text }}</label>
+                                        {{ form.category(class="form-select form-select-lg" + (" is-invalid" if form.category.errors else "")) }}
                                         {% if form.category.errors %}
                                             <div class="invalid-feedback">
                                                 {% for error in form.category.errors %}{{ error }}{% endfor %}
                                             </div>
                                         {% endif %}
+                                        <div class="form-text">
+                                            <i class="ri-information-line"></i>
+                                            Choose the category that best describes your issue
+                                        </div>
                                     </div>
                                 </div>
-                                <div class="col-md-4">
+                                <div class="col-md-6">
                                     <div class="mb-3">
-                                        {{ form.priority.label(class="form-label") }}
-                                        {{ form.priority(class="form-select" + (" is-invalid" if form.priority.errors else "")) }}
+                                        <label class="form-label required">{{ form.priority.label.text }}</label>
+                                        {{ form.priority(class="form-select form-select-lg" + (" is-invalid" if form.priority.errors else "")) }}
                                         {% if form.priority.errors %}
                                             <div class="invalid-feedback">
                                                 {% for error in form.priority.errors %}{{ error }}{% endfor %}
                                             </div>
                                         {% endif %}
-                                    </div>
-                                </div>
-                                <div class="col-md-4">
-                                    <div class="mb-3">
-                                        {{ form.system_name.label(class="form-label") }}
-                                        {{ form.system_name(class="form-control", placeholder="Enter your computer/system name") }}
-                                        <div class="form-text">Optional: Your computer/workstation name</div>
+                                        <div class="form-text">
+                                            <i class="ri-information-line"></i>
+                                            How urgent is this issue?
+                                        </div>
                                     </div>
                                 </div>
                             </div>
-                            
+                        </div>
+
+                        <!-- System Information Section -->
+                        <div class="form-section mb-4">
+                            <h5 class="section-title">
+                                <i class="ri-computer-line text-primary"></i>
+                                System Information
+                            </h5>
                             <div class="mb-3">
-                                {{ form.description.label(class="form-label") }}
-                                {{ form.description(class="form-control" + (" is-invalid" if form.description.errors else ""), 
-                                                  rows="6", placeholder="Please describe your issue in detail...") }}
+                                <label class="form-label">{{ form.system_name.label.text }}</label>
+                                {{ form.system_name(class="form-control" + (" is-invalid" if form.system_name.errors else ""), placeholder="e.g., DESK-001, Laptop-Marketing") }}
+                                {% if form.system_name.errors %}
+                                    <div class="invalid-feedback">
+                                        {% for error in form.system_name.errors %}{{ error }}{% endfor %}
+                                    </div>
+                                {% endif %}
+                                <div class="form-text">
+                                    <i class="ri-information-line"></i>
+                                    Enter the name or ID of the computer/device having issues (optional)
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Description Section -->
+                        <div class="form-section mb-4">
+                            <h5 class="section-title">
+                                <i class="ri-file-text-line text-primary"></i>
+                                Detailed Description
+                            </h5>
+                            <div class="mb-3">
+                                <label class="form-label required">{{ form.description.label.text }}</label>
+                                {{ form.description(class="form-control description-textarea" + (" is-invalid" if form.description.errors else ""), 
+                                    placeholder="Please provide a detailed description of the issue:\n\n• What were you trying to do?\n• What happened instead?\n• When did this start?\n• Have you tried any solutions?\n• Error messages (if any)",
+                                    rows="8") }}
                                 {% if form.description.errors %}
                                     <div class="invalid-feedback">
                                         {% for error in form.description.errors %}{{ error }}{% endfor %}
                                     </div>
                                 {% endif %}
-                                <div class="form-text">Include steps to reproduce, error messages, and any relevant details</div>
+                                <div class="form-text">
+                                    <i class="ri-information-line"></i>
+                                    The more details you provide, the faster we can help you
+                                </div>
+                                <div class="character-counter">
+                                    <span class="counter-text">0 characters</span>
+                                    <span class="counter-min">Minimum 10 characters</span>
+                                </div>
                             </div>
-                            
-                           <div class="mb-3">
-    <label for="attachments" class="form-label">Upload Attachment(s) (Optional)</label>
-    <input type="file"
-           name="attachments"
-           id="attachments"
-           class="form-control{{ ' is-invalid' if form.image.errors else '' }}"
-           accept=".jpg,.jpeg,.png,.gif,.bmp,.pdf,.doc,.docx,.xls,.xlsx"
-           multiple>
-    {% if form.image.errors %}
-        <div class="invalid-feedback">
-            {% for error in form.image.errors %}{{ error }}{% endfor %}
+                        </div>
+
+                        <!-- File Upload Section -->
+                        <div class="form-section mb-4">
+                            <h5 class="section-title">
+                                <i class="ri-attachment-line text-primary"></i>
+                                Attachments
+                                <span class="optional-tag">Optional</span>
+                            </h5>
+                            <div class="upload-area">
+                                <div class="upload-content">
+                                    <i class="ri-upload-cloud-line upload-icon"></i>
+                                    <h6>Upload files to help us understand the issue</h6>
+                                    <p class="text-muted">Screenshots, error messages, or related documents</p>
+                                    {{ form.image(class="form-control file-input" + (" is-invalid" if form.image.errors else ""), 
+                                        accept=".jpg,.jpeg,.png,.gif,.pdf,.doc,.docx,.xls,.xlsx") }}
+                                    {% if form.image.errors %}
+                                        <div class="invalid-feedback">
+                                            {% for error in form.image.errors %}{{ error }}{% endfor %}
+                                        </div>
+                                    {% endif %}
+                                </div>
+                                <div class="upload-info">
+                                    <small class="text-muted">
+                                        <i class="ri-information-line"></i>
+                                        Supported formats: Images (JPG, PNG, GIF), Documents (PDF, Word, Excel) • Max size: 10MB
+                                    </small>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Submit Section -->
+                        <div class="form-section">
+                            <div class="submit-section">
+                                <div class="row align-items-center">
+                                    <div class="col-md-6">
+                                        <div class="submission-info">
+                                            <h6><i class="ri-time-line text-primary"></i> What happens next?</h6>
+                                            <ul class="next-steps">
+                                                <li>You'll receive a ticket number for reference</li>
+                                                <li>Our team will review your request</li>
+                                                <li>You'll get updates via email and dashboard</li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6 text-md-end">
+                                        <div class="button-group">
+                                            <a href="{{ url_for('user_dashboard') }}" class="btn btn-outline-secondary btn-lg me-2">
+                                                <i class="ri-arrow-left-line"></i>
+                                                Cancel
+                                            </a>
+                                            {{ form.submit(class="btn btn-primary btn-lg") }}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
         </div>
-    {% endif %}
-    <div class="form-text">
-        You may upload images (JPG, PNG, GIF, BMP), PDF, Word (.doc, .docx), or Excel (.xls, .xlsx) files. Multiple files allowed.
     </div>
 </div>
-                            
-                            <div class="d-flex justify-content-between">
-                                <a href="{{ url_for('user_dashboard') }}" class="btn btn-secondary">
-                                    <i class="ri-arrow-left-line"></i> Cancel
-                                </a>
-                                {{ form.submit(class="btn btn-primary") }}
-                            </div>
-                        </form>
-                    </div>
-                </div>
 
-                <!-- Help Section -->
-                <div class="card mt-4">
-                    <div class="card-header">
-                        <h6><i class="ri-question-line"></i> Priority Guidelines</h6>
-                    </div>
-                    <div class="card-body">
-                        <ul class="list-unstyled mb-0">
-                            <li class="mb-2">
-                                <span class="badge bg-success">Low</span> - Minor issues that don't affect productivity
-                            </li>
-                            <li class="mb-2">
-                                <span class="badge bg-warning">Medium</span> - Issues that affect productivity but have workarounds
-                            </li>
-                            <li class="mb-2">
-                                <span class="badge bg-danger">High</span> - Issues that significantly impact work
-                            </li>
-                            <li class="mb-0">
-                                <span class="badge bg-dark">Critical</span> - System down or major business impact
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
+<style>
+/* Create Ticket Specific Styles */
+.page-header {
+    padding: 2rem 0 1rem;
+    border-bottom: 1px solid #e9ecef;
+}
+
+.page-title {
+    font-size: 2rem;
+    font-weight: 600;
+    color: #2c3e50;
+    margin-bottom: 0.5rem;
+}
+
+.page-subtitle {
+    color: #6c757d;
+    font-size: 1.1rem;
+    margin-bottom: 0;
+}
+
+.ticket-progress {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 2rem;
+    padding: 1.5rem;
+    background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+    border-radius: 10px;
+}
+
+.progress-step {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: relative;
+}
+
+.progress-step:not(:last-child)::after {
+    content: '';
+    position: absolute;
+    top: 20px;
+    left: 100%;
+    width: 30px;
+    height: 2px;
+    background: #dee2e6;
+    z-index: 0;
+}
+
+.progress-step.active .step-icon {
+    background: #007bff;
+    color: white;
+    transform: scale(1.1);
+}
+
+.progress-step.active .step-text {
+    color: #007bff;
+    font-weight: 600;
+}
+
+.step-icon {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: #dee2e6;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.2rem;
+    margin-bottom: 0.5rem;
+    transition: all 0.3s ease;
+    position: relative;
+    z-index: 1;
+}
+
+.step-text {
+    font-size: 0.9rem;
+    color: #6c757d;
+    text-align: center;
+    transition: all 0.3s ease;
+}
+
+.ticket-form-card {
+    border: none;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    border-radius: 12px;
+}
+
+.form-section {
+    padding: 1.5rem 0;
+    border-bottom: 1px solid #f1f3f4;
+}
+
+.form-section:last-child {
+    border-bottom: none;
+    padding-bottom: 0;
+}
+
+.section-title {
+    color: #2c3e50;
+    font-weight: 600;
+    margin-bottom: 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.section-title i {
+    font-size: 1.2rem;
+}
+
+.optional-tag {
+    background: #e9ecef;
+    color: #6c757d;
+    font-size: 0.75rem;
+    padding: 0.25rem 0.5rem;
+    border-radius: 4px;
+    margin-left: auto;
+}
+
+.form-label.required::after {
+    content: ' *';
+    color: #dc3545;
+}
+
+.form-control-lg, .form-select-lg {
+    padding: 0.75rem 1rem;
+    font-size: 1.1rem;
+    border-radius: 8px;
+    border: 2px solid #e9ecef;
+    transition: all 0.3s ease;
+}
+
+.form-control:focus, .form-select:focus {
+    border-color: #007bff;
+    box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+}
+
+.description-textarea {
+    min-height: 120px;
+    resize: vertical;
+    font-family: inherit;
+    line-height: 1.5;
+}
+
+.character-counter {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 0.5rem;
+    font-size: 0.875rem;
+}
+
+.counter-text {
+    color: #6c757d;
+}
+
+.counter-min {
+    color: #dc3545;
+    font-weight: 500;
+}
+
+.upload-area {
+    border: 2px dashed #dee2e6;
+    border-radius: 8px;
+    padding: 2rem;
+    text-align: center;
+    transition: all 0.3s ease;
+    position: relative;
+}
+
+.upload-area:hover {
+    border-color: #007bff;
+    background: #f8f9ff;
+}
+
+.upload-content {
+    position: relative;
+    z-index: 2;
+}
+
+.upload-icon {
+    font-size: 3rem;
+    color: #007bff;
+    margin-bottom: 1rem;
+}
+
+.upload-content h6 {
+    color: #2c3e50;
+    margin-bottom: 0.5rem;
+}
+
+.file-input {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    cursor: pointer;
+    z-index: 3;
+}
+
+.upload-info {
+    margin-top: 1rem;
+    padding-top: 1rem;
+    border-top: 1px solid #e9ecef;
+}
+
+.submission-info h6 {
+    color: #2c3e50;
+    margin-bottom: 1rem;
+}
+
+.next-steps {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.next-steps li {
+    color: #6c757d;
+    margin-bottom: 0.5rem;
+    position: relative;
+    padding-left: 1.5rem;
+}
+
+.next-steps li::before {
+    content: '✓';
+    position: absolute;
+    left: 0;
+    color: #28a745;
+    font-weight: bold;
+}
+
+.submit-section {
+    background: #f8f9fa;
+    padding: 2rem;
+    border-radius: 8px;
+    margin-top: 1rem;
+}
+
+.button-group {
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+}
+
+.btn-lg {
+    padding: 0.75rem 2rem;
+    font-size: 1.1rem;
+    border-radius: 8px;
+    transition: all 0.3s ease;
+}
+
+.btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 123, 255, 0.3);
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .ticket-progress {
+        gap: 1rem;
+        padding: 1rem;
+    }
+    
+    .progress-step:not(:last-child)::after {
+        width: 20px;
+    }
+    
+    .step-text {
+        font-size: 0.8rem;
+    }
+    
+    .button-group {
+        flex-direction: column;
+        width: 100%;
+    }
+    
+    .btn-lg {
+        width: 100%;
+        margin-bottom: 0.5rem;
+    }
+    
+    .submit-section .row {
+        flex-direction: column;
+        gap: 1rem;
+    }
+}
+</style>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Character counter for description
+    const descriptionField = document.querySelector('.description-textarea');
+    const counterText = document.querySelector('.counter-text');
+    const counterMin = document.querySelector('.counter-min');
+    
+    if (descriptionField && counterText) {
+        function updateCounter() {
+            const length = descriptionField.value.length;
+            counterText.textContent = length + ' characters';
+            
+            if (length >= 10) {
+                counterMin.style.color = '#28a745';
+                counterMin.textContent = 'Minimum requirement met ✓';
+            } else {
+                counterMin.style.color = '#dc3545';
+                counterMin.textContent = 'Minimum 10 characters';
+            }
+        }
+        
+        descriptionField.addEventListener('input', updateCounter);
+        updateCounter(); // Initial call
+    }
+    
+    // File upload enhancement
+    const fileInput = document.querySelector('.file-input');
+    const uploadArea = document.querySelector('.upload-area');
+    
+    if (fileInput && uploadArea) {
+        fileInput.addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            if (file) {
+                const uploadContent = uploadArea.querySelector('.upload-content');
+                uploadContent.innerHTML = `
+                    <i class="ri-file-check-line upload-icon" style="color: #28a745;"></i>
+                    <h6>File Selected: ${file.name}</h6>
+                    <p class="text-muted">Click to change file</p>
+                `;
+                uploadArea.style.borderColor = '#28a745';
+                uploadArea.style.background = '#f8fff8';
+            }
+        });
+    }
+    
+    // Form validation enhancement
+    const form = document.getElementById('ticketForm');
+    if (form) {
+        form.addEventListener('submit', function(e) {
+            const submitBtn = form.querySelector('button[type="submit"]');
+            if (submitBtn) {
+                submitBtn.innerHTML = '<i class="ri-loader-line spin"></i> Creating Ticket...';
+                submitBtn.disabled = true;
+            }
+        });
+    }
+});
+</script>
 {% endblock %}
