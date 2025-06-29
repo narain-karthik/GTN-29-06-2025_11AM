@@ -971,13 +971,17 @@ def master_data_dashboard():
     statuses = MasterDataStatus.query.all()
     departments = MasterDataDepartment.query.all()
     settings = SystemSettings.query.all()
+    users = User.query.order_by(User.created_at.desc()).all()
+    users_count = User.query.count()
     
     return render_template('master_data/dashboard.html',
                          categories=categories,
                          priorities=priorities, 
                          statuses=statuses,
                          departments=departments,
-                         settings=settings)
+                         settings=settings,
+                         users=users,
+                         users_count=users_count)
 
 
 @app.route('/super_admin/master_data/categories', methods=['GET', 'POST'])
