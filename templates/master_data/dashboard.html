@@ -340,64 +340,238 @@
 
     <!-- System Settings Section -->
     <div class="row">
-        <div class="col-12">
+        <!-- Email Settings Section -->
+        <div class="col-lg-6 mb-4">
             <div class="card shadow">
                 <div class="card-header py-3 d-flex justify-content-between align-items-center">
-                    <h6 class="m-0 font-weight-bold text-dark">
-                        <i class="ri-settings-3-line me-2"></i>System Settings
+                    <h6 class="m-0 font-weight-bold text-secondary">
+                        <i class="ri-mail-line me-2"></i>Email Settings
                     </h6>
-                    <a href="{{ url_for('manage_email_settings') }}" class="btn btn-dark btn-sm">
-                        <i class="ri-mail-line"></i> Email Settings
+                    <a href="{{ url_for('manage_email_settings') }}" class="btn btn-secondary btn-sm">
+                        <i class="ri-settings-line"></i> Manage
                     </a>
                 </div>
                 <div class="card-body">
-                    {% if settings %}
+                    {% if email_settings %}
                         <div class="table-responsive">
-                            <table class="table">
+                            <table class="table table-sm">
                                 <thead>
                                     <tr>
-                                        <th>Setting Key</th>
-                                        <th>Type</th>
+                                        <th>Setting</th>
                                         <th>Value</th>
-                                        <th>Description</th>
                                         <th>Status</th>
-                                        <th>Last Updated</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    {% for setting in settings[:10] %}
                                     <tr>
-                                        <td><code>{{ setting.setting_key }}</code></td>
+                                        <td>SMTP Server</td>
+                                        <td>{{ email_settings.smtp_server }}</td>
                                         <td>
-                                            <span class="badge bg-secondary">{{ setting.setting_type }}</span>
-                                        </td>
-                                        <td>
-                                            {% if setting.setting_value and setting.setting_value|length > 30 %}
-                                                {{ setting.setting_value[:30] }}...
-                                            {% else %}
-                                                {{ setting.setting_value or 'Empty' }}
-                                            {% endif %}
-                                        </td>
-                                        <td>{{ setting.description or 'No description' }}</td>
-                                        <td>
-                                            {% if setting.is_active %}
+                                            {% if email_settings.is_active %}
                                                 <span class="badge bg-success">Active</span>
                                             {% else %}
                                                 <span class="badge bg-secondary">Inactive</span>
                                             {% endif %}
                                         </td>
-                                        <td>{{ setting.updated_at.strftime('%Y-%m-%d %H:%M') if setting.updated_at else 'Never' }}</td>
                                     </tr>
-                                    {% endfor %}
+                                    <tr>
+                                        <td>SMTP Port</td>
+                                        <td>{{ email_settings.smtp_port }}</td>
+                                        <td>
+                                            {% if email_settings.use_tls %}
+                                                <span class="badge bg-info">TLS Enabled</span>
+                                            {% else %}
+                                                <span class="badge bg-warning">TLS Disabled</span>
+                                            {% endif %}
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>From Name</td>
+                                        <td>{{ email_settings.from_name }}</td>
+                                        <td><span class="text-muted">{{ email_settings.updated_at.strftime('%Y-%m-%d') if email_settings.updated_at else 'Never' }}</span></td>
+                                    </tr>
                                 </tbody>
                             </table>
                         </div>
                     {% else %}
                         <div class="text-center py-4">
-                            <i class="ri-settings-3-line fa-3x text-gray-300 mb-3"></i>
-                            <p class="text-muted">No system settings configured yet.</p>
+                            <i class="ri-mail-line fa-3x text-gray-300 mb-3"></i>
+                            <p class="text-muted">No email settings configured yet.</p>
                             <a href="{{ url_for('manage_email_settings') }}" class="btn btn-primary">
                                 <i class="ri-mail-line"></i> Configure Email Settings
+                            </a>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+
+        <!-- Timezone Settings Section -->
+        <div class="col-lg-6 mb-4">
+            <div class="card shadow">
+                <div class="card-header py-3 d-flex justify-content-between align-items-center">
+                    <h6 class="m-0 font-weight-bold text-info">
+                        <i class="ri-time-line me-2"></i>Timezone Settings
+                    </h6>
+                    <a href="{{ url_for('manage_timezone_settings') }}" class="btn btn-info btn-sm">
+                        <i class="ri-settings-line"></i> Manage
+                    </a>
+                </div>
+                <div class="card-body">
+                    {% if timezone_settings %}
+                        <div class="table-responsive">
+                            <table class="table table-sm">
+                                <thead>
+                                    <tr>
+                                        <th>Setting</th>
+                                        <th>Value</th>
+                                        <th>Status</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>Timezone</td>
+                                        <td>{{ timezone_settings.timezone_name }}</td>
+                                        <td>
+                                            {% if timezone_settings.is_active %}
+                                                <span class="badge bg-success">Active</span>
+                                            {% else %}
+                                                <span class="badge bg-secondary">Inactive</span>
+                                            {% endif %}
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>Display Name</td>
+                                        <td>{{ timezone_settings.display_name }}</td>
+                                        <td><span class="text-muted">{{ timezone_settings.utc_offset }}</span></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Last Updated</td>
+                                        <td colspan="2"><span class="text-muted">{{ timezone_settings.updated_at.strftime('%Y-%m-%d %H:%M') if timezone_settings.updated_at else 'Never' }}</span></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    {% else %}
+                        <div class="text-center py-4">
+                            <i class="ri-time-line fa-3x text-gray-300 mb-3"></i>
+                            <p class="text-muted">No timezone settings configured yet.</p>
+                            <a href="{{ url_for('manage_timezone_settings') }}" class="btn btn-primary">
+                                <i class="ri-time-line"></i> Configure Timezone Settings
+                            </a>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Backup Settings Row -->
+    <div class="row mb-4">
+        <div class="col-lg-12 mb-4">
+            <div class="card shadow">
+                <div class="card-header py-3 d-flex justify-content-between align-items-center">
+                    <h6 class="m-0 font-weight-bold text-dark">
+                        <i class="ri-database-2-line me-2"></i>Backup Settings
+                    </h6>
+                    <a href="{{ url_for('manage_backup_settings') }}" class="btn btn-dark btn-sm">
+                        <i class="ri-settings-line"></i> Manage
+                    </a>
+                </div>
+                <div class="card-body">
+                    {% if backup_settings %}
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="table-responsive">
+                                    <table class="table table-sm">
+                                        <thead>
+                                            <tr>
+                                                <th>Setting</th>
+                                                <th>Value</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td>Backup Frequency</td>
+                                                <td><span class="badge bg-primary">{{ backup_settings.backup_frequency.title() }}</span></td>
+                                            </tr>
+                                            <tr>
+                                                <td>Backup Time</td>
+                                                <td>{{ backup_settings.backup_time.strftime('%H:%M') if backup_settings.backup_time else 'Not set' }}</td>
+                                            </tr>
+                                            <tr>
+                                                <td>Backup Location</td>
+                                                <td><code>{{ backup_settings.backup_location }}</code></td>
+                                            </tr>
+                                            <tr>
+                                                <td>Max Backups</td>
+                                                <td>{{ backup_settings.max_backups }} backups</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="table-responsive">
+                                    <table class="table table-sm">
+                                        <thead>
+                                            <tr>
+                                                <th>Feature</th>
+                                                <th>Status</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td>Compression</td>
+                                                <td>
+                                                    {% if backup_settings.compress_backups %}
+                                                        <span class="badge bg-success">Enabled</span>
+                                                    {% else %}
+                                                        <span class="badge bg-secondary">Disabled</span>
+                                                    {% endif %}
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>Include Attachments</td>
+                                                <td>
+                                                    {% if backup_settings.include_attachments %}
+                                                        <span class="badge bg-success">Enabled</span>
+                                                    {% else %}
+                                                        <span class="badge bg-secondary">Disabled</span>
+                                                    {% endif %}
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>Email Notifications</td>
+                                                <td>
+                                                    {% if backup_settings.email_notifications %}
+                                                        <span class="badge bg-success">Enabled</span>
+                                                    {% else %}
+                                                        <span class="badge bg-secondary">Disabled</span>
+                                                    {% endif %}
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>Overall Status</td>
+                                                <td>
+                                                    {% if backup_settings.is_active %}
+                                                        <span class="badge bg-success">Active</span>
+                                                    {% else %}
+                                                        <span class="badge bg-secondary">Inactive</span>
+                                                    {% endif %}
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    {% else %}
+                        <div class="text-center py-4">
+                            <i class="ri-database-2-line fa-3x text-gray-300 mb-3"></i>
+                            <p class="text-muted">No backup settings configured yet.</p>
+                            <a href="{{ url_for('manage_backup_settings') }}" class="btn btn-primary">
+                                <i class="ri-database-2-line"></i> Configure Backup Settings
                             </a>
                         </div>
                     {% endif %}

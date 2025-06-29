@@ -34,6 +34,14 @@ A comprehensive Flask-based IT helpdesk management system with modern UI/UX desi
 - **System Detection**: Automatic IP and system name capture
 - **Audit Trail**: Complete ticket history with assignment tracking
 
+### **Master Data Management** (Super Admin Only)
+- **Ticket Categories**: Hardware, Software categories with descriptions
+- **Priority Levels**: Low, Medium, High, Critical with color coding
+- **Ticket Statuses**: Open, In Progress, Resolved, Closed with visual indicators
+- **Email Settings**: SMTP configuration for automated notifications
+- **Timezone Settings**: System-wide timezone configuration (Default: IST)
+- **Backup Settings**: Database backup scheduling and management
+
 ## 🗄️ Database Schema
 
 ### **Users Table**

@@ -2,7 +2,7 @@
 
 ## Overview
 
-The Master Data Management system provides Super Admins with centralized control over all reference data and system configurations in the GTN Engineering IT Helpdesk. This comprehensive guide covers how to manage all core data elements that drive the helpdesk operations.
+The Master Data Management system provides Super Admins with centralized control over all reference data and system configurations in the GTN Engineering IT Helpdesk. This comprehensive guide covers Categories, Priorities, Statuses, Email Settings, Timezone Settings, and Backup Settings that drive the helpdesk operations.
 
 ## Accessing Master Data
 
@@ -92,28 +92,7 @@ The Master Data Management system provides Super Admins with centralized control
 
 ---
 
-### 4. Departments Management 🏢
-
-**Purpose**: Organize users by organizational structure
-
-**How to Manage**:
-1. Click "Manage" button in Departments section
-2. Add departments with:
-   - **Department Name**: Official department name
-   - **Manager Name**: Department head/manager
-   - **Description**: Department responsibilities
-   - **Active Status**: Enable/disable department
-3. Assign users to departments for better organization
-
-**Examples**:
-- IT Support (Manager: John Smith)
-- Human Resources (Manager: Jane Doe)
-- Finance (Manager: Mike Johnson)
-- Operations (Manager: Sarah Wilson)
-
----
-
-### 5. System Users Management 👥
+### 4. System Users Management 👥
 
 **Purpose**: Manage all system users and their access levels
 
@@ -129,13 +108,79 @@ The Master Data Management system provides Super Admins with centralized control
 **User Management Functions**:
 - Create new user accounts
 - Edit user profiles and roles
-- Assign users to departments
+- Monitor user activity and tickets
 - Deactivate user accounts
 - View user activity and tickets
 
 ---
 
-### 6. System Settings Management ⚙️
+### 5. Email Settings Management 📧
+
+**Purpose**: Configure SMTP settings for automated email notifications
+
+**How to Manage**:
+1. Click "Manage" button in Email Settings section
+2. Configure SMTP settings:
+   - **SMTP Server**: Email server address (e.g., smtp.gmail.com)
+   - **SMTP Port**: Server port (usually 587 for TLS)
+   - **SMTP Username**: Email account username
+   - **SMTP Password**: Email account password/app password
+   - **Use TLS**: Enable secure connection
+   - **From Email**: Sender email address (optional)
+   - **From Name**: Display name for emails
+   - **Active Status**: Enable/disable email notifications
+
+**Best Practices**:
+- Use app passwords for Gmail accounts
+- Test email settings after configuration
+- Keep SMTP credentials secure
+
+---
+
+### 6. Timezone Settings Management 🌍
+
+**Purpose**: Configure system-wide timezone for consistent time display
+
+**How to Manage**:
+1. Click "Manage" button in Timezone Settings section  
+2. Set timezone configuration:
+   - **Timezone**: Select system timezone (e.g., Asia/Kolkata)
+   - **Display Name**: Human-readable timezone name
+   - **UTC Offset**: Timezone offset from UTC
+   - **Active Status**: Enable/disable timezone
+
+**Default Settings**:
+- Asia/Kolkata (Indian Standard Time - IST)
+- UTC Offset: +05:30
+
+---
+
+### 7. Backup Settings Management 💾
+
+**Purpose**: Configure automated database backup scheduling
+
+**How to Manage**:
+1. Click "Manage" button in Backup Settings section
+2. Configure backup parameters:
+   - **Backup Frequency**: Daily, Weekly, or Monthly
+   - **Backup Time**: Scheduled backup time (24-hour format)
+   - **Backup Location**: Storage path for backup files
+   - **Max Backups**: Number of backups to retain
+   - **Compression**: Enable/disable backup compression
+   - **Include Attachments**: Include file attachments in backup
+   - **Email Notifications**: Send backup status emails
+   - **Notification Email**: Email for backup notifications
+   - **Active Status**: Enable/disable backup system
+
+**Default Settings**:
+- Daily backups at 02:00 AM
+- Retain 30 backup files
+- Compression enabled
+- Include attachments enabled
+
+---
+
+### 8. System Settings Management ⚙️
 
 **Purpose**: Configure system-wide parameters and behaviors
 

@@ -4,7 +4,7 @@ Comprehensive documentation for the GTN Engineering IT Helpdesk System database 
 
 ## Overview
 
-The system uses a modern relational database architecture with four core tables supporting user management, ticket lifecycle, collaborative comments, and file attachments. Designed for PostgreSQL primary deployment with IST timezone support and optimized for Replit environment.
+The system uses a modern relational database architecture with ten core tables supporting user management, ticket lifecycle, collaborative comments, file attachments, and comprehensive master data management. Designed for PostgreSQL primary deployment with IST timezone support and optimized for Replit environment.
 
 ## Database Architecture
 
@@ -196,6 +196,129 @@ tickets(id) ←→ ticket_comments(ticket_id) [1:Many]
 
 -- Tickets can have multiple attachments
 tickets(id) ←→ attachments(ticket_id) [1:Many]
+```
+
+## Master Data Tables
+
+### 5. Master Data Categories (`master_categories`)
+
+Configurable ticket categories for system administrators.
+
+```sql
+CREATE TABLE master_categories (
+    id SERIAL PRIMARY KEY,
+    name VARCHAR(50) UNIQUE NOT NULL,
+    description VARCHAR(200),
+    is_active BOOLEAN DEFAULT TRUE,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+```
+
+**Default Data:**
+- Hardware: Hardware-related issues and requests
+- Software: Software-related issues and applications
+
+### 6. Master Data Priorities (`master_priorities`)
+
+Configurable priority levels with color coding and escalation levels.
+
+```sql
+CREATE TABLE master_priorities (
+    id SERIAL PRIMARY KEY,
+    name VARCHAR(20) UNIQUE NOT NULL,
+    description VARCHAR(200),
+    level INTEGER NOT NULL,
+    color_code VARCHAR(7),
+    is_active BOOLEAN DEFAULT TRUE,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+```
+
+**Default Data:**
+- Low (Level 1): #28a745 - Low priority issues, can be addressed within a week
+- Medium (Level 2): #ffc107 - Medium priority issues, should be addressed within 2-3 days
+- High (Level 3): #fd7e14 - High priority issues, should be addressed within 24 hours
+- Critical (Level 4): #dc3545 - Critical priority issues, requires immediate attention
+
+### 7. Master Data Statuses (`master_statuses`)
+
+Configurable ticket statuses with color coding for workflow management.
+
+```sql
+CREATE TABLE master_statuses (
+    id SERIAL PRIMARY KEY,
+    name VARCHAR(20) UNIQUE NOT NULL,
+    description VARCHAR(200),
+    color_code VARCHAR(7),
+    is_active BOOLEAN DEFAULT TRUE,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+```
+
+**Default Data:**
+- Open: #6c757d - Newly created ticket awaiting assignment
+- In Progress: #007bff - Ticket is being actively worked on
+- Resolved: #28a745 - Issue has been resolved and awaits user confirmation
+- Closed: #343a40 - Ticket has been completed and closed
+
+### 8. Email Settings (`email_settings`)
+
+SMTP configuration for automated email notifications.
+
+```sql
+CREATE TABLE email_settings (
+    id SERIAL PRIMARY KEY,
+    smtp_server VARCHAR(100) NOT NULL DEFAULT 'smtp.gmail.com',
+    smtp_port INTEGER NOT NULL DEFAULT 587,
+    smtp_username VARCHAR(100) NOT NULL,
+    smtp_password VARCHAR(200) NOT NULL,
+    use_tls BOOLEAN DEFAULT TRUE,
+    from_email VARCHAR(100),
+    from_name VARCHAR(100) DEFAULT 'GTN IT Helpdesk',
+    is_active BOOLEAN DEFAULT TRUE,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+```
+
+### 9. Timezone Settings (`timezone_settings`)
+
+System-wide timezone configuration for consistent time display.
+
+```sql
+CREATE TABLE timezone_settings (
+    id SERIAL PRIMARY KEY,
+    timezone_name VARCHAR(50) NOT NULL DEFAULT 'Asia/Kolkata',
+    display_name VARCHAR(100) NOT NULL DEFAULT 'Indian Standard Time (IST)',
+    utc_offset VARCHAR(10) NOT NULL DEFAULT '+05:30',
+    is_active BOOLEAN DEFAULT TRUE,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+```
+
+### 10. Backup Settings (`backup_settings`)
+
+Database backup configuration and scheduling management.
+
+```sql
+CREATE TABLE backup_settings (
+    id SERIAL PRIMARY KEY,
+    backup_frequency VARCHAR(20) NOT NULL DEFAULT 'daily',
+    backup_time TIME NOT NULL DEFAULT '02:00:00',
+    backup_location VARCHAR(200) DEFAULT '/backups',
+    max_backups INTEGER NOT NULL DEFAULT 30,
+    compress_backups BOOLEAN DEFAULT TRUE,
+    include_attachments BOOLEAN DEFAULT TRUE,
+    email_notifications BOOLEAN DEFAULT TRUE,
+    notification_email VARCHAR(100),
+    is_active BOOLEAN DEFAULT TRUE,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
 ```
 
 ## Data Validation & Constraints
