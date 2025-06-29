@@ -88,7 +88,8 @@ CREATE TABLE tickets (
 ```
 
 **Field Specifications:**
-- `id`: Auto-incrementing ticket number
+- `id`: Auto-incrementing primary key
+- `ticket_number`: Unique ticket identifier in GTN-000001 format (required)
 - `title`: Brief issue summary (5-200 chars)
 - `description`: Detailed problem description (min 10 chars)
 - `category`: Issue type (`Hardware`, `Software`)
@@ -107,6 +108,7 @@ CREATE TABLE tickets (
 
 **Indexes & Constraints:**
 ```sql
+CREATE UNIQUE INDEX idx_tickets_ticket_number ON tickets(ticket_number);
 CREATE INDEX idx_tickets_user_id ON tickets(user_id);
 CREATE INDEX idx_tickets_assigned_to ON tickets(assigned_to);
 CREATE INDEX idx_tickets_assigned_by ON tickets(assigned_by);
