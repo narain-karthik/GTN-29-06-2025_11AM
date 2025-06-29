@@ -113,6 +113,7 @@ The GTN Engineering IT Helpdesk System is a comprehensive Flask-based web applic
   - Reduced Super Admin dashboard banner size with smaller padding, font sizes, and icon for more compact appearance
   - Fixed Recent Activity panel icon positioning issue - icons now properly contained within panel borders
   - Applied colored gradient backgrounds to Quick Actions cards (green, orange, purple, blue) matching New Ticket design
+  - Changed homepage text colors to black for "Trusted IT Support" and "Professional IT Helpdesk" headings for better readability
   - Fixed search bar overflow in "My Support Tickets" section by implementing proper flexbox layout and responsive design
   - Reduced banner header size with smaller padding, font sizes, and margins for more compact appearance
   - Added proper CSS for section headers to prevent content overflow on mobile devices
