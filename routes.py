@@ -170,7 +170,20 @@ def user_profile():
         flash('Profile updated successfully!', 'success')
         return redirect(url_for('user_profile'))
     
-    return render_template('user_profile.html', form=form, user=user)
+    # Get user statistics for the profile
+    user_tickets = Ticket.query.filter_by(user_id=user.id).all()
+    total_tickets = len(user_tickets)
+    open_tickets = len([t for t in user_tickets if t.status == 'Open'])
+    resolved_tickets = len([t for t in user_tickets if t.status == 'Resolved'])
+    
+    user_stats = {
+        'total_tickets': total_tickets,
+        'open_tickets': open_tickets,
+        'resolved_tickets': resolved_tickets,
+        'recent_tickets': user_tickets[:5] if user_tickets else []
+    }
+    
+    return render_template('user_profile.html', form=form, user=user, user_stats=user_stats)
 
 @app.route('/super-admin-dashboard')
 @super_admin_required
@@ -728,7 +741,33 @@ def reports_dashboard():
         'status': [open_tickets, in_progress_tickets, resolved_tickets, closed_tickets]
     }
     
-    return render_template('reports_dashboard.html', stats=stats, tickets=all_tickets, chart_data=chart_data)
+    # Get recent tickets for activity timeline
+    recent_tickets = Ticket.query.order_by(Ticket.created_at.desc()).limit(10).all()
+    
+    # Get top users by ticket count
+    from sqlalchemy import func
+    top_users = db.session.query(
+        User,
+        func.count(Ticket.id).label('ticket_count')
+    ).join(Ticket).group_by(User.id).order_by(func.count(Ticket.id).desc()).limit(8).all()
+    
+    return render_template('reports_dashboard.html', 
+                         stats=stats, 
+                         tickets=all_tickets, 
+                         chart_data=chart_data,
+                         recent_tickets=recent_tickets,
+                         top_users=top_users,
+                         total_tickets=total_tickets,
+                         open_tickets=open_tickets,
+                         in_progress_tickets=in_progress_tickets,
+                         resolved_tickets=resolved_tickets,
+                         closed_tickets=closed_tickets,
+                         hardware_tickets=hardware_tickets,
+                         software_tickets=software_tickets,
+                         critical_tickets=critical_tickets,
+                         high_tickets=high_tickets,
+                         medium_tickets=medium_tickets,
+                         low_tickets=low_tickets)
 
 @app.route('/edit-assignment/<int:ticket_id>', methods=['GET', 'POST'])
 @super_admin_required

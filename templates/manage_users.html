@@ -66,7 +66,7 @@
                     <i class="ri-time-line"></i>
                 </div>
                 <div class="stat-content">
-                    <h3>{{ users | selectattr('created_at') | selectattr('created_at', 'greaterthan', (moment().subtract(30, 'days'))) | list | length or 'N/A' }}</h3>
+                    <h3>N/A</h3>
                     <p>New This Month</p>
                 </div>
             </div>
