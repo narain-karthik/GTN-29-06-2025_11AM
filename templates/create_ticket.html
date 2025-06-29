@@ -116,7 +116,12 @@
                             </h5>
                             <div class="mb-3">
                                 <label class="form-label">{{ form.system_name.label.text }}</label>
-                                {{ form.system_name(class="form-control" + (" is-invalid" if form.system_name.errors else ""), placeholder="e.g., DESK-001, Laptop-Marketing") }}
+                                <div class="input-group">
+                                    {{ form.system_name(class="form-control" + (" is-invalid" if form.system_name.errors else ""), placeholder="e.g., DESKTOP-ABC123, Laptop-001", id="system_name_field") }}
+                                    <button type="button" class="btn btn-outline-secondary" onclick="detectSystemName()" title="Auto-detect system name">
+                                        <i class="ri-computer-line"></i>
+                                    </button>
+                                </div>
                                 {% if form.system_name.errors %}
                                     <div class="invalid-feedback">
                                         {% for error in form.system_name.errors %}{{ error }}{% endfor %}
@@ -124,7 +129,7 @@
                                 {% endif %}
                                 <div class="form-text">
                                     <i class="ri-information-line"></i>
-                                    Enter the name or ID of the computer/device having issues (optional)
+                                    Enter your computer name or click the button to auto-detect (helpful for IT support)
                                 </div>
                             </div>
                         </div>
@@ -510,6 +515,86 @@
 </style>
 
 <script>
+// Function to detect system name
+function detectSystemName() {
+    const systemNameField = document.getElementById('system_name_field');
+    const button = event.target.closest('button');
+    
+    // Show loading state
+    const originalIcon = button.innerHTML;
+    button.innerHTML = '<i class="ri-loader-4-line" style="animation: spin 1s linear infinite;"></i>';
+    button.disabled = true;
+    
+    // Try to get hostname from browser APIs
+    try {
+        // Try WebRTC method for hostname detection
+        const rtc = new RTCPeerConnection({iceServers: []});
+        rtc.createDataChannel('');
+        rtc.createOffer().then(offer => rtc.setLocalDescription(offer));
+        
+        rtc.onicecandidate = function(event) {
+            if (event.candidate) {
+                const candidate = event.candidate.candidate;
+                const hostMatch = candidate.match(/candidate:\d+ \d+ \w+ \d+ ([^\s]+)/);
+                if (hostMatch && hostMatch[1] && !hostMatch[1].includes('.')) {
+                    // Found hostname
+                    systemNameField.value = hostMatch[1].toUpperCase();
+                    button.innerHTML = '<i class="ri-check-line" style="color: green;"></i>';
+                    setTimeout(() => {
+                        button.innerHTML = originalIcon;
+                        button.disabled = false;
+                    }, 2000);
+                    rtc.close();
+                    return;
+                }
+            }
+        };
+        
+        // Fallback after timeout
+        setTimeout(() => {
+            if (button.disabled) {
+                // Use more specific system detection
+                const userAgent = navigator.userAgent;
+                let systemName = 'Unknown-System';
+                
+                if (userAgent.includes('Windows NT 10.0')) {
+                    systemName = 'Windows-10-PC';
+                } else if (userAgent.includes('Windows NT 6.3')) {
+                    systemName = 'Windows-8-PC';
+                } else if (userAgent.includes('Windows')) {
+                    systemName = 'Windows-PC';
+                } else if (userAgent.includes('Mac OS X')) {
+                    systemName = 'MacOS-System';
+                } else if (userAgent.includes('Linux')) {
+                    systemName = 'Linux-System';
+                }
+                
+                // Add timestamp for uniqueness
+                const timestamp = new Date().toISOString().slice(11, 19).replace(/:/g, '');
+                systemName += '-' + timestamp;
+                
+                systemNameField.value = systemName;
+                systemNameField.placeholder = 'Please update with your actual computer name';
+                button.innerHTML = '<i class="ri-information-line" style="color: orange;"></i>';
+                setTimeout(() => {
+                    button.innerHTML = originalIcon;
+                    button.disabled = false;
+                }, 2000);
+            }
+        }, 3000);
+        
+    } catch (error) {
+        // Complete fallback
+        systemNameField.value = 'PC-' + new Date().getTime().toString().slice(-6);
+        systemNameField.placeholder = 'Please update with your actual computer name';
+        button.innerHTML = '<i class="ri-error-warning-line" style="color: red;"></i>';
+        setTimeout(() => {
+            button.innerHTML = originalIcon;
+            button.disabled = false;
+        }, 2000);
+    }
+}
+
 document.addEventListener('DOMContentLoaded', function() {
     // Character counter for description
     const descriptionField = document.querySelector('.description-textarea');

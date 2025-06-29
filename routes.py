@@ -285,18 +285,28 @@ def create_ticket():
                 current_system_name = user.system_name.strip()
             else:
                 user_agent = request.headers.get('User-Agent', '').lower()
-                if 'windows' in user_agent:
-                    current_system_name = 'Windows System'
+                timestamp = datetime.now().strftime('%m%d%H%M')
+                
+                if 'windows nt 10.0' in user_agent:
+                    current_system_name = f'WIN10-PC-{timestamp}'
+                elif 'windows nt 6.3' in user_agent:
+                    current_system_name = f'WIN8-PC-{timestamp}'
+                elif 'windows nt 6.1' in user_agent:
+                    current_system_name = f'WIN7-PC-{timestamp}'
+                elif 'windows' in user_agent:
+                    current_system_name = f'WINDOWS-PC-{timestamp}'
                 elif 'mac os x' in user_agent or 'macos' in user_agent:
-                    current_system_name = 'macOS System'
-                elif 'linux' in user_agent:
-                    current_system_name = 'Linux System'
+                    current_system_name = f'MACOS-{timestamp}'
+                elif 'linux' in user_agent and 'android' not in user_agent:
+                    current_system_name = f'LINUX-{timestamp}'
                 elif 'android' in user_agent:
-                    current_system_name = 'Android Device'
-                elif 'iphone' in user_agent or 'ipad' in user_agent:
-                    current_system_name = 'iOS Device'
+                    current_system_name = f'ANDROID-{timestamp}'
+                elif 'iphone' in user_agent:
+                    current_system_name = f'IPHONE-{timestamp}'
+                elif 'ipad' in user_agent:
+                    current_system_name = f'IPAD-{timestamp}'
                 else:
-                    current_system_name = f'Unknown System ({request.remote_addr})'
+                    current_system_name = f'DEVICE-{timestamp}'
 
         user.ip_address = current_ip
         user.system_name = current_system_name
